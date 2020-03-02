@@ -1,0 +1,6 @@
+parameters:
+	autoload_files:
+		- %rootDir%/../../../tests/bootstrap.php
+	checkMissingIterableValueType: false
+	checkGenericClassInNonGenericObjectType: false
+	ignoreErrors:
