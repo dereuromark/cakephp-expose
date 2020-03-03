@@ -20,6 +20,7 @@ $table->addIndex(['uuid'], ['unique' => true]);
 
 $table->create();
 ```
+If you want to save disk space, you can also use binary UUID (16 instead of 32 char length) with `'type' => 'binaryuuid'`.
 
 #### Existing Table Migration
 ```php
@@ -43,6 +44,16 @@ public function initialize(array $config): void {
     ...
     $this->addBehavior('Expose.Expose');
 }
+```
+
+#### Entity update
+You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
+```php
+protected $_accessible = [
+    '*' => true,
+    'id' => false,
+    'uuid' => false, // Your exposed field
+];
 ```
 
 Now you are all set to go.
@@ -93,9 +104,13 @@ $exposedUsers = $this->ExposedUsers
 ```
 
 #### Pagination restrictions
-Activate component for this.
-
-//TODO
+Set a sortWhitelist into your pagination config:
+```php
+    'sortWhitelist' => [
+        'name',
+    ],
+```
+The `id` should not be sortable or filterable here.
 
 #### Using a different UUID generator
 
@@ -109,7 +124,13 @@ If you want to use a different generator, you can set a closure:
 
 ### Populating existing records
 
-The behavior ships with a convenience method to be called from CLI.
-So just hook in the method in some command and it will be able to populate the existing records with the missing UUID data.
+The behavior ships with a convenience command to be called from CLI.
+So just run this to populate the existing records with the missing UUID data.
+```
+bin/cake init_exposed_field PluginName.ModelName
+```
 
-$this->Users->
+Make sure the Expose.Expose behavior is attached to this table class.
+Also execute the migration for the field to be added prior to running this.
+
+Once all records are populated, you can set the field to be `DEFAULT NOT NULL` and add a `UNIQUE` constraint.

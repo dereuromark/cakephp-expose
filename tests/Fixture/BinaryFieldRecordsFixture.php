@@ -5,7 +5,7 @@ namespace Expose\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-class UsersFixture extends TestFixture {
+class BinaryFieldRecordsFixture extends TestFixture {
 
 	/**
 	 * Fields
@@ -14,7 +14,7 @@ class UsersFixture extends TestFixture {
 	 */
 	public $fields = [
 		'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-		'uuid' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
+		'uuid' => ['type' => 'binaryuuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
 		'name' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => null],
 		'created' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
 		'modified' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],

@@ -52,4 +52,4 @@ See [Docs](/docs) for details.
 
 ## TODOs
 
-- Check UUID binary16 compatibility/usage instead of default char36. Saves some disk space.
+- Confirm UUID binary16 compatibility/usage instead of default char36. Saves some disk space, should still be as fast.

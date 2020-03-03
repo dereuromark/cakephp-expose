@@ -14,6 +14,7 @@ class ExposeBehaviorTest extends TestCase {
 		'plugin.Expose.Users',
 		'plugin.Expose.CustomFieldRecords',
 		'plugin.Expose.ExistingRecords',
+		'plugin.Expose.BinaryFieldRecords',
 	];
 
 	/**
@@ -33,7 +34,7 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testSave() {
+	public function testSave(): void {
 		$user = $this->Users->newEntity([
 			'name' => 'New User',
 		]);
@@ -49,7 +50,7 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testBeforeSave() {
+	public function testBeforeSave(): void {
 		$this->Users->removeBehavior('Expose');
 		$this->Users->addBehavior('Expose.Expose', ['on' => 'beforeSave']);
 
@@ -66,7 +67,7 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testFindExposed() {
+	public function testFindExposed(): void {
 		$user = $this->Users->find()->firstOrFail();
 
 		$uuid = $user->uuid;
@@ -81,7 +82,7 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testFindExposedList() {
+	public function testFindExposedList(): void {
 		$user = $this->Users->find()->firstOrFail();
 
 		/** @var string[] $result */
@@ -139,6 +140,29 @@ class ExposeBehaviorTest extends TestCase {
 
 		$count = $customFieldRecordsTable->initExposedField();
 		$this->assertSame(1, $count);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testBinaryUuidField(): void {
+		$binaryFieldRecordsTable = TableRegistry::getTableLocator()->get('BinaryFieldRecords');
+
+		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $binaryFieldRecordsTable */
+		$binaryFieldRecordsTable->addBehavior('Expose.Expose');
+		$binaryFieldRecordsTable->addBehavior('Timestamp');
+
+		$user = $binaryFieldRecordsTable->newEntity([
+			'name' => 'New User',
+		]);
+		$this->assertNotEmpty($user->uuid);
+
+		$binaryFieldRecordsTable->saveOrFail($user);
+
+		$this->assertNotEmpty($user->uuid);
+
+		$result = $binaryFieldRecordsTable->find('exposed', ['uuid' => $user->uuid])->firstOrFail();
+		$this->assertSame($user->name, $result->name);
 	}
 
 }

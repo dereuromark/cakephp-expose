@@ -12,7 +12,6 @@ class ExistingRecordsFixture extends TestFixture {
 	 *
 	 * @var array
 	 */
-	// @codingStandardsIgnoreStart
 	public $fields = [
 		'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
 		'uuid' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
@@ -25,11 +24,10 @@ class ExistingRecordsFixture extends TestFixture {
 		],
 		'_options' => [
 			'engine' => 'InnoDB',
-			'collation' => 'utf8_unicode_ci'
+			'collation' => 'utf8_unicode_ci',
 		],
 	];
 
-	// @codingStandardsIgnoreEnd
 	/**
 	 * Init method
 	 *
