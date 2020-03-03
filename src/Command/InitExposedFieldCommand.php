@@ -9,49 +9,48 @@ use Cake\Console\ConsoleOptionParser;
 
 class InitExposedFieldCommand extends Command {
 
-    /**
-     * E.g.:
-     * bin/cake init_exposed_field PluginName.ModelName
-     *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
-     *
-     * @return int|null The exit code or null for success
-     */
-    public function execute(Arguments $args, ConsoleIo $io): ?int
-    {
-        $table = $args->getArgument('table');
+	/**
+	 * E.g.:
+	 * bin/cake init_exposed_field PluginName.ModelName
+	 *
+	 * @param \Cake\Console\Arguments $args The command arguments.
+	 * @param \Cake\Console\ConsoleIo $io The console io
+	 *
+	 * @return int|null The exit code or null for success
+	 */
+	public function execute(Arguments $args, ConsoleIo $io): ?int {
+		$table = $args->getArgument('table');
 
-        $this->loadModel($table);
-        [$prefix, $name] = pluginSplit($table);
+		$this->loadModel($table);
+		[$prefix, $name] = pluginSplit($table);
 
-        /** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $model */
+		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $model */
 		$model = $this->$name;
 
 		$field = $model->getExposedKey();
 		$io->out('Populating ' . $table . ' `' . $field . '` field ...');
 
-        $count = $model->initExposedField();
+		$count = $model->initExposedField();
 
-        $io->success('Populated ' . $count . ' records. Nothing else left.');
+		$io->success('Populated ' . $count . ' records. Nothing else left.');
 
-        return static::CODE_SUCCESS;
-    }
+		return static::CODE_SUCCESS;
+	}
 
-    /**
-     * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
-     *
-     * @return \Cake\Console\ConsoleOptionParser The built parser.
-     */
-    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
-    {
-        $parser = parent::buildOptionParser($parser);
-        $parser->setDescription('Initialize the exposed field for all existing records. This requires the Expose.Expose behavior to be attached to this table class as well as the migration for the field to be added being executed.');
+	/**
+	 * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
+	 *
+	 * @return \Cake\Console\ConsoleOptionParser The built parser.
+	 */
+	protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
+		$parser = parent::buildOptionParser($parser);
+		$parser->setDescription('Initialize the exposed field for all existing records. This requires the Expose.Expose behavior to be attached to this table class as well as the migration for the field to be added being executed.');
 
-        $parser->addArgument('table', [
-            'required' => true,
-        ]);
+		$parser->addArgument('table', [
+			'required' => true,
+		]);
 
-        return $parser;
-    }
+		return $parser;
+	}
+
 }
