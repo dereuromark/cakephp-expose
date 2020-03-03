@@ -14,7 +14,7 @@ Robustness
 - Speed should be similar to default AIID approach.
 
 Simplicity
-- Changes from AIID exposure to UUID lookup should be minimal for all public endpoints.
+- Code changes from AIID exposure to UUID lookup should be minimal for all public endpoints.
 
 ### Why UUIDs
 This replaces [Hashid](https://github.com/dereuromark/cakephp-hashid) as a more explicit approach which has several advantages:

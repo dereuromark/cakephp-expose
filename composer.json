@@ -36,7 +36,6 @@
 	"autoload-dev": {
 		"psr-4": {
 			"Expose\\Test\\": "tests/",
-			"Expose\\Test\\Fixture\\": "tests/Fixture/",
 			"TestApp\\": "tests/test_app/src/"
 		}
 	},

@@ -4,7 +4,6 @@ namespace Expose\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use TestApp\Model\Table\UsersTable;
 
 class ExposeBehaviorTest extends TestCase {
 
@@ -14,6 +13,7 @@ class ExposeBehaviorTest extends TestCase {
 	protected $fixtures = [
 		'plugin.Expose.Users',
 		'plugin.Expose.CustomFieldRecords',
+		'plugin.Expose.ExistingRecords',
 	];
 
 	/**
@@ -27,7 +27,7 @@ class ExposeBehaviorTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->Users = TableRegistry::getTableLocator()->get('Users', ['className' => UsersTable::class]);
+		$this->Users = TableRegistry::getTableLocator()->get('Users');
 	}
 
 	/**
@@ -93,15 +93,52 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function testCustomExposedField(): void {
+		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('CustomFieldRecords');
+
+		$record = $customFieldRecordsTable->newEntity([
+			'name' => 'New User',
+		]);
+		$this->assertNotEmpty($record->public_identifier);
+
+		$customFieldRecordsTable->saveOrFail($record);
+
+		$record = $customFieldRecordsTable->get($record->id);
+
+		$this->assertNotEmpty($record->public_identifier);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testCustomExposedFieldBeforeSave(): void {
+		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('CustomFieldRecords');
+
+		$config = ['on' => 'beforeSave'] + $customFieldRecordsTable->behaviors()->Expose->getConfig();
+		$customFieldRecordsTable->removeBehavior('Expose');
+		$customFieldRecordsTable->addBehavior('Expose.Expose', $config);
+
+		$user = $customFieldRecordsTable->newEntity([
+			'name' => 'New User',
+		]);
+		$this->assertEmpty($user->public_identifier);
+
+		$customFieldRecordsTable->saveOrFail($user);
+
+		$this->assertNotEmpty($user->public_identifier);
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testInitExposedField(): void {
-		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('Expose.CustomFieldRecords');
+		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('ExistingRecords');
 
-		$user = $customFieldRecordsTable->newEmptyEntity();
-		$user->name = 'My Name';
+		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $customFieldRecordsTable */
+		$customFieldRecordsTable->addBehavior('Expose.Expose');
 
-		$user = $this->Users->saveOrFail($user);
-
-		dd($user);
+		$count = $customFieldRecordsTable->initExposedField();
+		$this->assertSame(1, $count);
 	}
 
 }

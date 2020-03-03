@@ -34,7 +34,8 @@ require CORE_PATH . 'config/bootstrap.php';
 
 Cake\Core\Configure::write('App', [
 	'namespace' => 'TestApp',
-	'encoding' => 'utf-8',
+	'encoding' => 'UTF-8',
+	'fullBaseUrl' => '/',
 ]);
 
 Cake\Core\Configure::write('Expose', [
