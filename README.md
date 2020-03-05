@@ -32,12 +32,25 @@ This replaces [Hashid](https://github.com/dereuromark/cakephp-hashid) as a more 
 
 One does have to make small adjustments to the public actions, though. All lookup by `id` need to be replaced with `uuid`.
 
+It wouldn't even need to be a UUID, it could be any random key of any length. But UUIDs exist and are supported out of the box here.
+So it is just super convenient to use them for this.
+
 ### Why not Hash IDs (anymore)
 Turns out that the auto(magic) overloading of the primary key (from int to string) is not really a solid approach.
+
 Also:
 - The cloaking is also not too secure (and can be reverse engineered), using a truly random UUID though solves this by design.
 - The speed is not an issue actually if you use both AIID and UUID together. We only use the exposed field for the query conditions. All joins and internals continue to use
 normal primary key relations. And we have an index on that exposed field, so it really doesn't slow things down much.
+
+### Why not only UUID as primary key
+This kills internal usability (hard to remember IDs and foreign keys), as well as usually increases DB size dramatically (as each foreign key is now also a UUID).
+If you do not need this, you only make life harder this way.
+The UUID in our case is only meant for external lookup. Everything inside the app should still be simple, easy and fast.
+
+Further issues:
+- Loss of deterministic sorting (which you get for free keeping the AIID primary key) and pagination (especially with burst inputs around the same times).
+- Key index creation required and quite slow with a lot of row changes. Also lookup is often much slower here still compared to UUID, especially when doing a lot of joins.
 
 ## Installation
 
