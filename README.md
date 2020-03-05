@@ -10,6 +10,8 @@
 
 Exposes UUIDs as public identifiers for your entities instead of numeric primary keys.
 
+This branch is for use with **CakePHP 4.0+**. For details see [version map](https://github.com/dereuromark/cakephp-expose/wiki#cakephp-version-map).
+
 ## Key Goals
 Cloaking/Obfuscation
 - True randomness, so you cannot determine order or count of records per time-frame.
