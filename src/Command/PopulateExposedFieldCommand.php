@@ -7,11 +7,14 @@ use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-class InitExposedFieldCommand extends Command {
+/**
+ * Data migration assistance for exposed fields.
+ */
+class PopulateExposedFieldCommand extends Command {
 
 	/**
 	 * E.g.:
-	 * bin/cake init_exposed_field PluginName.ModelName
+	 * bin/cake populate_exposed_field PluginName.ModelName
 	 *
 	 * @param \Cake\Console\Arguments $args The command arguments.
 	 * @param \Cake\Console\ConsoleIo $io The console io
@@ -44,7 +47,7 @@ class InitExposedFieldCommand extends Command {
 	 */
 	protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
 		$parser = parent::buildOptionParser($parser);
-		$parser->setDescription('Initialize the exposed field for all existing records. This requires the Expose.Expose behavior to be attached to this table class as well as the migration for the field to be added being executed.');
+		$parser->setDescription('Populate the exposed field for all existing records. This requires the Expose.Expose behavior to be attached to this table class as well as the migration for the field to be added being executed.');
 
 		$parser->addArgument('table', [
 			'required' => true,

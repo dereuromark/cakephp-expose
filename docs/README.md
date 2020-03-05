@@ -8,8 +8,20 @@ You can configure it to be any other key.
 
 The primary key `id` (auto increment integer) will not be touched by this plugin/behavior.
 
+#### Adding the Behavior
+In your Table class, add this in your `initialize()` method:
+```php
+public function initialize(array $config): void {
+    parent::initialize($config);
+
+    ...
+    $this->addBehavior('Expose.Expose');
+}
+```
+
 #### New Table Migration
 ```php
+// Add your exposed field
 $table->addColumn('uuid', 'uuid', [
     'default' => null,
     'null' => false, // Add it as true for existing entities first, then fill/populate, then set to false afterwards.
@@ -35,16 +47,14 @@ $table->addIndex(['uuid'], ['unique' => true]);
 $table->update();
 ```
 
-#### Adding the Behavior
-In your Table class, add this in your `initialize()` method:
-```php
-public function initialize(array $config): void {
-    parent::initialize($config);
-
-    ...
-    $this->addBehavior('Expose.Expose');
-}
+Use the command here to generate a migration file for you:
 ```
+bin/cake add_exposed_field PluginName.ModelName {MigrationName}
+```
+With `-d`/`--dry-run` you can output first what would be generated.
+
+Then execute the migration using `bin/cake migrations migrate`.
+
 
 #### Entity update
 You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
@@ -118,7 +128,7 @@ It uses UUID version 4 generator from CakePHP Text utility library by default.
 If you want to use a different generator, you can set a closure:
 ```php
 'generator' => function () {
-    return MyUuidClass::generate(); // or alike
+    return MyAwesomeUuid::generate(); // or alike
 }
 ```
 
@@ -127,10 +137,15 @@ If you want to use a different generator, you can set a closure:
 The behavior ships with a convenience command to be called from CLI.
 So just run this to populate the existing records with the missing UUID data.
 ```
-bin/cake init_exposed_field PluginName.ModelName
+bin/cake populate_exposed_field PluginName.ModelName
 ```
 
-Make sure the Expose.Expose behavior is attached to this table class.
+Make sure the `Expose.Expose` behavior is attached to this table class.
 Also execute the migration for the field to be added prior to running this.
 
 Once all records are populated, you can set the field to be `DEFAULT NOT NULL` and add a `UNIQUE` constraint.
+If you run here the first command again, it will display the code snippet for it:
+```
+bin/cake add_exposed_field PluginName.ModelName
+```
+You don't need the dry-run part here anymore, since it will just output the migration content in this case.
