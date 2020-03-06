@@ -63,7 +63,7 @@ You can install this plugin into your CakePHP application using [Composer](https
 The recommended way to install is:
 
 ```
-composer require dereuromark/cakephp-expose:dev-master
+composer require dereuromark/cakephp-expose
 ```
 
 Then load the plugin with the following command:
