@@ -75,6 +75,13 @@ bin/cake plugin load Expose
 
 See [Docs](/docs) for details.
 
-## TODOs
+### Quick Start for adding to existing records
 
-- Confirm UUID binary16 compatibility/usage instead of default char36. Saves some disk space, should still be as fast.
+Faster than the speed of light:
+
+- Add the behavior and run `bin/cake add_exposed_field PluginName.ModelName {MigrationName}` to generate a migration for adding the field.
+- Execute the migration and then populate existing records using `bin/cake populate_exposed_field PluginName.ModelName`
+- Use `bin/cake add_exposed_field PluginName.ModelName {MigrationName}` to get a non nullable field migration for your new field.
+- After also executing that migration all new records will automatically have their exposed field stored as well.
+
+You are done and can now adjust your public actions to query by exposed field only and hide the primary key completely.
