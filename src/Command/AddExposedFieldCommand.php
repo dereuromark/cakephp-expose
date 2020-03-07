@@ -68,7 +68,7 @@ class AddExposedFieldCommand extends Command {
 
 		$migrationName = $args->getArgument('migration') ?: 'MigrationExposedField' . $prefix . $name;
 		$migrationsPath = CONFIG . 'Migrations' . DS;
-		$migrationFilePath = $migrationsPath . date('YmdH0001') . '_' . $migrationName . '.php';
+		$migrationFilePath = $migrationsPath . date('YmdHis') . '_' . $migrationName . '.php';
 
 		$io->out('Migration to be created: ' . $migrationName);
 		$io->out('File to be created: ' . $migrationFilePath);
