@@ -73,10 +73,15 @@ class ExposeBehaviorTest extends TestCase {
 		$uuid = $user->uuid;
 
 		$field = $this->Users->getExposedKey();
+		$this->assertSame('uuid', $field);
+
 		/** @var \TestApp\Model\Entity\User $result */
 		$result = $this->Users->find('exposed', [$field => $uuid])->firstOrFail();
 
 		$this->assertSame($user->id, $result->id);
+
+		$field = $this->Users->getExposedKey(true);
+		$this->assertSame('Users.uuid', $field);
 	}
 
 	/**
