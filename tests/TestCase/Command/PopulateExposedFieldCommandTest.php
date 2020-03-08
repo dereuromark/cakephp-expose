@@ -6,7 +6,7 @@ use Cake\Console\ConsoleIo;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Expose\Command\AddExposedFieldCommand;
+use Expose\Command\PopulateExposedFieldCommand;
 
 class PopulateExposedFieldCommandTest extends TestCase {
 
@@ -28,7 +28,7 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	protected $Users;
 
 	/**
-	 * @var \Expose\Command\AddExposedFieldCommand
+	 * @var \Expose\Command\PopulateExposedFieldCommand
 	 */
 	protected $command;
 
@@ -41,7 +41,7 @@ class PopulateExposedFieldCommandTest extends TestCase {
 		$this->Users = TableRegistry::getTableLocator()->get('Users');
 
 		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
-		$this->command = new AddExposedFieldCommand($this->io);
+		$this->command = new PopulateExposedFieldCommand($this->io);
 	}
 
 	/**

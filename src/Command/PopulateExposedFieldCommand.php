@@ -31,7 +31,7 @@ class PopulateExposedFieldCommand extends Command {
 		$table = $this->$name;
 
 		$field = $table->getExposedKey();
-		$io->out('Populating ' . $table . ' `' . $field . '` field ...');
+		$io->out('Populating ' . $model . ' `' . $field . '` field ...');
 
 		$count = $table->initExposedField();
 
