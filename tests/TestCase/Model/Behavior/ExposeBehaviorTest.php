@@ -161,7 +161,9 @@ class ExposeBehaviorTest extends TestCase {
 
 		$this->assertNotEmpty($user->uuid);
 
-		$result = $binaryFieldRecordsTable->find('exposed', ['uuid' => $user->uuid])->firstOrFail();
+		$field = $binaryFieldRecordsTable->getExposedKey();
+
+		$result = $binaryFieldRecordsTable->find('exposed', [$field => $user->uuid])->firstOrFail();
 		$this->assertSame($user->name, $result->name);
 	}
 
