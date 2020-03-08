@@ -79,10 +79,17 @@ class ExposeBehavior extends Behavior {
 	}
 
 	/**
+	 * @param bool $prefixed
+	 *
 	 * @return string
 	 */
-	public function getExposedKey(): string {
-		return $this->getConfig('field');
+	public function getExposedKey(bool $prefixed = false): string {
+		$field = $this->getConfig('field');
+		if ($prefixed) {
+			$field = $this->getTable()->getAlias() . '.' . $field;
+		}
+
+		return $field;
 	}
 
 	/**
@@ -101,7 +108,7 @@ class ExposeBehavior extends Behavior {
 			throw new InvalidArgumentException('The `' . $field . '` key is required for find(\'exposed\')');
 		}
 
-		return $query->where([$field => $options[$field]]);
+		return $query->where([$this->getTable()->getAlias() . '.' . $field => $options[$field]]);
 	}
 
 	/**
