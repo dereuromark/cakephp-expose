@@ -22,18 +22,18 @@ class PopulateExposedFieldCommand extends Command {
 	 * @return int|null The exit code or null for success
 	 */
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
-		$table = $args->getArgument('table');
+		$model = $args->getArgument('model');
 
-		$this->loadModel($table);
-		[$prefix, $name] = pluginSplit($table);
+		$this->loadModel($model);
+		[$prefix, $name] = pluginSplit($model);
 
-		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $model */
-		$model = $this->$name;
+		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
+		$table = $this->$name;
 
-		$field = $model->getExposedKey();
+		$field = $table->getExposedKey();
 		$io->out('Populating ' . $table . ' `' . $field . '` field ...');
 
-		$count = $model->initExposedField();
+		$count = $table->initExposedField();
 
 		$io->success('Populated ' . $count . ' records. Nothing else left.');
 

@@ -7,11 +7,18 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
+use DirectoryIterator;
 
 /**
  * Structure migration assistance for exposed fields.
  */
 class AddExposedFieldCommand extends Command {
+
+	/**
+	 * @var string
+	 */
+	protected $migrationPath = CONFIG . 'Migrations' . DS;
 
 	/**
 	 * E.g.:
@@ -67,8 +74,7 @@ class AddExposedFieldCommand extends Command {
 		$containsRecords = $io->askChoice('Does this table already contain records? If so, we need to create a nullable field.', ['no', 'yes'], 'yes') === 'yes';
 
 		$migrationName = $args->getArgument('migration') ?: 'MigrationExposedField' . $prefix . $name;
-		$migrationsPath = CONFIG . 'Migrations' . DS;
-		$migrationFilePath = $migrationsPath . date('YmdHis') . '_' . $migrationName . '.php';
+		$migrationFilePath = $this->migrationPath . date('YmdHis') . '_' . $migrationName . '.php';
 
 		$io->out('Migration to be created: ' . $migrationName);
 		$io->out('File to be created: ' . $migrationFilePath);
@@ -83,7 +89,7 @@ class AddExposedFieldCommand extends Command {
 
 		$migrationContent = $this->generateMigration($migrationName, $table, $containsRecords);
 		if (!$args->getOption('dry-run')) {
-			if (file_exists($migrationFilePath)) {
+			if ($this->migrationExists($migrationName, $this->migrationPath)) {
 				$io->abort('File already exists: ' . $migrationFilePath);
 			}
 			file_put_contents($migrationFilePath, $migrationContent);
@@ -193,6 +199,30 @@ TXT;
 TXT;
 
 		return $operations;
+	}
+
+	/**
+	 * @param string $migrationName
+	 * @param string $migrationPath
+	 *
+	 * @return bool
+	 */
+	protected function migrationExists(string $migrationName, string $migrationPath): bool {
+		$inflectedMigrationName = Inflector::underscore($migrationName);
+
+		/** @var \SplFileInfo[] $iterator */
+		$iterator = new DirectoryIterator($migrationPath);
+		foreach ($iterator as $fileInfo) {
+			if ($fileInfo->isDot()) {
+				continue;
+			}
+
+			if (preg_match('#_(' . $migrationName . '|' . $inflectedMigrationName . ')\.php$#', $fileInfo->getFilename())) {
+				return true;
+			};
+		}
+
+		return false;
 	}
 
 }
