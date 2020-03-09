@@ -2,6 +2,7 @@
 
 namespace Expose\Test\TestCase\Command;
 
+use Cake\Command\Command;
 use Cake\Console\ConsoleIo;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
@@ -29,6 +30,11 @@ class AddExposedFieldCommandTest extends TestCase {
 	protected $Users;
 
 	/**
+	 * @var \Cake\Console\ConsoleIo|\PHPUnit\Framework\MockObject\MockObject
+	 */
+	protected $io;
+
+	/**
 	 * @var \Expose\Command\AddExposedFieldCommand
 	 */
 	protected $command;
@@ -43,6 +49,9 @@ class AddExposedFieldCommandTest extends TestCase {
 
 		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
 		$this->command = new AddExposedFieldCommand($this->io);
+
+		$this->setAppNamespace();
+		$this->useCommandRunner();
 	}
 
 	/**
@@ -67,9 +76,25 @@ class AddExposedFieldCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testExecute(): void {
-		$this->skipIf(true);
+		$this->io->expects($this->any())->method('askChoice')->willReturn('yes');
 
 		$this->exec('add_exposed_field Users');
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testExecuteNewField(): void {
+		$this->skipIf(true);
+
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['field' => 'binary_uuid']);
+
+		$this->exec('add_exposed_field Users');
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
 	}
 
 	/**
