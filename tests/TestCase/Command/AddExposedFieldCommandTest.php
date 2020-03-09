@@ -87,14 +87,19 @@ class AddExposedFieldCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testExecuteNewField(): void {
-		$this->skipIf(true);
-
 		$this->Users->removeBehavior('Expose');
 		$this->Users->addBehavior('Expose.Expose', ['field' => 'binary_uuid']);
 
-		$this->exec('add_exposed_field Users');
+		$this->exec('add_exposed_field Users -d', ['yes']);
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
+
+		$this->assertOutputContains('Migration to be created: MigrationExposedFieldUsers');
+
+		$this->assertOutputContains('$table->addColumn(\'binary_uuid\', \'uuid\', [');
+		$this->assertOutputContains('\'null\' => true,');
+
+		$this->assertOutputContains('$table->addIndex([\'binary_uuid\'], [\'unique\' => true]);');
 	}
 
 	/**
