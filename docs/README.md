@@ -113,6 +113,16 @@ $exposedUsers = $this->ExposedUsers
     ->toArray();
 ```
 
+#### Using the key directly in queries
+In some cases you might want to manually use the field in a query. Here it is recommended to get the field as prefixed version:
+```php
+$field = $this->Users->getExposedKey(true); // ModelName.field_name
+...
+->where([..., $field => $value)
+...
+```
+Especially when you `contain` other relations, you should always prefix the fields to avoid naming collisions.
+
 #### Pagination restrictions
 Set a sortWhitelist into your pagination config:
 ```php
