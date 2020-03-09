@@ -2,6 +2,7 @@
 
 namespace Expose\Test\TestCase\Command;
 
+use Cake\Command\Command;
 use Cake\Console\ConsoleIo;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
@@ -42,15 +43,19 @@ class PopulateExposedFieldCommandTest extends TestCase {
 
 		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
 		$this->command = new PopulateExposedFieldCommand($this->io);
+
+		$this->setAppNamespace();
+		$this->useCommandRunner();
 	}
 
 	/**
 	 * @return void
 	 */
 	public function testExecute(): void {
-		$this->skipIf(true);
-
 		$this->exec('populate_exposed_field Users');
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+		$this->assertOutputContains('Populated 0 records. Nothing else left.');
 	}
 
 }

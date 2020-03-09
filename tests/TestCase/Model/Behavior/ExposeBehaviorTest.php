@@ -50,6 +50,21 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function testMarshalFieldsConfig(): void {
+		$user = $this->Users->newEntity([
+			'name' => 'New User',
+			'created' => '2020-01-01',
+		], ['fields' => ['name']]);
+		$this->assertNotEmpty($user->uuid);
+
+		$this->assertNull($user->created);
+		$this->assertNull($user->modified);
+		$this->assertNotEmpty($user->name);
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testBeforeSave(): void {
 		$this->Users->removeBehavior('Expose');
 		$this->Users->addBehavior('Expose.Expose', ['on' => 'beforeSave']);
