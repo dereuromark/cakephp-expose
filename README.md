@@ -1,7 +1,7 @@
 # CakePHP Expose plugin
 
 [![Build Status](https://travis-ci.org/dereuromark/cakephp-expose.svg?branch=master)](https://travis-ci.org/dereuromark/cakephp-expose)
-[![Codecov](https://img.shields.io/codecov/c/github/dereuromark/cakephp-expose/master.svg)](https://codecov.io/gh/dereuromark/cakephp-expose)
+[![Codecov](https://codecov.io/gh/dereuromark/cakephp-expose/branch/master/graph/badge.svg)](https://codecov.io/gh/dereuromark/cakephp-expose)
 [![Latest Stable Version](https://poser.pugx.org/dereuromark/cakephp-expose/v/stable.svg)](https://packagist.org/packages/dereuromark/cakephp-expose)
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-expose/license.svg)](https://packagist.org/packages/dereuromark/cakephp-expose)
