@@ -49,7 +49,7 @@ class PopulateExposedFieldCommand extends Command {
 		$parser = parent::buildOptionParser($parser);
 		$parser->setDescription('Populate the exposed field for all existing records. This requires the Expose.Expose behavior to be attached to this table class as well as the migration for the field to be added being executed.');
 
-		$parser->addArgument('table', [
+		$parser->addArgument('model', [
 			'required' => true,
 		]);
 
