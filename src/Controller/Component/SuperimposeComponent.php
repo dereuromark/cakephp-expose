@@ -16,7 +16,6 @@ class SuperimposeComponent extends Component {
 	 * @var array
 	 */
 	protected $_defaultConfig = [
-		'modifyResult' => false,
 		'actions' => [],
 	];
 
@@ -38,10 +37,7 @@ class SuperimposeComponent extends Component {
 			throw new RuntimeException('Expose.Expose behavior must be attached to a model that uses superimposing.');
 		}
 
-		$config = [
-			'modifyResult' => $this->getConfig('modifyResult'),
-		];
-		$this->getController()->$modelName->addBehavior('Expose.Superimpose', $config);
+		$this->getController()->$modelName->addBehavior('Expose.Superimpose', $this->getConfig());
 	}
 
 }

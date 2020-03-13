@@ -172,12 +172,9 @@ $config = [
         'index',
         'view',
     ],
-    'modifyResult' => true,
 ];
 $this->loadComponent('Expose.Superimpose', $config);
 ```
 
-The `modifyResult` config makes sure that you can also continue use `->id` access inside templates. With this it will superimpose that field with the UUID.
-Careful though: You lose the actual primary key info.
-
-If you want to keep control over the templates, keep this `false`.
+The behavior takes sure that you can also continue use `->id` access inside templates. With this it will superimpose that field with the UUID.
+The actual primary key value will be stored in `_id` property by default here.

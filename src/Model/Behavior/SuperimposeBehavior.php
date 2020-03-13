@@ -19,10 +19,9 @@ class SuperimposeBehavior extends Behavior {
 
 	/**
 	 * @var array
-	 * {@inheritdoc}
 	 */
 	protected $_defaultConfig = [
-		'modifyResult' => false,
+		'primaryKeyField' => '_id',
 		'implementedFinders' => [
 			'superimpose' => 'findSuperimpose',
 		],
@@ -39,6 +38,11 @@ class SuperimposeBehavior extends Behavior {
 	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
 		$pk = $this->_table->getPrimaryKey();
 		$field = $this->_table->getExposedKey();
+
+		$alias = $this->getConfig('primaryKeyField');
+		$entity->set($alias, $entity->$pk);
+		$entity->setDirty($alias, false);
+
 		$entity->set($pk, $entity->$field);
 		$entity->setDirty($pk, false);
 	}
@@ -84,9 +88,7 @@ class SuperimposeBehavior extends Behavior {
 			}
 		}
 
-		if ($this->getConfig('modifyResult')) {
-			$query = $query->find('superimpose');
-		}
+		$query = $query->find('superimpose');
 	}
 
 	/**
@@ -105,6 +107,8 @@ class SuperimposeBehavior extends Behavior {
 					return $row;
 				}
 
+				$alias = $this->getConfig('primaryKeyField');
+				$row[$alias] = $row[$pk] ?? null;
 				$row[$pk] = $row[$field];
 
 				return $row;
