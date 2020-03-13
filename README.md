@@ -56,6 +56,9 @@ Further issues with only UUID as primary key:
 - Loss of deterministic sorting (which you get for free keeping the AIID primary key) and pagination (especially with burst inputs around the same times).
 - Queries are often much slower here still compared to integer AIID, especially when doing a lot of joins.
 
+## Demo
+See [sandbox](https://sandbox4.dereuromark.de/sandbox/expose-examples) examples.
+
 ## Installation
 
 You can install this plugin into your CakePHP application using [Composer](https://getcomposer.org/).
