@@ -6,3 +6,4 @@ parameters:
 	ignoreErrors:
 		- '#PHPDoc tag @param for parameter \$table with type .+ExposeBehavior is not subtype of native type Cake\\ORM\\Table.#'
 		- '#Call to an undefined method Cake\\ORM\\Table::getExposedKey\(\).#'
+		- '#Call to an undefined method object::.+etValue\(\).#'

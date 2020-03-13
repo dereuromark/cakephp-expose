@@ -159,3 +159,24 @@ If you run here the first command again, it will display the code snippet for it
 bin/cake add_exposed_field PluginName.ModelName
 ```
 You don't need the dry-run part here anymore, since it will just output the migration content in this case.
+
+### Superimposing
+In some cases you don't want to modify all public actions and their templates.
+In that case you can use the superimpose functionality to map UUIDs to the primary key field on read, and the other way around on write.
+
+For this load the `Expose.Superimpose` component in the controllers you want this, and only for those actions that are needed:
+```php
+// in the initialize() method
+$config = [
+    'actions' => [
+        'index',
+        'view',
+    ],
+];
+$this->loadComponent('Expose.Superimpose', $config);
+```
+
+The behavior takes sure that you can also continue use `->id` access inside templates. With this it will superimpose that field with the UUID.
+The actual primary key value will be stored in `_id` property by default here.
+
+If you want more control over the behavior, you can disable `autoFinder` and manually set your `find('superimpose')` where needed, including associations.
