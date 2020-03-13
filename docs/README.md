@@ -160,7 +160,7 @@ bin/cake add_exposed_field PluginName.ModelName
 ```
 You don't need the dry-run part here anymore, since it will just output the migration content in this case.
 
-### Superimposing
+### Superimposition
 In some cases you don't want to modify all public actions and their templates.
 In that case you can use the superimpose functionality to map UUIDs to the primary key field on read, and the other way around on write.
 
