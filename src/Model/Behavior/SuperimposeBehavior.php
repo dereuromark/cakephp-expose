@@ -21,6 +21,7 @@ class SuperimposeBehavior extends Behavior {
 	 * @var array
 	 */
 	protected $_defaultConfig = [
+		'autoFinder' => true,
 		'primaryKeyField' => '_id',
 		'implementedFinders' => [
 			'superimpose' => 'findSuperimpose',
@@ -77,6 +78,10 @@ class SuperimposeBehavior extends Behavior {
 
 			return $expression;
 		});
+
+		if (!$this->getConfig('autoFinder')) {
+			return;
+		}
 
 		foreach ($this->_table->associations() as $association) {
 			/** @var \Cake\ORM\Association|\Cake\ORM\Table $association */

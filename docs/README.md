@@ -178,3 +178,5 @@ $this->loadComponent('Expose.Superimpose', $config);
 
 The behavior takes sure that you can also continue use `->id` access inside templates. With this it will superimpose that field with the UUID.
 The actual primary key value will be stored in `_id` property by default here.
+
+If you want more control over the behavior, you can disable `autoFinder` and manually set your `find('superimpose')` where needed, including associations.
