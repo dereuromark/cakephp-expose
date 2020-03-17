@@ -21,7 +21,7 @@ Security
 
 Robustness
 - Must work with also more complex queries and use cases, including the atomic `updateAll()`, `deleteAll()`.
-- Speed should be similar to default AIID approach.
+- Speed should be similar to default AIID (Auto Increment ID) approach.
 
 Simplicity
 - Code changes from AIID exposure to UUID lookup should be minimal for all public endpoints.
@@ -45,7 +45,7 @@ Also:
 - The speed is not an issue actually if you use both AIID and UUID together. We only use the exposed field for the query conditions. All joins and internals continue to use
 normal primary key relations. And we have an index on that exposed field, so it really doesn't slow things down much.
 
-### Why AAID and UUID as combination
+### Why AIID and UUID as combination
 You might ask now: Why not only UUID as primary key?
 
 This kills internal usability (hard to remember IDs and foreign keys), as well as usually increases DB size dramatically (as each foreign key is now also a UUID).
