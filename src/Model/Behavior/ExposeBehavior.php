@@ -33,7 +33,7 @@ class ExposeBehavior extends Behavior {
 	 */
 	protected $_defaultConfig = [
 		'field' => 'uuid',
-		'on' => 'beforeMarshal',
+		'on' => 'beforeSave',
 		'implementedFinders' => [
 			'exposed' => 'findExposed',
 			'exposedList' => 'findExposedList',
@@ -115,6 +115,9 @@ class ExposeBehavior extends Behavior {
 	 * Using marshalling is needed if you want to use the exposed ID before persisting the entity.
 	 * Otherwise use beforeSave callback.
 	 *
+	 * This is only allowed/possible for (mass)creating or updating records.
+	 * It will overwrite all fields! Careful with using this callback as it does not separate between create and update.
+	 *
 	 * This callback will auto-add the exposed ID field into the fields whitelist as well as accessibleFields.
 	 *
 	 * @param \Cake\Event\EventInterface $event
@@ -152,6 +155,10 @@ class ExposeBehavior extends Behavior {
 	 */
 	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
 		if ($this->_config['on'] !== 'beforeSave') {
+			return;
+		}
+
+		if (!$entity->isNew()) {
 			return;
 		}
 

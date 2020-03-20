@@ -18,7 +18,7 @@ class ExposeBehaviorTest extends TestCase {
 	];
 
 	/**
-	 * @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior
+	 * @var \TestApp\Model\Table\UsersTable
 	 */
 	protected $Users;
 
@@ -34,23 +34,61 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testSave(): void {
+	public function testBeforeSave(): void {
+		$user = $this->Users->newEntity([
+			'name' => 'New User',
+		]);
+		$this->assertEmpty($user->uuid);
+
+		$this->Users->saveOrFail($user);
+
+		$this->assertNotEmpty($user->uuid);
+		$uuid = $user->uuid;
+
+		$updatedUser = $this->Users->patchEntity($user, [
+			'name' => 'Updated User',
+		]);
+		$this->Users->saveOrFail($updatedUser);
+
+		$fetchedUser = $this->Users->get($updatedUser->id);
+		$this->assertSame($uuid, $fetchedUser->uuid);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testPatchAndSave(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['on' => 'beforeMarshal']);
+
 		$user = $this->Users->newEntity([
 			'name' => 'New User',
 		]);
 		$this->assertNotEmpty($user->uuid);
+		$uuid = $user->uuid;
 
 		$this->Users->saveOrFail($user);
 
 		$user = $this->Users->get($user->id);
 
 		$this->assertNotEmpty($user->uuid);
+
+		$updatedUser = $this->Users->patchEntity($user, [
+			'name' => 'Updated User',
+		]);
+
+		$this->Users->saveOrFail($updatedUser);
+
+		$this->assertNotSame($uuid, $updatedUser->uuid);
 	}
 
 	/**
 	 * @return void
 	 */
 	public function testMarshalFieldsConfig(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['on' => 'beforeMarshal']);
+
 		$user = $this->Users->newEntity([
 			'name' => 'New User',
 			'created' => '2020-01-01',
@@ -60,23 +98,6 @@ class ExposeBehaviorTest extends TestCase {
 		$this->assertNull($user->created);
 		$this->assertNull($user->modified);
 		$this->assertNotEmpty($user->name);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function testBeforeSave(): void {
-		$this->Users->removeBehavior('Expose');
-		$this->Users->addBehavior('Expose.Expose', ['on' => 'beforeSave']);
-
-		$user = $this->Users->newEntity([
-			'name' => 'New User',
-		]);
-		$this->assertEmpty($user->uuid);
-
-		$this->Users->saveOrFail($user);
-
-		$this->assertNotEmpty($user->uuid);
 	}
 
 	/**
@@ -117,28 +138,6 @@ class ExposeBehaviorTest extends TestCase {
 	public function testCustomExposedField(): void {
 		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('CustomFieldRecords');
 
-		$record = $customFieldRecordsTable->newEntity([
-			'name' => 'New User',
-		]);
-		$this->assertNotEmpty($record->public_identifier);
-
-		$customFieldRecordsTable->saveOrFail($record);
-
-		$record = $customFieldRecordsTable->get($record->id);
-
-		$this->assertNotEmpty($record->public_identifier);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function testCustomExposedFieldBeforeSave(): void {
-		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('CustomFieldRecords');
-
-		$config = ['on' => 'beforeSave'] + $customFieldRecordsTable->behaviors()->Expose->getConfig();
-		$customFieldRecordsTable->removeBehavior('Expose');
-		$customFieldRecordsTable->addBehavior('Expose.Expose', $config);
-
 		$user = $customFieldRecordsTable->newEntity([
 			'name' => 'New User',
 		]);
@@ -147,6 +146,28 @@ class ExposeBehaviorTest extends TestCase {
 		$customFieldRecordsTable->saveOrFail($user);
 
 		$this->assertNotEmpty($user->public_identifier);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testCustomExposedFieldBeforeMarshal(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['on' => 'beforeMarshal']);
+
+		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('CustomFieldRecords');
+
+		$record = $customFieldRecordsTable->newEntity([
+			'name' => 'New User',
+		]);
+
+		$customFieldRecordsTable->saveOrFail($record);
+
+		$this->assertNotEmpty($record->public_identifier);
+
+		$record = $customFieldRecordsTable->get($record->id);
+
+		$this->assertNotEmpty($record->public_identifier);
 	}
 
 	/**
@@ -175,7 +196,6 @@ class ExposeBehaviorTest extends TestCase {
 		$user = $binaryFieldRecordsTable->newEntity([
 			'name' => 'New User',
 		]);
-		$this->assertNotEmpty($user->uuid);
 
 		$binaryFieldRecordsTable->saveOrFail($user);
 
