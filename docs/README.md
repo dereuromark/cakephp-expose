@@ -180,3 +180,11 @@ The behavior takes sure that you can also continue use `->id` access inside temp
 The actual primary key value will be stored in `_id` property by default here.
 
 If you want more control over the behavior, you can disable `autoFinder` and manually set your `find('superimpose')` where needed, including associations.
+
+#### Saving records
+Obviously, with superimposed primary keys saving - and in particularly updating - records becomes a bit more complicated.
+Here, the behavior tries to auto-convert the primary keys back before saving.
+What it currently cannot fully do yet is to take care of relations and their foreign keys. Do not activate this behavior
+for those cases (yet).
+
+Make sure you don't have any validation or domain rules on the primary key (e.g. "integer"). Those would work against the behavior here.

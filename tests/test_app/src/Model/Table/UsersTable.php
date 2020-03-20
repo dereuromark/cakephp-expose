@@ -38,6 +38,8 @@ class UsersTable extends Table {
 	public function initialize(array $config): void {
 		parent::initialize($config);
 
+		$this->hasMany('Posts');
+
 		$this->addBehavior('Timestamp');
 		$this->addBehavior('Expose.Expose');
 	}
@@ -49,10 +51,6 @@ class UsersTable extends Table {
 	 * @return \Cake\Validation\Validator
 	 */
 	public function validationDefault(Validator $validator): Validator {
-		$validator
-			->integer('id')
-			->allowEmptyString('id', null, 'create');
-
 		$validator
 			->uuid('uuid')
 			->notEmptyString('uuid');

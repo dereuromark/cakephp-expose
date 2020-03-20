@@ -29,6 +29,28 @@ class SuperimposeBehavior extends Behavior {
 	];
 
 	/**
+	 * Switching UUID IDs with their AIID counterpart if found.
+	 *
+	 * @param \Cake\Event\EventInterface $event
+	 * @param \Cake\Datasource\EntityInterface $entity
+	 * @param \ArrayObject $options
+	 * @return void
+	 */
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
+		if ($entity->isNew()) {
+			return;
+		}
+
+		$pk = $this->_table->getPrimaryKey();
+		$field = $this->_table->getExposedKey();
+		$alias = $this->getConfig('primaryKeyField');
+		if (isset($entity->$field) && isset($entity->$alias)) {
+			$entity->$pk = $entity->$alias;
+			$entity->setDirty($pk, false);
+		}
+	}
+
+	/**
 	 * Callback to superimpose the records' primary key returned after a save operation.
 	 *
 	 * @param \Cake\Event\EventInterface $event Event.
@@ -115,6 +137,11 @@ class SuperimposeBehavior extends Behavior {
 				$alias = $this->getConfig('primaryKeyField');
 				$row[$alias] = $row[$pk] ?? null;
 				$row[$pk] = $row[$field];
+
+				if ($row instanceof EntityInterface) {
+					$row->setDirty($alias, false);
+					$row->setDirty($pk, false);
+				}
 
 				return $row;
 			});
