@@ -3,8 +3,8 @@
 namespace Expose\Model\Behavior;
 
 use ArrayObject;
+use Cake\Collection\CollectionInterface;
 use Cake\Datasource\EntityInterface;
-use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
@@ -126,7 +126,7 @@ class SuperimposeBehavior extends Behavior {
 	 * @return \Cake\ORM\Query
 	 */
 	public function findSuperimpose(Query $query, array $options) {
-		$query->formatResults(function (ResultSetInterface $results) {
+		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				$pk = $this->_table->getPrimaryKey();
 				$field = $this->_table->getExposedKey();
@@ -148,6 +148,23 @@ class SuperimposeBehavior extends Behavior {
 		});
 
 		return $query;
+	}
+
+	/**
+	 * Switching UUID IDs with their AIID counterpart if found.
+	 *
+	 * @param \Cake\Event\EventInterface $event
+	 * @param \Cake\Datasource\EntityInterface $entity
+	 * @return void
+	 */
+	public function beforeDelete(EventInterface $event, EntityInterface $entity) {
+		$pk = $this->_table->getPrimaryKey();
+		$field = $this->_table->getExposedKey();
+		$alias = $this->getConfig('primaryKeyField');
+		if (isset($entity->$field) && isset($entity->$alias)) {
+			$entity->$pk = $entity->$alias;
+			$entity->setDirty($pk, false);
+		}
 	}
 
 	/**

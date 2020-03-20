@@ -3,11 +3,9 @@
 namespace Expose\Test\TestCase\Command;
 
 use Cake\Command\Command;
-use Cake\Console\ConsoleIo;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Expose\Command\PopulateExposedFieldCommand;
 
 class PopulateExposedFieldCommandTest extends TestCase {
 
@@ -17,16 +15,13 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	 * @var string[]
 	 */
 	protected $fixtures = [
-		'plugin.Expose.Users',
-		'plugin.Expose.CustomFieldRecords',
 		'plugin.Expose.ExistingRecords',
-		'plugin.Expose.BinaryFieldRecords',
 	];
 
 	/**
-	 * @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior
+	 * @var \TestApp\Model\Table\ExistingRecordsTable
 	 */
-	protected $Users;
+	protected $ExistingRecords;
 
 	/**
 	 * @var \Expose\Command\PopulateExposedFieldCommand
@@ -39,10 +34,21 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->Users = TableRegistry::getTableLocator()->get('Users');
+		$this->ExistingRecords = TableRegistry::getTableLocator()->get('ExistingRecords');
+		$this->ExistingRecords->deleteAll('1=1');
+		$this->ExistingRecords->removeBehavior('Expose');
+		$data = [
+			[
+				'name' => 'One',
+			],
+			[
+				'name' => 'Two',
+			],
+		];
+		$entities = $this->ExistingRecords->newEntities($data);
+		$this->ExistingRecords->saveManyOrFail($entities);
 
-		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
-		$this->command = new PopulateExposedFieldCommand($this->io);
+		$this->ExistingRecords->addBehavior('Expose.Expose');
 
 		$this->setAppNamespace();
 		$this->useCommandRunner();
@@ -52,10 +58,10 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testExecute(): void {
-		$this->exec('populate_exposed_field Users');
+		$this->exec('populate_exposed_field ExistingRecords');
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
-		$this->assertOutputContains('Populated 0 records. Nothing else left.');
+		$this->assertOutputContains('Populated 2 records. Nothing else left.');
 	}
 
 }

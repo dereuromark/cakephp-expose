@@ -35,6 +35,11 @@ Cake\Core\Configure::write('App', [
 	'namespace' => 'TestApp',
 	'encoding' => 'UTF-8',
 	'fullBaseUrl' => '/',
+	'paths' => [
+		'templates' => [
+			TESTS . 'test_app' . DS . 'templates' . DS,
+		],
+	],
 ]);
 
 Cake\Core\Configure::write('Expose', [

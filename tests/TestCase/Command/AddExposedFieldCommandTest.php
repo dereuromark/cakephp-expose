@@ -25,7 +25,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	];
 
 	/**
-	 * @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior
+	 * @var \TestApp\Model\Table\UsersTable
 	 */
 	protected $Users;
 
@@ -48,7 +48,7 @@ class AddExposedFieldCommandTest extends TestCase {
 		$this->Users = TableRegistry::getTableLocator()->get('Users');
 
 		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
-		$this->command = new AddExposedFieldCommand($this->io);
+		$this->command = new AddExposedFieldCommand();
 
 		$this->setAppNamespace();
 		$this->useCommandRunner();
