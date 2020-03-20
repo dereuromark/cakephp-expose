@@ -185,6 +185,6 @@ If you want more control over the behavior, you can disable `autoFinder` and man
 Obviously, with superimposed primary keys saving - and in particularly updating - records becomes a bit more complicated.
 Here, the behavior tries to auto-convert the primary keys back before saving.
 What it currently cannot fully do yet is to take care of relations and their foreign keys. Do not activate this behavior
-for those cases (yet).
+for those cases (yet). The primary intend of Superimpose is still to make exposure more easy and convenient - as readonly lookups.
 
-Make sure you don't have any validation or domain rules on the primary key (e.g. "integer"). Those would work against the behavior here.
+Tip: Make sure you don't have any validation or domain rules on the primary key (e.g. "integer"). Those would work against the behavior here.

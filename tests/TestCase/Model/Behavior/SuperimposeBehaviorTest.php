@@ -4,6 +4,7 @@ namespace Expose\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use InvalidArgumentException;
 use TestApp\Model\Entity\Post;
 
 class SuperimposeBehaviorTest extends TestCase {
@@ -17,7 +18,7 @@ class SuperimposeBehaviorTest extends TestCase {
 	];
 
 	/**
-	 * @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior
+	 * @var \TestApp\Model\Table\UsersTable
 	 */
 	protected $Users;
 
@@ -55,7 +56,7 @@ class SuperimposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testSaveRelated(): void {
+	public function testSaveRelatedHasMany(): void {
 		$this->Users->addBehavior('Expose.Superimpose');
 
 		$user = $this->Users->newEntity([
@@ -98,6 +99,50 @@ class SuperimposeBehaviorTest extends TestCase {
 		$this->assertNotEmpty($user->posts[1]->_id);
 
 		$this->assertSame([], $user->getDirty());
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testSaveRelatedBelongsTo(): void {
+		$this->Users->Posts->addBehavior('Expose.Superimpose');
+
+		$post = $this->Users->Posts->newEntity([
+			'content' => 'New User',
+			'user' => [
+				'name' => 'Me',
+			],
+		]);
+
+		$this->Users->Posts->saveOrFail($post);
+
+		$this->assertNotEmpty($post->uuid);
+		$this->assertNotEmpty($post->_id);
+		$this->assertSame($post->uuid, $post->id);
+
+		$this->assertNotEmpty($post->user->uuid);
+		$this->assertEmpty($post->user->_id);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testSaveRelatedAllSuperimposed(): void {
+		$this->Users->Posts->addBehavior('Expose.Superimpose');
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$post = $this->Users->Posts->newEntity([
+			'content' => 'New User',
+			'user' => [
+				'name' => 'Me',
+			],
+		]);
+
+		//TODO
+		$this->expectException(InvalidArgumentException::class);
+		$this->expectExceptionMessage('Cannot convert value of type `string` to integer');
+
+		$this->Users->Posts->saveOrFail($post);
 	}
 
 }
