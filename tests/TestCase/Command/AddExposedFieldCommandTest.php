@@ -115,7 +115,8 @@ class AddExposedFieldCommandTest extends TestCase {
 
 		$this->assertOutputContains('Migration to be created: MigrationExposedFieldUsers');
 
-		$this->assertOutputContains('$table->addColumn(\'binary_uuid\', \'binaryuuid\', [');
+		$this->assertOutputContains('$table->addColumn(\'binary_uuid\', \'binary\', [');
+		$this->assertOutputContains('\'limit\' => 16,');
 		$this->assertOutputContains('\'null\' => true,');
 
 		$this->assertOutputContains('$table->addIndex([\'binary_uuid\'], [\'unique\' => true]);');

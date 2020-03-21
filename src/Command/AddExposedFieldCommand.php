@@ -174,13 +174,24 @@ TXT;
 		$field = $table->getExposedKey();
 		$tableName = $table->getTable();
 		$null = $containsRecords ? 'true' : 'false';
-		$type = $binary ? 'binaryuuid' : 'uuid';
+		$type = $binary ? 'binary' : 'uuid';
+
+		$options = <<<TXT
+            'default' => null,
+            'null' => $null, // Add it as true for existing entities first, then fill/populate, then set to false afterwards.
+
+TXT;
+		if ($type === 'binary') {
+			$options = <<<TXT
+            'limit' => 16,
+
+TXT . $options;
+		}
 
 		$operations = <<<TXT
         \$table = \$this->table('$tableName');
         \$table->addColumn('$field', '$type', [
-            'default' => null,
-            'null' => $null, // Add it as true for existing entities first, then fill/populate, then set to false afterwards.
+$options
         ]);
         \$table->addIndex(['$field'], ['unique' => true]);
         \$table->update();

@@ -32,7 +32,15 @@ $table->addIndex(['uuid'], ['unique' => true]);
 
 $table->create();
 ```
-If you want to save disk space, you can also use binary UUID (16 instead of 32 char length) with `'type' => 'binaryuuid'`.
+If you want to save disk space, you can also use binary UUID (16 instead of 32 char length):
+```php
+$table->addColumn('uuid', 'binary', [
+    'limit' => 16,
+    ...
+```
+With 16 instead of 36 byte you save half of the disk storage needed, and long term this definitely can be a lot.
+As such this is the recommended type. On top you can later add shortening, for details see further down.
+
 
 #### Existing Table Migration
 ```php
@@ -98,6 +106,9 @@ You can even provide your own callable if needed for a constructor initializatio
 },
 ```
 
+Note: Adding a shortener later on is BC in terms of accessibility.
+The record can still always also be accessed through the long 36-char string here.
+Just make sure you 301 SEO-redirect or use canonical linking if that is relevant for you and those records.
 
 #### Entity update
 You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
