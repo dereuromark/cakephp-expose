@@ -103,6 +103,25 @@ class AddExposedFieldCommandTest extends TestCase {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function testExecuteNewFieldBinary(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['field' => 'binary_uuid']);
+
+		$this->exec('add_exposed_field Users -b -d', ['yes']);
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+
+		$this->assertOutputContains('Migration to be created: MigrationExposedFieldUsers');
+
+		$this->assertOutputContains('$table->addColumn(\'binary_uuid\', \'binaryuuid\', [');
+		$this->assertOutputContains('\'null\' => true,');
+
+		$this->assertOutputContains('$table->addIndex([\'binary_uuid\'], [\'unique\' => true]);');
+	}
+
+	/**
 	 * @param object &$object Instantiated object that we will run method on.
 	 * @param string $methodName Method name to call.
 	 * @param array $parameters Array of parameters to pass into method.

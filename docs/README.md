@@ -53,6 +53,8 @@ bin/cake add_exposed_field PluginName.ModelName {MigrationName}
 ```
 With `-d`/`--dry-run` you can output first what would be generated.
 
+Tip: Binary UUID saves a lot of disk space in the long run. Use `-b`/`--binary` option here.
+
 Then execute the migration using `bin/cake migrations migrate`.
 
 

@@ -87,7 +87,8 @@ class AddExposedFieldCommand extends Command {
 
 		$io->out('Creating ' . $model . ' `' . $field . '` field migration ...');
 
-		$migrationContent = $this->generateMigration($migrationName, $table, $containsRecords);
+		$binary = (bool)$args->getOption('binary');
+		$migrationContent = $this->generateMigration($migrationName, $table, $containsRecords, $binary);
 		if (!$args->getOption('dry-run')) {
 			if ($this->migrationExists($migrationName, $this->migrationPath)) {
 				$io->abort('File already exists: ' . $migrationFilePath);
@@ -119,6 +120,11 @@ class AddExposedFieldCommand extends Command {
 		$parser->addArgument('migration', [
 			'required' => false,
 		]);
+		$parser->addOption('binary', [
+			'short' => 'b',
+			'help' => 'Binary UUID (16 chars)',
+			'boolean' => true,
+		]);
 		$parser->addOption('dry-run', [
 			'short' => 'd',
 			'help' => 'Dry-Run it (just output the file content instead of creating it)',
@@ -132,11 +138,12 @@ class AddExposedFieldCommand extends Command {
 	 * @param string $migrationName
 	 * @param \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table
 	 * @param bool $containsRecords
+	 * @param bool $binary
 	 *
 	 * @return string
 	 */
-	protected function generateMigration(string $migrationName, Table $table, bool $containsRecords): string {
-		$operations = $this->generateOperations($table, $containsRecords);
+	protected function generateMigration(string $migrationName, Table $table, bool $containsRecords, bool $binary): string {
+		$operations = $this->generateOperations($table, $containsRecords, $binary);
 
 		$migration = <<<TXT
 <?php
@@ -159,17 +166,19 @@ TXT;
 	/**
 	 * @param \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table
 	 * @param bool $containsRecords
+	 * @param bool $binary
 	 *
 	 * @return string
 	 */
-	protected function generateOperations(Table $table, bool $containsRecords): string {
+	protected function generateOperations(Table $table, bool $containsRecords, bool $binary): string {
 		$field = $table->getExposedKey();
 		$tableName = $table->getTable();
 		$null = $containsRecords ? 'true' : 'false';
+		$type = $binary ? 'binaryuuid' : 'uuid';
 
 		$operations = <<<TXT
         \$table = \$this->table('$tableName');
-        \$table->addColumn('$field', 'uuid', [
+        \$table->addColumn('$field', '$type', [
             'default' => null,
             'null' => $null, // Add it as true for existing entities first, then fill/populate, then set to false afterwards.
         ]);
