@@ -68,6 +68,9 @@ Cache::setConfig($cache);
 
 Cake\Core\Configure::write('debug', true);
 
+class_alias(TestApp\Controller\AppController::class, 'App\Controller\AppController');
+class_alias(Cake\View\View::class, 'App\View\AppView');
+
 Cake\Core\Plugin::getCollection()->add(new Expose\Plugin());
 
 // Ensure default test connection is defined

@@ -29,7 +29,9 @@ class ShortUuidType extends BinaryUuidType {
 	 */
 	public function toDatabase($value, DriverInterface $driver) {
 		if (is_string($value)) {
-			$value = $this->lengthen($value);
+			if (strlen($value) !== 36) {
+				$value = $this->lengthen($value);
+			}
 
 			return $this->convertStringToBinaryUuid($value);
 		}
@@ -61,7 +63,11 @@ class ShortUuidType extends BinaryUuidType {
 		if (is_string($value)) {
 			$value = $this->convertBinaryUuidToString($value);
 
-			return $this->shorten($value);
+			if (strlen($value) === 36) {
+				$value = $this->shorten($value);
+			}
+
+			return $value;
 		}
 		if (is_resource($value)) {
 			return $value;

@@ -1,4 +1,4 @@
-### Expose Plugin Documentation
+## Expose Plugin Documentation
 
 ### Set Up
 
