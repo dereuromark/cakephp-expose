@@ -4,6 +4,7 @@ namespace Expose\Model\Behavior;
 
 use ArrayObject;
 use Cake\Core\Configure;
+use Cake\Database\TypeFactory;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
@@ -27,7 +28,6 @@ class ExposeBehavior extends Behavior {
 	 * Default config
 	 *
 	 * - field: The exposed field name
-	 * - generator: Set to a custom callable/closure if you don't want default UUID 4 (random UUIDs).
 	 *
 	 * @var array
 	 */
@@ -42,7 +42,6 @@ class ExposeBehavior extends Behavior {
 			'getExposedKey' => 'getExposedKey',
 			'initExposedField' => 'initExposedField',
 		],
-		'generator' => null,
 	];
 
 	/**
@@ -131,7 +130,7 @@ class ExposeBehavior extends Behavior {
 		}
 
 		$field = $this->getConfig('field');
-		$data[$field] = $this->generateExposedField();
+		$data[$field] = $this->generateExposedField($field);
 
 		if (isset($options['fields'])) {
 			if (!in_array($field, $options['fields'], true)) {
@@ -163,7 +162,7 @@ class ExposeBehavior extends Behavior {
 		}
 
 		$field = $this->getConfig('field');
-		$entity->$field = $this->generateExposedField();
+		$entity->$field = $this->generateExposedField($field);
 	}
 
 	/**
@@ -193,7 +192,7 @@ class ExposeBehavior extends Behavior {
 		while (($records = $this->_table->find('all', $params)->toArray())) {
 			/** @var \Cake\ORM\Entity $record */
 			foreach ($records as $record) {
-				$record->$field = $this->generateExposedField();
+				$record->$field = $this->generateExposedField($field);
 
 				$this->_table->saveOrFail($record);
 				$count++;
@@ -204,17 +203,19 @@ class ExposeBehavior extends Behavior {
 	}
 
 	/**
-	 * Uses UUID version 4 by default.
+	 * @param string $field
 	 *
 	 * @return string
 	 */
-	public function generateExposedField(): string {
-		$generator = $this->getConfig('generator');
-		if ($generator !== null) {
-			return $generator();
+	protected function generateExposedField(string $field): string {
+		$fieldType = $this->_table->getSchema()->getColumnType($field);
+		if (!$fieldType) {
+			throw new RuntimeException('Cannot determine column type of field `' . $field . '`');
 		}
 
-		return Text::uuid();
+		$type = TypeFactory::build($fieldType);
+
+		return $type->newId();
 	}
 
 }

@@ -144,9 +144,10 @@ The `id` should not be sortable or filterable here.
 #### Using a different UUID generator
 
 It uses UUID version 4 generator from CakePHP Text utility library by default.
-If you want to use a different generator, you can set a closure:
+If you want to use a different generator, you need to create a custom database type extending the `UuidType`
+and overwrite the `newId()` method:
 ```php
-'generator' => function () {
+public function newId(): string {
     return MyAwesomeUuid::generate(); // or alike
 }
 ```
