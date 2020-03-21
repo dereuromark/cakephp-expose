@@ -57,6 +57,39 @@ Tip: Binary UUID saves a lot of disk space in the long run. Use `-b`/`--binary` 
 
 Then execute the migration using `bin/cake migrations migrate`.
 
+#### Shortening Converters
+If you also want to shorten the resulting output UUID from 32 to 22 chars, go with `ShortUuidType` class which extends the binary one.
+In this case you need to specify the type-map in your bootstrap:
+```php
+use Cake\Database\Type;
+
+Type::map('binaryuuid', \Expose\Database\Type\ShortUuidType::class);
+```
+A UUID stored in the DB as `4e52c919-513e-4562-9248-7dd612c6c1ca` would then be displayed and
+used as `fpfyRTmt6XeE9ehEKZ5LwF` for example.
+This can be a bit more user-friendly as it is shorter and selectable with a double click in most browsers and apps.
+
+Make sure to include the required composer dependencies as listed at the top of the converter class.
+For the default one to work you need to run
+```
+composer require brick/math
+```
+
+You can select a different converter than the default `Short` one by configuring it through `Expose.converter`:
+```php
+// e.g. in your app.php
+'Expose.converter' => \Expose\Converter\KeikoShort::class,
+```
+Or write your own one on plugin or app level using the given interface:
+```php
+namespace App\Converter;
+
+use Expose\Converter\ConverterInterface;
+
+class MyShort implements ConverterInterface {
+    // implement the methods
+}
+```
 
 #### Entity update
 You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
