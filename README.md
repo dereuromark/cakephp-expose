@@ -64,3 +64,5 @@ Faster than the speed of light:
 You are done and can now adjust your public actions to query by exposed field only and hide the primary key completely.
 Using `Superimpose` behavior on top of `Expose` means that you actually might not even have to modify any code.
 Should work out of the box.
+
+More migration tips in [Migrating](docs/Migrating.md) section.
