@@ -112,7 +112,7 @@ class AddExposedFieldCommand extends Command {
 	 */
 	protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
 		$parser = parent::buildOptionParser($parser);
-		$parser->setDescription('Initialize the exposed field for all existing records. This requires the Expose.Expose behavior to be attached to this table class as well as the migration for the field to be added being executed.');
+		$parser->setDescription('Initialize the exposed field for all existing records. This requires the `Expose.Expose` behavior to be attached to this table class as well as the migration for the field to be added being executed.');
 
 		$parser->addArgument('model', [
 			'required' => true,
@@ -122,7 +122,7 @@ class AddExposedFieldCommand extends Command {
 		]);
 		$parser->addOption('binary', [
 			'short' => 'b',
-			'help' => 'Binary UUID (16 chars)',
+			'help' => 'Binary UUID (16 byte). Normal UUID is char-36 (36 byte).',
 			'boolean' => true,
 		]);
 		$parser->addOption('dry-run', [
