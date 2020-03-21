@@ -10,7 +10,6 @@ use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
-use Cake\Utility\Text;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -124,7 +123,7 @@ class ExposeBehavior extends Behavior {
 	 * @param \ArrayObject $options
 	 * @return void
 	 */
-	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options) {
+	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void {
 		if ($this->_config['on'] !== 'beforeMarshal') {
 			return;
 		}
@@ -152,7 +151,7 @@ class ExposeBehavior extends Behavior {
 	 * @param \ArrayObject $options
 	 * @return void
 	 */
-	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
 		if ($this->_config['on'] !== 'beforeSave') {
 			return;
 		}
@@ -175,7 +174,7 @@ class ExposeBehavior extends Behavior {
 	 * @return int
 	 * @throws \RuntimeException
 	 */
-	public function initExposedField($params = []) {
+	public function initExposedField(array $params = []): int {
 		$field = $this->getConfig('field');
 		if (!$this->_table->hasField($field)) {
 			throw new RuntimeException('Table does not have exposed field `' . $field . '`');
