@@ -26,6 +26,8 @@
 		"cakephp/cakephp": "^4.0"
 	},
 	"require-dev": {
+		"ext-bcmath": "*",
+		"keiko/uuid-shortener": "^0.2.1",
 		"fig-r/psr2r-sniffer": "dev-master"
 	},
 	"autoload": {
