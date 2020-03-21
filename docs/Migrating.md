@@ -7,8 +7,6 @@ Here you first need to migrate to an integer primary key, and then afterwards fo
 and let the provided commands guide you to the rest.
 
 #### UUID to AIID primary key
-That's why we start with this now.
-
 Step 1: Add a the new primary key column `id_new`, but as a normal `int(10)` field with auto-increment for now.
 Make sure the column is filled with values now.
 

@@ -6,7 +6,7 @@ Make sure you set  up your entity with a UUID field for exposure.
 By default it is expected to be named `uuid`.
 You can configure it to be any other key.
 
-The primary key `id` (auto increment integer) will not be touched by this plugin/behavior.
+The primary key `id` (auto-increment integer) will not be touched by this plugin/behavior.
 
 #### Adding the Behavior
 In your Table class, add this in your `initialize()` method:
@@ -64,51 +64,6 @@ With `-d`/`--dry-run` you can output first what would be generated.
 Tip: Binary UUID saves a lot of disk space in the long run. Use `-b`/`--binary` option here.
 
 Then execute the migration using `bin/cake migrations migrate`.
-
-#### Shortening Converters
-If you also want to shorten the resulting output UUID from 32 to 22 chars, go with `ShortUuidType` class which extends the binary one.
-In this case you need to specify the type-map in your bootstrap:
-```php
-use Cake\Database\Type;
-
-Type::map('binaryuuid', \Expose\Database\Type\ShortUuidType::class);
-```
-A UUID stored in the DB as `4e52c919-513e-4562-9248-7dd612c6c1ca` would then be displayed and
-used as `fpfyRTmt6XeE9ehEKZ5LwF` for example.
-This can be a bit more user-friendly as it is shorter and selectable with a double click in most browsers and apps.
-
-Make sure to include the required composer dependencies as listed at the top of the converter class.
-For the default one to work you need to run
-```
-composer require brick/math
-```
-
-You can select a different converter than the default `Short` one by configuring it through `Expose.converter`:
-```php
-// e.g. in your app.php
-'Expose.converter' => \Expose\Converter\KeikoShort::class,
-```
-Or write your own one on plugin or app level using the given interface:
-```php
-namespace App\Converter;
-
-use Expose\Converter\ConverterInterface;
-
-class MyShort implements ConverterInterface {
-    // implement the methods
-}
-```
-
-You can even provide your own callable if needed for a constructor initialization:
-```php
-'Expose.converter' => function () {
-    return new KeikoShort(Dictionary::createAlphanumeric());
-},
-```
-
-Note: Adding a shortener later on is BC in terms of accessibility.
-The record can still always also be accessed through the long 36-char string here.
-Just make sure you 301 SEO-redirect or use canonical linking if that is relevant for you and those records.
 
 #### Entity update
 You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
@@ -207,7 +162,8 @@ bin/cake populate_exposed_field PluginName.ModelName
 Make sure the `Expose.Expose` behavior is attached to this table class.
 Also execute the migration for the field to be added prior to running this.
 
-Once all records are populated, you can set the field to be `DEFAULT NOT NULL` and add a `UNIQUE` constraint.
+Once all records are populated, you can make a second migration file and set the field
+to be `DEFAULT NOT NULL` and add a `UNIQUE` constraint.
 If you run here the first command again, it will display the code snippet for it:
 ```
 bin/cake add_exposed_field PluginName.ModelName
@@ -245,6 +201,52 @@ Tip: Make sure you don't have any validation or domain rules on the primary key 
 
 If you want still want to partially use it on saving nested entities, you can set `recursive` option to false on the behavior.
 Then all relations will just use `Expose` - and you will just have to use the `uuid` field on those for follow up usage in that same request.
+
+
+#### Shortening Converters
+If you also want to shorten the resulting output UUID from 32 to 22 chars, go with `ShortUuidType` class which extends the binary one.
+In this case you need to specify the type-map in your bootstrap:
+```php
+use Cake\Database\Type;
+
+Type::map('binaryuuid', \Expose\Database\Type\ShortUuidType::class);
+```
+A UUID stored in the DB as `4e52c919-513e-4562-9248-7dd612c6c1ca` would then be displayed and
+used as `fpfyRTmt6XeE9ehEKZ5LwF` for example.
+This can be a bit more user-friendly as it is shorter and selectable with a double click in most browsers and apps.
+
+Make sure to include the required composer dependencies as listed at the top of the converter class.
+For the default one to work you need to run
+```
+composer require brick/math
+```
+
+You can select a different converter than the default `Short` one by configuring it through `Expose.converter`:
+```php
+// e.g. in your app.php
+'Expose.converter' => \Expose\Converter\KeikoShort::class,
+```
+Or write your own one on plugin or app level using the given interface:
+```php
+namespace App\Converter;
+
+use Expose\Converter\ConverterInterface;
+
+class MyShort implements ConverterInterface {
+    // implement the methods
+}
+```
+
+You can even provide your own callable if needed for a constructor initialization:
+```php
+'Expose.converter' => function () {
+    return new KeikoShort(Dictionary::createAlphanumeric());
+},
+```
+
+Note: Adding a shortener later on is BC in terms of accessibility.
+The record can still always also be accessed through the long 36-char string here.
+Just make sure you 301 SEO-redirect or use canonical linking if that is relevant for you and those records.
 
 ### Backend
 The plugin comes with an optional and small admin backend to reverse UUIDs.
