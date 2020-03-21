@@ -3,6 +3,7 @@
 namespace Expose;
 
 use Cake\Core\BasePlugin;
+use Cake\Routing\RouteBuilder;
 
 /**
  * Plugin for Expose
@@ -20,8 +21,18 @@ class Plugin extends BasePlugin {
 	protected $bootstrapEnabled = false;
 
 	/**
-	 * @var bool
+	 * @param \Cake\Routing\RouteBuilder $routes
+	 *
+	 * @return void
 	 */
-	protected $routesEnabled = false;
+	public function routes(RouteBuilder $routes): void {
+		$routes->prefix('Admin', function (RouteBuilder $routes) {
+			$routes->plugin('Expose', function (RouteBuilder $routes) {
+				$routes->connect('/', ['controller' => 'Expose', 'action' => 'index']);
+
+				$routes->fallbacks();
+			});
+		});
+	}
 
 }

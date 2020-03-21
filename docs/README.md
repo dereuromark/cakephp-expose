@@ -91,6 +91,14 @@ class MyShort implements ConverterInterface {
 }
 ```
 
+You can even provide your own callable if needed for a constructor initialization:
+```php
+'Expose.converter' => function () {
+    return new KeikoShort(Dictionary::createAlphanumeric());
+},
+```
+
+
 #### Entity update
 You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
 ```php
@@ -226,3 +234,17 @@ Tip: Make sure you don't have any validation or domain rules on the primary key 
 
 If you want still want to partially use it on saving nested entities, you can set `recursive` option to false on the behavior.
 Then all relations will just use `Expose` - and you will just have to use the `uuid` field on those for follow up usage in that same request.
+
+### Backend
+The plugin comes with an optional and small admin backend to reverse UUIDs.
+This can come in handy sometimes.
+
+Browse to `/admin/expose` for this.
+As long as you didn't disable the routes for the plugin it should be visible right away.
+
+If you have Auth enabled, make sure to allow your user (or admin role) access.
+Using [TinyAuth](https://github.com/dereuromark/cakephp-tinyauth) plugin, for example (in `auth_acl.ini`):
+```ini
+[Expose.Admin/Expose]
+* = admin
+```
