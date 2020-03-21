@@ -184,8 +184,9 @@ TXT;
 		if ($type === 'binary') {
 			$options = <<<TXT
             'limit' => 16,
+$options
 
-TXT . $options;
+TXT;
 		}
 
 		$operations = <<<TXT
