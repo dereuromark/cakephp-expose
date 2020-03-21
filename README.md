@@ -25,6 +25,7 @@ Robustness
 
 Simplicity
 - Code changes from AIID exposure to UUID lookup should be minimal for all public endpoints.
+- The default shortener provided makes the UUIDs also only 22 chars long concise strings.
 
 ### Why UUIDs
 This replaces [Hashid](https://github.com/dereuromark/cakephp-hashid) as a more explicit approach which has several advantages:
@@ -88,3 +89,5 @@ Faster than the speed of light:
 - After also executing that migration all new records will automatically have their exposed field stored as well.
 
 You are done and can now adjust your public actions to query by exposed field only and hide the primary key completely.
+Using `Superimpose` behavior on top of `Expose` means that you actually might not even have to modify any code.
+Should work out of the box.
