@@ -45,7 +45,7 @@ class ShortUuidTypeTest extends TestCase {
 	 */
 	public function testNewId(): void {
 		$result = $this->type->newId();
-		$this->assertTrue(strlen($result) === 22, $result);
+		$this->assertWithinRange(21, strlen($result), 1, $result);
 	}
 
 	/**
@@ -71,6 +71,28 @@ class ShortUuidTypeTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function testKeikoNewId(): void {
+		Configure::write('Expose.converter', KeikoShort::class);
+
+		$result = $this->type->newId();
+		$this->assertWithinRange(21, strlen($result), 1, $result);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testKeikoToDatabase(): void {
+		Configure::write('Expose.converter', KeikoShort::class);
+
+		$shortId = 'mavTAjNm4NVztDwh4gdSrQ';
+		$result = $this->type->toDatabase($shortId, $this->driver);
+
+		$this->assertSame('806d096995b3433b976f774611fdacbb', bin2hex($result));
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testKeikoToPhp(): void {
 		Configure::write('Expose.converter', KeikoShort::class);
 
@@ -87,7 +109,7 @@ class ShortUuidTypeTest extends TestCase {
 		Configure::write('Expose.converter', $this->callable());
 
 		$result = $this->type->newId();
-		$this->assertTrue(strlen($result) === 22, $result);
+		$this->assertWithinRange(21, strlen($result), 1, $result);
 	}
 
 	/**

@@ -8,7 +8,7 @@ use Cake\Database\DriverInterface;
 use Cake\Database\Type\BinaryUuidType;
 use Cake\Utility\Text;
 use Expose\Converter\ConverterInterface;
-use Expose\Converter\KeikoShort;
+use Expose\Converter\Short;
 
 /**
  * Short Binary UUID type converter. Stored as binary16, displayed as char22.
@@ -98,7 +98,7 @@ class ShortUuidType extends BinaryUuidType {
 		}
 
 		if ($converter === null) {
-			$converter = KeikoShort::class;
+			$converter = Short::class;
 		}
 
 		return new $converter();

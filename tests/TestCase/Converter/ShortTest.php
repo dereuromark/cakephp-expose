@@ -3,12 +3,12 @@
 namespace Expose\Test\TestCase\Converter;
 
 use Cake\TestSuite\TestCase;
-use Expose\Converter\KeikoShort;
+use Expose\Converter\Short;
 
-class KeikoShortTest extends TestCase {
+class ShortTest extends TestCase {
 
 	/**
-	 * @var \Expose\Converter\KeikoShort
+	 * @var \Expose\Converter\Short
 	 */
 	protected $converter;
 
@@ -18,27 +18,27 @@ class KeikoShortTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->converter = new KeikoShort();
+		$this->converter = new Short();
 	}
 
 	/**
 	 * @return void
 	 */
 	public function testEncode(): void {
-		$uuid = '806d0969-95b3-433b-976f-774611fdacbb';
+		$uuid = '4e52c919-513e-4562-9248-7dd612c6c1ca';
 		$result = $this->converter->encode($uuid);
 
-		$this->assertSame('mavTAjNm4NVztDwh4gdSrQ', $result);
+		$this->assertSame('fpfyRTmt6XeE9ehEKZ5LwF', $result);
 	}
 
 	/**
 	 * @return void
 	 */
 	public function testDecode(): void {
-		$shortId = 'mavTAjNm4NVztDwh4gdSrQ';
+		$shortId = 'fpfyRTmt6XeE9ehEKZ5LwF';
 		$result = $this->converter->decode($shortId);
 
-		$this->assertSame('806d0969-95b3-433b-976f-774611fdacbb', $result);
+		$this->assertSame('4e52c919-513e-4562-9248-7dd612c6c1ca', $result);
 	}
 
 }
