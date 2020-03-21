@@ -182,9 +182,12 @@ The actual primary key value will be stored in `_id` property by default here.
 If you want more control over the behavior, you can disable `autoFinder` and manually set your `find('superimpose')` where needed, including associations.
 
 #### Saving records
-Obviously, with superimposed primary keys saving - and in particularly updating - records becomes a bit more complicated.
+With superimposed primary keys, saving - and in particularly updating - records becomes a bit more complicated.
 Here, the behavior tries to auto-convert the primary keys back before saving.
 What it currently cannot fully do yet is to take care of relations and their foreign keys. Do not activate this behavior
 for those cases (yet). The primary intend of Superimpose is still to make exposure more easy and convenient - as readonly lookups.
 
 Tip: Make sure you don't have any validation or domain rules on the primary key (e.g. "integer"). Those would work against the behavior here.
+
+If you want still want to partially use it on saving nested entities, you can set `recursive` option to false on the behavior.
+Then all relations will just use `Expose` - and you will just have to use the `uuid` field on those for follow up usage in that same request.

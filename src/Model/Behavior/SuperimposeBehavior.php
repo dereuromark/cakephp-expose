@@ -22,6 +22,7 @@ class SuperimposeBehavior extends Behavior {
 	 */
 	protected $_defaultConfig = [
 		'autoFinder' => true,
+		'recursive' => true,
 		'primaryKeyField' => '_id',
 		'implementedFinders' => [
 			'superimpose' => 'findSuperimpose',
@@ -105,6 +106,12 @@ class SuperimposeBehavior extends Behavior {
 			return;
 		}
 
+		$query = $query->find('superimpose');
+
+		if (!$this->getConfig('recursive')) {
+			return;
+		}
+
 		foreach ($this->_table->associations() as $association) {
 			/** @var \Cake\ORM\Association|\Cake\ORM\Table $association */
 			if ($association->getTarget()->hasBehavior('Expose') && $association->getFinder() === 'all') {
@@ -114,8 +121,6 @@ class SuperimposeBehavior extends Behavior {
 				$association->setFinder('superimpose');
 			}
 		}
-
-		$query = $query->find('superimpose');
 	}
 
 	/**
