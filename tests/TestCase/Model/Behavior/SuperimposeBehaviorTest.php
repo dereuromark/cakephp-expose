@@ -127,6 +127,26 @@ class SuperimposeBehaviorTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function testSaveRelatedAllSuperimposedRecursiveOff(): void {
+		$this->Users->Posts->addBehavior('Expose.Superimpose', ['recursive' => false]);
+		$this->Users->addBehavior('Expose.Superimpose', ['recursive' => false]);
+
+		$post = $this->Users->Posts->newEntity([
+			'content' => 'New User',
+			'user' => [
+				'name' => 'Me',
+			],
+		]);
+
+		$this->Users->Posts->saveOrFail($post);
+
+		$this->assertNotEmpty($post->user->uuid);
+		$this->assertEmpty($post->user->_id);
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testSaveRelatedAllSuperimposed(): void {
 		$this->Users->Posts->addBehavior('Expose.Superimpose');
 		$this->Users->addBehavior('Expose.Superimpose');
@@ -138,7 +158,6 @@ class SuperimposeBehaviorTest extends TestCase {
 			],
 		]);
 
-		//TODO
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('Cannot convert value of type `string` to integer');
 

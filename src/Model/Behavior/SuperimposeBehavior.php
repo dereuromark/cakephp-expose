@@ -63,6 +63,10 @@ class SuperimposeBehavior extends Behavior {
 		$pk = $this->_table->getPrimaryKey();
 		$field = $this->_table->getExposedKey();
 
+		if (!$options['_primary'] && !$this->getConfig('recursive')) {
+			return;
+		}
+
 		$alias = $this->getConfig('primaryKeyField');
 		$entity->set($alias, $entity->$pk);
 		$entity->setDirty($alias, false);
