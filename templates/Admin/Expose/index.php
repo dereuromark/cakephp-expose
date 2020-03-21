@@ -15,8 +15,8 @@
 		<ul>
 			<li>36-char UUID (default) - e.g. `f7ac0123-a938-4e80-840e-efe892051332`</li>
 			<li>34-char `0x...` prefixed in DB tool - e.g. `0xf7ac0123a9384e80840eefe892051332`)</li>
-			<li>24-char binary (often through .bin file)</li>
 			<li>22-char (or 21) shortened string (through any ConverterInterface compatible one) - e.g. `JG2n2fdRHcdMSiyDq5em5n`</li>
+			<li>16-char binary (hard to read/copy, often through .bin file)</li>
 		</ul>
 
 		<?php
@@ -26,12 +26,13 @@
 		}
 		?>
 
-		<?php echo $this->Form->create();?>
+		<?php echo $this->Form->create(null, ['type' => 'file']);?>
 		<fieldset>
 			<legend><?php echo __('Enter the UUID you want to reverse');?></legend>
 			<?php
 			echo $this->Form->control('uuid', []);
 			//echo $this->Form->control('shortened', ['type' => 'checkbox', 'label' => 'This UUID is shortened']);
+			echo $this->Form->control('file', ['type' => 'file', 'label' => '.bin file']);
 			?>
 		</fieldset>
 		<?php echo $this->Form->submit(__('Submit')); echo $this->Form->end();?>

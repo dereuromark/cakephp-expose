@@ -15,6 +15,15 @@ class ExposeController extends AppController {
 			$result = null;
 
 			$uuid = (string)$this->request->getData('uuid');
+			/** @var \Laminas\Diactoros\UploadedFile|null $file */
+			$file = $this->request->getData('file');
+			if ($file && !$file->getError()) {
+				$content = $file->getStream()->getContents();
+				if (strlen($content) === 16) {
+					$uuid = $content;
+				}
+			}
+
 			$result = $this->reverseUuid($uuid);
 
 			$this->set(compact('result'));

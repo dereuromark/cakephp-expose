@@ -12,7 +12,7 @@ class ReverseBinary implements ReverseStrategyInterface {
 	 * @inheritDoc
 	 */
 	public function reverse(string $uuid): string {
-		if (strlen($uuid) !== 24) {
+		if (strlen($uuid) !== 16) {
 			throw new RuntimeException();
 		}
 
