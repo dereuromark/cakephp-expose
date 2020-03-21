@@ -127,7 +127,7 @@ In some cases you might want to manually use the field in a query. Here it is re
 ```php
 $field = $this->Users->getExposedKey(true); // ModelName.field_name
 ...
-->where([..., $field => $value)
+->where([..., $field => $value])
 ...
 ```
 Especially when you `contain` other relations, you should always prefix the fields to avoid naming collisions.
@@ -203,8 +203,13 @@ If you want still want to partially use it on saving nested entities, you can se
 Then all relations will just use `Expose` - and you will just have to use the `uuid` field on those for follow up usage in that same request.
 
 
-#### Shortening Converters
+#### UUID Shortening
 If you also want to shorten the resulting output UUID from 32 to 22 chars, go with `ShortUuidType` class which extends the binary one.
+Make sure that your `uuid` is set to the binary type as outlined above.
+
+While Migrations/Phinx require this field type to be `binary` length 16, the schema in CakeCHP ORM itself represents this as `binaryuuid` type.
+So here we need to overwrite this type-mapping of CakePHP now.
+
 In this case you need to specify the type-map in your bootstrap:
 ```php
 use Cake\Database\Type;
