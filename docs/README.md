@@ -2,7 +2,7 @@
 
 ### Set Up
 
-Make sure you set  up your entity with a UUID field for exposure.
+We will now add a new UUID field to your entity for exposure.
 By default it is expected to be named `uuid`.
 You can configure it to be any other key.
 
@@ -20,6 +20,8 @@ public function initialize(array $config): void {
 ```
 
 #### New Table Migration
+Now let's make sure you set up your new entity with this new field, ideally including it in the migration.
+
 ```php
 // Add your exposed field
 $table->addColumn('uuid', 'uuid', [
@@ -43,6 +45,8 @@ As such this is the recommended type. On top you can later add shortening, for d
 
 
 #### Existing Table Migration
+If you already have a table, and you want to add it to this existing one:
+
 ```php
 // Add it as 'null' => true for existing entities first, then fill/populate, then set to false afterwards.
 $table->addColumn('uuid', 'uuid', [
