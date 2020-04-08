@@ -258,6 +258,14 @@ Note: Adding a shortener later on is BC in terms of accessibility.
 The record can still always also be accessed through the long 36-char string here.
 Just make sure you 301 SEO-redirect or use canonical linking if that is relevant for you and those records.
 
+If you need to access your converter anywhere in your system, you use the factory:
+```php
+use Expose\Converter\ConverterFactory;
+
+$result = ConverterFactory::getConverter()->encode($value);
+$result = ConverterFactory::getConverter()->decode($value);
+```
+
 ### Backend
 The plugin comes with an optional and small admin backend to reverse UUIDs.
 This can come in handy sometimes.

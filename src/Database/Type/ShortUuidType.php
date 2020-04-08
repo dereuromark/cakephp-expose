@@ -2,13 +2,11 @@
 
 namespace Expose\Database\Type;
 
-use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Database\DriverInterface;
 use Cake\Database\Type\BinaryUuidType;
 use Cake\Utility\Text;
-use Expose\Converter\ConverterInterface;
-use Expose\Converter\Short;
+use Expose\Converter\ConverterFactory;
 
 /**
  * Short Binary UUID type converter. Stored as binary16, displayed as char22.
@@ -82,7 +80,7 @@ class ShortUuidType extends BinaryUuidType {
 	 * @return string
 	 */
 	protected function shorten(string $value): string {
-		return $this->converter()->encode($value);
+		return ConverterFactory::getConverter()->encode($value);
 	}
 
 	/**
@@ -91,23 +89,7 @@ class ShortUuidType extends BinaryUuidType {
 	 * @return string
 	 */
 	protected function lengthen(string $value): string {
-		return $this->converter()->decode($value);
-	}
-
-	/**
-	 * @return \Expose\Converter\ConverterInterface
-	 */
-	protected function converter(): ConverterInterface {
-		$converter = Configure::read('Expose.converter');
-		if ($converter !== null && is_callable($converter)) {
-			return $converter();
-		}
-
-		if ($converter === null) {
-			$converter = Short::class;
-		}
-
-		return new $converter();
+		return ConverterFactory::getConverter()->decode($value);
 	}
 
 }
