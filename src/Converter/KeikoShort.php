@@ -7,7 +7,7 @@ use Keiko\Uuid\Shortener\Number\BigInt\Converter;
 use Keiko\Uuid\Shortener\Shortener;
 
 /**
- * Make sure to include the required dependency `"keiko/uuid-shortener": "^0.2.1"`.
+ * Make sure to include the required dependency `"keiko/uuid-shortener"`.
  *
  * @link https://github.com/mgrajcarek/uuid-shortener
  */
