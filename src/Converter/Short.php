@@ -64,7 +64,7 @@ class Short implements ConverterInterface {
 	 *
 	 * @return string
 	 */
-	private function numToString(BigInteger $number): string {
+	protected function numToString(BigInteger $number): string {
 		$output = '';
 		while ($number->isGreaterThan(0)) {
 			$previousNumber = clone $number;
@@ -84,7 +84,7 @@ class Short implements ConverterInterface {
 	 *
 	 * @return \Brick\Math\BigInteger
 	 */
-	private function stringToNum(string $string): BigInteger {
+	protected function stringToNum(string $string): BigInteger {
 		$number = BigInteger::of(0);
 		foreach (str_split(strrev($string)) as $char) {
 			$number = $number->multipliedBy($this->dictionaryLength)->plus(array_search($char, $this->dictionary, false));

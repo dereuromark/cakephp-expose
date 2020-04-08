@@ -28,7 +28,7 @@
 	"require-dev": {
 		"ext-bcmath": "*",
 		"brick/math": "^0.8.14",
-		"keiko/uuid-shortener": "^0.2.1",
+		"keiko/uuid-shortener": "^0.3.2",
 		"fig-r/psr2r-sniffer": "dev-master"
 	},
 	"autoload": {
