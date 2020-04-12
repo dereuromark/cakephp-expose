@@ -181,6 +181,11 @@ class ExposeBehaviorTest extends TestCase {
 
 		$count = $customFieldRecordsTable->initExposedField();
 		$this->assertSame(1, $count);
+
+		$records = $customFieldRecordsTable->find()->find('list', ['valueField' => 'uuid'])->toArray();
+		foreach ($records as $id => $uuid) {
+			$this->assertNotEmpty($uuid, 'ID ' . $id . ' not expected to have empty uuid field');
+		}
 	}
 
 	/**

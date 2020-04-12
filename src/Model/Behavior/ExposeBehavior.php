@@ -183,6 +183,7 @@ class ExposeBehavior extends Behavior {
 		$defaults = [
 			'limit' => 1000,
 			'conditions' => [$field . ' IS' => null],
+			'fields' => (array)$this->_table->getPrimaryKey(),
 		];
 		$params = array_merge($defaults, $params);
 
