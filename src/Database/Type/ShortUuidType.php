@@ -51,8 +51,8 @@ class ShortUuidType extends BinaryUuidType {
 	 *
 	 * @param mixed $value The value to convert.
 	 * @param \Cake\Database\DriverInterface $driver The driver instance to convert with.
-	 * @return resource|string|null
 	 * @throws \Cake\Core\Exception\Exception
+	 * @return resource|string|null
 	 */
 	public function toPHP($value, DriverInterface $driver) {
 		if ($value === null) {

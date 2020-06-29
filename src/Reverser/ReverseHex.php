@@ -14,6 +14,7 @@ class ReverseHex implements ReverseStrategyInterface {
 	public function reverse(string $uuid): string {
 		if (strlen($uuid) === 34 && strpos($uuid, '0x') === 0) {
 			$binaryUuid = hex2bin(substr($uuid, 2));
+
 			return (new BinaryUuidType())->toPHP($binaryUuid, new Mysql());
 		}
 

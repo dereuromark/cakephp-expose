@@ -97,8 +97,8 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * @param \Cake\ORM\Query $query
 	 * @param array $options
-	 * @return \Cake\ORM\Query
 	 * @throws \InvalidArgumentException If the 'slug' key is missing in options
+	 * @return \Cake\ORM\Query
 	 */
 	public function findExposed(Query $query, array $options) {
 		$field = $this->getConfig('field');
@@ -171,8 +171,8 @@ class ExposeBehavior extends Behavior {
 	 * After this, the field can be migrated to "DEFAULT NOT NULL" constraint and a unique index.
 	 *
 	 * @param array $params
-	 * @return int
 	 * @throws \RuntimeException
+	 * @return int
 	 */
 	public function initExposedField(array $params = []): int {
 		$field = $this->getConfig('field');

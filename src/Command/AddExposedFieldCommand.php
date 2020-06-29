@@ -160,6 +160,7 @@ $operations
     }
 }
 TXT;
+
 		return $migration;
 	}
 
@@ -240,7 +241,7 @@ TXT;
 
 			if (preg_match('#_(' . $migrationName . '|' . $inflectedMigrationName . ')\.php$#', $fileInfo->getFilename())) {
 				return true;
-			};
+			}
 		}
 
 		return false;

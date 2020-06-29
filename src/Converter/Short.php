@@ -30,7 +30,7 @@ class Short implements ConverterInterface {
 	/**
 	 * @param string[]|null $dictionary
 	 */
-	public function __construct(array $dictionary = null) {
+	public function __construct(?array $dictionary = null) {
 		if ($dictionary !== null) {
 			$this->dictionary = $dictionary;
 			$this->dictionaryLength = count($dictionary);
