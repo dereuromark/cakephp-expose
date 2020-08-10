@@ -29,3 +29,7 @@ The UUID in our case is only meant for external lookup. Everything inside the ap
 Further issues with only UUID as primary key:
 - Loss of deterministic sorting (which you get for free keeping the AIID primary key) and pagination (especially with burst inputs around the same times).
 - Queries are often much slower here still compared to integer AIID, especially when doing a lot of joins.
+
+Issues with mixing - some primary keys as UUID and others as AIID:
+- Easy to mess things up (e.g. some foreign_key now has to be varchar to allow both the int and the string)
+- Less flexible in general of adding functionality on top. Keeping always primary key one type allows here for easier future additions.
