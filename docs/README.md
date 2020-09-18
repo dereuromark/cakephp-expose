@@ -8,6 +8,9 @@ You can configure it to be any other key.
 
 The primary key `id` (auto-increment integer) will not be touched by this plugin/behavior.
 
+By default this exposed field is also expected to be of a UUID type (either binary16/32 or char36 etc), recognized by CakePHP as such.
+If you plan on using a custom lenght/field (e.g. varchar64), then you need to make sure the mapping to a valid UUID type class happens in your configuration.
+
 #### Adding the Behavior
 In your Table class, add this in your `initialize()` method:
 ```php
