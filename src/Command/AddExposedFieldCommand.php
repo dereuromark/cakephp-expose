@@ -116,8 +116,10 @@ class AddExposedFieldCommand extends Command {
 
 		$parser->addArgument('model', [
 			'required' => true,
+			'help' => 'Model name (e.g. `Photos` or `My/PluginName.Attachments`)',
 		]);
 		$parser->addArgument('migration', [
+			'help' => 'Name of Migration to generate (defaults to `MigrationExposedField{FieldName}`)',
 			'required' => false,
 		]);
 		$parser->addOption('binary', [

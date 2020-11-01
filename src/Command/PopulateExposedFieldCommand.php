@@ -51,6 +51,7 @@ class PopulateExposedFieldCommand extends Command {
 
 		$parser->addArgument('model', [
 			'required' => true,
+			'help' => 'Model name (e.g. `Photos` or `My/PluginName.Attachments`)',
 		]);
 
 		return $parser;
