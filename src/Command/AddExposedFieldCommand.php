@@ -49,7 +49,7 @@ class AddExposedFieldCommand extends Command {
 
 		if ($fieldExists) {
 			$schema = $table->getSchema()->getColumn($field);
-			if ($schema['null'] !== false) {
+			if ($schema['null'] === false) {
 				$io->success('Nothing to be done. The field exists and is already set to NOT NULL.');
 
 				return static::CODE_SUCCESS;

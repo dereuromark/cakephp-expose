@@ -192,9 +192,9 @@ class ExposeBehavior extends Behavior {
 		while (($records = $this->_table->find('all', $params)->toArray())) {
 			/** @var \Cake\ORM\Entity $record */
 			foreach ($records as $record) {
-				$record->$field = $this->generateExposedField($field);
+				$uuid = $this->generateExposedField($field);
 
-				$this->_table->saveOrFail($record);
+				$this->_table->updateAll(['uuid' => $uuid], ['id' => $record->id]);
 				$count++;
 			}
 		}
