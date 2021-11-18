@@ -18,7 +18,7 @@ use Cake\ORM\Query;
 class SuperimposeBehavior extends Behavior {
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected $_defaultConfig = [
 		'autoFinder' => true,

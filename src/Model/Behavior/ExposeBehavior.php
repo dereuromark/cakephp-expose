@@ -28,7 +28,7 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * - field: The exposed field name
 	 *
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected $_defaultConfig = [
 		'field' => 'uuid',
@@ -84,7 +84,7 @@ class ExposeBehavior extends Behavior {
 	public function getExposedKey(bool $prefixed = false): string {
 		$field = $this->getConfig('field');
 		if ($prefixed) {
-			$field = $this->getTable()->getAlias() . '.' . $field;
+			$field = $this->table()->getAlias() . '.' . $field;
 		}
 
 		return $field;
@@ -106,7 +106,7 @@ class ExposeBehavior extends Behavior {
 			throw new InvalidArgumentException('The `' . $field . '` key is required for find(\'exposed\')');
 		}
 
-		return $query->where([$this->getTable()->getAlias() . '.' . $field => $options[$field]]);
+		return $query->where([$this->table()->getAlias() . '.' . $field => $options[$field]]);
 	}
 
 	/**

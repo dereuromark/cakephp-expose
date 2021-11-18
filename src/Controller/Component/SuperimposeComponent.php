@@ -13,7 +13,7 @@ use RuntimeException;
 class SuperimposeComponent extends Component {
 
 	/**
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected $_defaultConfig = [
 		'actions' => [],
