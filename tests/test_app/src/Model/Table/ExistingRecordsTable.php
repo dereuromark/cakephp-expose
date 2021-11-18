@@ -12,11 +12,11 @@ use Cake\Validation\Validator;
  *
  * @method \TestApp\Model\Entity\User newEmptyEntity()
  * @method \TestApp\Model\Entity\User newEntity(array $data, array $options = [])
- * @method \TestApp\Model\Entity\User[] newEntities(array $data, array $options = [])
+ * @method array<\TestApp\Model\Entity\User> newEntities(array $data, array $options = [])
  * @method \TestApp\Model\Entity\User get($primaryKey, $options = [])
  * @method \TestApp\Model\Entity\User findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \TestApp\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \TestApp\Model\Entity\User[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method array<\TestApp\Model\Entity\User> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \TestApp\Model\Entity\User|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\User saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])

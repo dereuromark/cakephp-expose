@@ -234,7 +234,7 @@ TXT;
 	protected function migrationExists(string $migrationName, string $migrationPath): bool {
 		$inflectedMigrationName = Inflector::underscore($migrationName);
 
-		/** @var \DirectoryIterator[]\SplFileInfo[] $iterator */
+		/** @var array<\DirectoryIterator&\SplFileInfo> $iterator */
 		$iterator = new DirectoryIterator($migrationPath);
 		foreach ($iterator as $fileInfo) {
 			if ($fileInfo->isDot()) {

@@ -10,7 +10,7 @@ use TestApp\Model\Entity\Post;
 class SuperimposeBehaviorTest extends TestCase {
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $fixtures = [
 		'plugin.Expose.Users',

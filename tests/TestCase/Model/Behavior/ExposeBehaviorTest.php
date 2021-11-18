@@ -8,7 +8,7 @@ use Cake\TestSuite\TestCase;
 class ExposeBehaviorTest extends TestCase {
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $fixtures = [
 		'plugin.Expose.Users',
@@ -126,7 +126,7 @@ class ExposeBehaviorTest extends TestCase {
 	public function testFindExposedList(): void {
 		$user = $this->Users->find()->firstOrFail();
 
-		/** @var string[] $result */
+		/** @var array<string> $result */
 		$result = $this->Users->find('exposedList')->toArray();
 
 		$this->assertSame('Foo Bar', $result[$user->uuid]);

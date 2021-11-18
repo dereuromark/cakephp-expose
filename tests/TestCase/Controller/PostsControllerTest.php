@@ -13,7 +13,7 @@ class PostsControllerTest extends TestCase {
 	use IntegrationTestTrait;
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	public $fixtures = [
 		'plugin.Expose.Users',

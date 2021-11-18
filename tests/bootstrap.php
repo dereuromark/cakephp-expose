@@ -1,7 +1,6 @@
 <?php
 
 use Cake\Cache\Cache;
-use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 
 if (!defined('DS')) {

@@ -24,7 +24,7 @@ class KeikoShort implements ConverterInterface {
 	public function __construct(?Dictionary $dictionary = null) {
 		$this->shortener = new Shortener(
 			$dictionary ?: Dictionary::createUnmistakable(),
-			new Converter()
+			new Converter(),
 		);
 	}
 

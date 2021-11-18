@@ -13,7 +13,7 @@ use Brick\Math\RoundingMode;
 class Short implements ConverterInterface {
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $dictionary = [
 		'2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
@@ -28,7 +28,7 @@ class Short implements ConverterInterface {
 	protected $dictionaryLength = 57;
 
 	/**
-	 * @param string[]|null $dictionary
+	 * @param array<string>|null $dictionary
 	 */
 	public function __construct(?array $dictionary = null) {
 		if ($dictionary !== null) {

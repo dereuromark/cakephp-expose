@@ -12,7 +12,7 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	use ConsoleIntegrationTestTrait;
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $fixtures = [
 		'plugin.Expose.ExistingRecords',

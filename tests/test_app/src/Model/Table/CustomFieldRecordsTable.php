@@ -12,11 +12,11 @@ use Cake\Validation\Validator;
  *
  * @method \TestApp\Model\Entity\CustomFieldRecord newEmptyEntity()
  * @method \TestApp\Model\Entity\CustomFieldRecord newEntity(array $data, array $options = [])
- * @method \TestApp\Model\Entity\CustomFieldRecord[] newEntities(array $data, array $options = [])
+ * @method array<\TestApp\Model\Entity\CustomFieldRecord> newEntities(array $data, array $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord get($primaryKey, $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \TestApp\Model\Entity\CustomFieldRecord[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method array<\TestApp\Model\Entity\CustomFieldRecord> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])

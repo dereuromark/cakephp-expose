@@ -5,7 +5,7 @@ namespace Expose\Reverser;
 class Reverser {
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $stategies = [
 		ReverseBinary::class,

@@ -12,7 +12,7 @@ use TestApp\Controller\UsersController;
 class SuperimposeComponentTest extends TestCase {
 
 	/**
-	 * @var string[]
+	 * @var array<string>
 	 */
 	protected $fixtures = [
 		'plugin.Expose.Users',

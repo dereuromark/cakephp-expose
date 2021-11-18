@@ -12,11 +12,11 @@ use Cake\Validation\Validator;
  *
  * @method \TestApp\Model\Entity\Post newEmptyEntity()
  * @method \TestApp\Model\Entity\Post newEntity(array $data, array $options = [])
- * @method \TestApp\Model\Entity\Post[] newEntities(array $data, array $options = [])
+ * @method array<\TestApp\Model\Entity\Post> newEntities(array $data, array $options = [])
  * @method \TestApp\Model\Entity\Post get($primaryKey, $options = [])
  * @method \TestApp\Model\Entity\Post findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \TestApp\Model\Entity\Post patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \TestApp\Model\Entity\Post[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method array<\TestApp\Model\Entity\Post> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \TestApp\Model\Entity\Post|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\Post saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\Post[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
