@@ -19,10 +19,10 @@ use Cake\Validation\Validator;
  * @method array<\TestApp\Model\Entity\Post> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \TestApp\Model\Entity\Post|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\Post saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \TestApp\Model\Entity\Post[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \TestApp\Model\Entity\Post[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \TestApp\Model\Entity\Post[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \TestApp\Model\Entity\Post[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\Post>|false saveMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\Post> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\Post>|false deleteMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\Post> deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Expose\Model\Behavior\ExposeBehavior

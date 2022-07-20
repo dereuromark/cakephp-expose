@@ -19,10 +19,10 @@ use Cake\Validation\Validator;
  * @method array<\TestApp\Model\Entity\CustomFieldRecord> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \TestApp\Model\Entity\CustomFieldRecord saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \TestApp\Model\Entity\CustomFieldRecord[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \TestApp\Model\Entity\CustomFieldRecord[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \TestApp\Model\Entity\CustomFieldRecord[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \TestApp\Model\Entity\CustomFieldRecord[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\CustomFieldRecord>|false saveMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\CustomFieldRecord> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\CustomFieldRecord>|false deleteMany(iterable $entities, $options = [])
+ * @method \Cake\Datasource\ResultSetInterface<\TestApp\Model\Entity\CustomFieldRecord> deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Expose\Model\Behavior\ExposeBehavior

@@ -34,7 +34,7 @@
 		"ext-bcmath": "*",
 		"phpunit/phpunit": "^9.5",
 		"brick/math": "^0.9.1",
-		"keiko/uuid-shortener": "^0.5.0",
+		"keiko/uuid-shortener": "^0.6.0",
 		"fig-r/psr2r-sniffer": "dev-master"
 	},
 	"autoload": {

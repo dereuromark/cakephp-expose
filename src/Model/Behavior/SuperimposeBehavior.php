@@ -95,7 +95,7 @@ class SuperimposeBehavior extends Behavior {
 				method_exists($expression, 'getField')
 				&& in_array($expression->getField(), [$pk, $this->_table->aliasField($pk)], true)
 			) {
-				/** @var \Cake\Database\Expression\Comparison $expression */
+				/** @var \Cake\Database\Expression\ComparisonExpression $expression */
 				//$field = $this->_table->getExposedKey(); // This doesnt work yet, so we have to make an extra query
 				//$expression = new Comparison($field, $expression->getValue(), 'string');
 				$expression->setValue($this->resolve($expression->getValue()));
