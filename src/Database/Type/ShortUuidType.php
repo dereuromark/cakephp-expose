@@ -2,7 +2,7 @@
 
 namespace Expose\Database\Type;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Database\DriverInterface;
 use Cake\Database\Type\BinaryUuidType;
 use Cake\Utility\Text;
@@ -51,7 +51,7 @@ class ShortUuidType extends BinaryUuidType {
 	 *
 	 * @param mixed $value The value to convert.
 	 * @param \Cake\Database\DriverInterface $driver The driver instance to convert with.
-	 * @throws \Cake\Core\Exception\Exception
+	 * @throws \Cake\Core\Exception\CakeException
 	 * @return resource|string|null
 	 */
 	public function toPHP($value, DriverInterface $driver) {
@@ -71,7 +71,7 @@ class ShortUuidType extends BinaryUuidType {
 			return $value;
 		}
 
-		throw new Exception(sprintf('Unable to convert %s into binary uuid.', gettype($value)));
+		throw new CakeException(sprintf('Unable to convert %s into binary uuid.', gettype($value)));
 	}
 
 	/**
