@@ -21,7 +21,7 @@ class ConverterFactory {
 	 * @return \Expose\Converter\ConverterInterface
 	 */
 	public static function getConverter(): ConverterInterface {
-		/** @var callable|class-string<\Expose\Converter\ConverterInterface>|null $converter */
+		/** @var class-string<\Expose\Converter\ConverterInterface>|callable|null $converter */
 		$converter = Configure::read('Expose.converter');
 		if ($converter !== null && is_callable($converter)) {
 			return $converter();
