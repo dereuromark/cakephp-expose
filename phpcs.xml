@@ -6,7 +6,7 @@
 	<file>src/</file>
 	<file>tests/</file>
 
-	<exclude-pattern>/config/Migrations/</exclude-pattern>
+	<exclude-pattern>/test_app/config/Migrations/</exclude-pattern>
 
 	<rule ref="PSR2R"/>
 
