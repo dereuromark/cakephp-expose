@@ -4,7 +4,7 @@ namespace Expose\Test\TestCase\Command;
 
 use Cake\Command\Command;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 class PopulateExposedFieldCommandTest extends TestCase {
@@ -14,7 +14,7 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	/**
 	 * @var array<string>
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Expose.ExistingRecords',
 	];
 

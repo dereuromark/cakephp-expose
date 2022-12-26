@@ -5,7 +5,7 @@ namespace Expose\Test\TestCase\Command;
 use Cake\Command\Command;
 use Cake\Console\ConsoleIo;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Expose\Command\AddExposedFieldCommand;
 use ReflectionClass;
@@ -17,7 +17,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	/**
 	 * @var array<string>
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Expose.Users',
 		'plugin.Expose.CustomFieldRecords',
 		'plugin.Expose.ExistingRecords',

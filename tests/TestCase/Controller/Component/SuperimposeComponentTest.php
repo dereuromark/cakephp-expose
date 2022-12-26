@@ -14,7 +14,7 @@ class SuperimposeComponentTest extends TestCase {
 	/**
 	 * @var array<string>
 	 */
-	protected $fixtures = [
+	protected array $fixtures = [
 		'plugin.Expose.Users',
 		'plugin.Expose.Posts',
 	];

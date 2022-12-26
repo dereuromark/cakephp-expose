@@ -87,3 +87,8 @@ ConnectionManager::setConfig('test', [
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,
 ]);
+
+
+//use Migrations\TestSuite\Migrator;
+//$migrator = new Migrator();
+//$migrator->run();
