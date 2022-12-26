@@ -13,7 +13,7 @@ class ExposeControllerTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testIndex() {
+	public function testIndex(): void {
 		$this->disableErrorHandlerMiddleware();
 
 		$this->get(['prefix' => 'Admin', 'plugin' => 'Expose', 'controller' => 'Expose', 'action' => 'index']);
@@ -24,7 +24,7 @@ class ExposeControllerTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testIndexReverse() {
+	public function testIndexReverse(): void {
 		$this->disableErrorHandlerMiddleware();
 
 		$data = [
@@ -38,7 +38,7 @@ class ExposeControllerTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testIndexReverseFile() {
+	public function testIndexReverseFile(): void {
 		$this->disableErrorHandlerMiddleware();
 
 		$data = [

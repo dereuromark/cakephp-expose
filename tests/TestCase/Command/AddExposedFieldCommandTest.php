@@ -129,7 +129,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	 *
 	 * @return mixed Method return.
 	 */
-	protected function invokeMethod(&$object, string $methodName, array $parameters = []) {
+	protected function invokeMethod(object &$object, string $methodName, array $parameters = []) {
 		$reflection = new ReflectionClass(get_class($object));
 		$method = $reflection->getMethod($methodName);
 		$method->setAccessible(true);

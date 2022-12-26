@@ -27,7 +27,7 @@ class PostsControllerTest extends TestCase {
 		parent::setUp();
 
 		Router::defaultRouteClass(DashedRoute::class);
-		Router::scope('/', function(RouteBuilder $routes) {
+		Router::scope('/', function(RouteBuilder $routes): void {
 			$routes->fallbacks();
 		});
 	}
@@ -37,7 +37,7 @@ class PostsControllerTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testAdd() {
+	public function testAdd(): void {
 		$this->disableErrorHandlerMiddleware();
 
 		/** @var \TestApp\Model\Table\PostsTable $postsTable */
@@ -66,7 +66,7 @@ class PostsControllerTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testEdit() {
+	public function testEdit(): void {
 		$this->disableErrorHandlerMiddleware();
 
 		$postsTable = $this->getTableLocator()->get('Posts');
@@ -90,7 +90,7 @@ class PostsControllerTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testDelete() {
+	public function testDelete(): void {
 		$this->disableErrorHandlerMiddleware();
 
 		$postsTable = $this->getTableLocator()->get('Posts');

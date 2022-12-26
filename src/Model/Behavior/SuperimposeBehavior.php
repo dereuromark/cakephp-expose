@@ -37,7 +37,7 @@ class SuperimposeBehavior extends Behavior {
 	 * @param \ArrayObject $options
 	 * @return void
 	 */
-	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options) {
+	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
 		if ($entity->isNew()) {
 			return;
 		}
@@ -134,7 +134,7 @@ class SuperimposeBehavior extends Behavior {
 	 * @param array $options Options.
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findSuperimpose(SelectQuery $query, array $options) {
+	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				$pk = $this->_table->getPrimaryKey();
@@ -166,7 +166,7 @@ class SuperimposeBehavior extends Behavior {
 	 * @param \Cake\Datasource\EntityInterface $entity
 	 * @return void
 	 */
-	public function beforeDelete(EventInterface $event, EntityInterface $entity) {
+	public function beforeDelete(EventInterface $event, EntityInterface $entity): void {
 		$pk = $this->_table->getPrimaryKey();
 		$field = $this->_table->getExposedKey();
 		$alias = $this->getConfig('primaryKeyField');

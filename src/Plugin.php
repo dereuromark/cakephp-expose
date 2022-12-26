@@ -26,8 +26,8 @@ class Plugin extends BasePlugin {
 	 * @return void
 	 */
 	public function routes(RouteBuilder $routes): void {
-		$routes->prefix('Admin', function (RouteBuilder $routes) {
-			$routes->plugin('Expose', function (RouteBuilder $routes) {
+		$routes->prefix('Admin', function (RouteBuilder $routes): void {
+			$routes->plugin('Expose', function (RouteBuilder $routes): void {
 				$routes->connect('/', ['controller' => 'Expose', 'action' => 'index']);
 
 				$routes->fallbacks();

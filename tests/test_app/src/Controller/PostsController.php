@@ -2,6 +2,8 @@
 
 namespace TestApp\Controller;
 
+use Cake\Http\Response;
+
 /**
  * @property \TestApp\Model\Table\PostsTable $Posts
  */
@@ -19,7 +21,7 @@ class PostsController extends AppController {
 	/**
 	 * Add method
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function add() {
 		$post = $this->Posts->newEmptyEntity();
@@ -38,9 +40,9 @@ class PostsController extends AppController {
 	/**
 	 * Edit method
 	 *
-	 * @param string|null $id
+	 * @param string|int|null $id
 	 *
-	 * @return \Cake\Http\Response|null
+	 * @return \Cake\Http\Response|null|void
 	 */
 	public function edit($id = null) {
 		$post = $this->Posts->get($id, [
@@ -61,11 +63,11 @@ class PostsController extends AppController {
 	/**
 	 * Delete method
 	 *
-	 * @param string|null $id
+	 * @param string|int|null $id
 	 *
 	 * @return \Cake\Http\Response|null
 	 */
-	public function delete($id = null) {
+	public function delete($id = null): ?Response {
 		$this->request->allowMethod(['post', 'delete']);
 		$post = $this->Posts->get($id);
 		if ($this->Posts->delete($post)) {

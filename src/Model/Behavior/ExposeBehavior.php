@@ -59,7 +59,7 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposedList(SelectQuery $query, array $options) {
+	public function findExposedList(SelectQuery $query, array $options): SelectQuery {
 		$options += [
 			'keyField' => $this->getConfig('field'),
 			'valueField' => $this->_table->getDisplayField(),
@@ -93,7 +93,7 @@ class ExposeBehavior extends Behavior {
 	 * @throws \InvalidArgumentException If the 'slug' key is missing in options
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposed(SelectQuery $query, array $options) {
+	public function findExposed(SelectQuery $query, array $options): SelectQuery {
 		$field = $this->getConfig('field');
 		if (empty($options[$field])) {
 			throw new InvalidArgumentException('The `' . $field . '` key is required for find(\'exposed\')');
