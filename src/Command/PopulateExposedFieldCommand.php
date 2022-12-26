@@ -24,11 +24,8 @@ class PopulateExposedFieldCommand extends Command {
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
 		$model = $args->getArgument('model');
 
-		$this->loadModel($model);
-		[$prefix, $name] = pluginSplit($model);
-
 		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
-		$table = $this->$name;
+		$table = $this->getTableLocator()->get($model);
 
 		$field = $table->getExposedKey();
 		$io->out('Populating ' . $model . ' `' . $field . '` field ...');

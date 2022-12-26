@@ -4,10 +4,10 @@ namespace Expose\Model\Behavior;
 
 use ArrayObject;
 use Cake\Collection\CollectionInterface;
+use Cake\Database\Query\SelectQuery;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
 
 /**
  * Adds superimpose functionality on top of Expose behavior.
@@ -20,7 +20,7 @@ class SuperimposeBehavior extends Behavior {
 	/**
 	 * @var array<string, mixed>
 	 */
-	protected $_defaultConfig = [
+	protected array $_defaultConfig = [
 		'autoFinder' => true,
 		'recursive' => true,
 		'primaryKeyField' => '_id',
@@ -79,12 +79,12 @@ class SuperimposeBehavior extends Behavior {
 	 * Callback to modify the primary key value and set the `superimposed` finder on all associations.
 	 *
 	 * @param \Cake\Event\EventInterface $event Event.
-	 * @param \Cake\ORM\Query $query Query.
+	 * @param \Cake\ORM\Query\SelectQuery $query Query.
 	 * @param \ArrayObject $options Options.
 	 * @param bool $primary True if this is the primary table.
 	 * @return void
 	 */
-	public function beforeFind(EventInterface $event, Query $query, ArrayObject $options, bool $primary): void {
+	public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options, bool $primary): void {
 		if ((isset($options['superimpose']) && $options['superimpose'] === false) || !$primary) {
 			return;
 		}
@@ -130,11 +130,11 @@ class SuperimposeBehavior extends Behavior {
 	/**
 	 * Custom finder that superimposes the primary key with the UUID in returned result set.
 	 *
-	 * @param \Cake\ORM\Query $query Query.
+	 * @param \Cake\ORM\Query\SelectQuery $query Query.
 	 * @param array $options Options.
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findSuperimpose(Query $query, array $options) {
+	public function findSuperimpose(SelectQuery $query, array $options) {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				$pk = $this->_table->getPrimaryKey();

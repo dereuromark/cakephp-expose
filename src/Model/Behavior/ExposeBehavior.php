@@ -4,11 +4,11 @@ namespace Expose\Model\Behavior;
 
 use ArrayObject;
 use Cake\Core\Configure;
+use Cake\Database\Query\SelectQuery;
 use Cake\Database\TypeFactory;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
 use Cake\ORM\Table;
 use InvalidArgumentException;
 use RuntimeException;
@@ -30,7 +30,7 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * @var array<string, mixed>
 	 */
-	protected $_defaultConfig = [
+	protected array $_defaultConfig = [
 		'field' => 'uuid',
 		'on' => 'beforeSave',
 		'implementedFinders' => [
@@ -44,13 +44,6 @@ class ExposeBehavior extends Behavior {
 	];
 
 	/**
-	 * Table instance
-	 *
-	 * @var \Cake\ORM\Table
-	 */
-	protected $_table;
-
-	/**
 	 * @param \Cake\ORM\Table $table
 	 * @param array $config
 	 */
@@ -61,12 +54,12 @@ class ExposeBehavior extends Behavior {
 	}
 
 	/**
-	 * @param \Cake\ORM\Query $query
+	 * @param \Cake\ORM\Query\SelectQuery $query
 	 * @param array $options
 	 *
-	 * @return \Cake\Datasource\QueryInterface|\Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposedList(Query $query, array $options) {
+	public function findExposedList(SelectQuery $query, array $options) {
 		$options += [
 			'keyField' => $this->getConfig('field'),
 			'valueField' => $this->_table->getDisplayField(),
@@ -95,12 +88,12 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * ->find('exposed', ['uuid' => $uuid])
 	 *
-	 * @param \Cake\ORM\Query $query
+	 * @param \Cake\ORM\Query\SelectQuery $query
 	 * @param array $options
 	 * @throws \InvalidArgumentException If the 'slug' key is missing in options
-	 * @return \Cake\ORM\Query
+	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposed(Query $query, array $options) {
+	public function findExposed(SelectQuery $query, array $options) {
 		$field = $this->getConfig('field');
 		if (empty($options[$field])) {
 			throw new InvalidArgumentException('The `' . $field . '` key is required for find(\'exposed\')');
@@ -111,7 +104,7 @@ class ExposeBehavior extends Behavior {
 
 	/**
 	 * Using marshalling is needed if you want to use the exposed ID before persisting the entity.
-	 * Otherwise use beforeSave callback.
+	 * Otherwise, use beforeSave callback.
 	 *
 	 * This is only allowed/possible for (mass)creating or updating records.
 	 * It will overwrite all fields! Careful with using this callback as it does not separate between create and update.

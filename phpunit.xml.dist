@@ -15,13 +15,9 @@
         </testsuite>
     </testsuites>
 
-	<listeners>
-		<listener class="Cake\TestSuite\Fixture\FixtureInjector">
-			<arguments>
-				<object class="Cake\TestSuite\Fixture\FixtureManager"/>
-			</arguments>
-		</listener>
-	</listeners>
+	<extensions>
+		<extension class="\Cake\TestSuite\Fixture\PHPUnitExtension" />
+	</extensions>
 
     <!-- Prevent coverage reports from looking in tests and vendors -->
     <filter>

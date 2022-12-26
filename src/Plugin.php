@@ -13,12 +13,12 @@ class Plugin extends BasePlugin {
 	/**
 	 * @var bool
 	 */
-	protected $middlewareEnabled = false;
+	protected bool $middlewareEnabled = false;
 
 	/**
 	 * @var bool
 	 */
-	protected $bootstrapEnabled = false;
+	protected bool $bootstrapEnabled = false;
 
 	/**
 	 * @param \Cake\Routing\RouteBuilder $routes

@@ -3,7 +3,7 @@
 namespace Expose\Database\Type;
 
 use Cake\Core\Exception\CakeException;
-use Cake\Database\DriverInterface;
+use Cake\Database\Driver;
 use Cake\Database\Type\BinaryUuidType;
 use Cake\Utility\Text;
 use Expose\Converter\ConverterFactory;
@@ -22,10 +22,10 @@ class ShortUuidType extends BinaryUuidType {
 	 * As PDO will handle reading file handles.
 	 *
 	 * @param mixed $value The value to convert.
-	 * @param \Cake\Database\DriverInterface $driver The driver instance to convert with.
+	 * @param \Cake\Database\Driver $driver The driver instance to convert with.
 	 * @return resource|string
 	 */
-	public function toDatabase($value, DriverInterface $driver) {
+	public function toDatabase(mixed $value, Driver $driver): mixed {
 		if (is_string($value)) {
 			if (strlen($value) !== 36) {
 				$value = $this->lengthen($value);
@@ -50,11 +50,11 @@ class ShortUuidType extends BinaryUuidType {
 	 * Convert short UUID into resource handles
 	 *
 	 * @param mixed $value The value to convert.
-	 * @param \Cake\Database\DriverInterface $driver The driver instance to convert with.
+	 * @param \Cake\Database\Driver $driver The driver instance to convert with.
 	 * @throws \Cake\Core\Exception\CakeException
 	 * @return resource|string|null
 	 */
-	public function toPHP($value, DriverInterface $driver) {
+	public function toPHP(mixed $value, Driver $driver): mixed {
 		if ($value === null) {
 			return null;
 		}

@@ -32,11 +32,9 @@ class AddExposedFieldCommand extends Command {
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
 		$model = $args->getArgument('model');
 
-		$this->loadModel($model);
-		[$prefix, $name] = pluginSplit($model);
-
 		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
-		$table = $this->$name;
+		$table = $this->getTableLocator()->get($model);
+
 		if (get_class($table) === Table::class) {
 			$io->abort('This table class cannot be found (' . get_class($table) . ' was used). Please check the name of your table class.');
 		}
@@ -48,7 +46,9 @@ class AddExposedFieldCommand extends Command {
 		$fieldExists = $table->hasField($field);
 
 		if ($fieldExists) {
-			$schema = $table->getSchema()->getColumn($field);
+			/** @var \Cake\Datasource\SchemaInterface $tableSchema */
+			$tableSchema = $table->getSchema();
+			$schema = $tableSchema->getColumn($field);
 			if ($schema['null'] === false) {
 				$io->success('Nothing to be done. The field exists and is already set to NOT NULL.');
 
@@ -73,6 +73,7 @@ class AddExposedFieldCommand extends Command {
 
 		$containsRecords = $io->askChoice('Does this table already contain records? If so, we need to create a nullable field.', ['no', 'yes'], 'yes') === 'yes';
 
+		[$prefix, $name] = pluginSplit($model);
 		$migrationName = $args->getArgument('migration') ?: 'MigrationExposedField' . $prefix . $name;
 		$migrationFilePath = $this->migrationPath . date('YmdHis') . '_' . $migrationName . '.php';
 

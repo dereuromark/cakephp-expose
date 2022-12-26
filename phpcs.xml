@@ -6,5 +6,57 @@
 	<file>src/</file>
 	<file>tests/</file>
 
+	<exclude-pattern>/config/Migrations/</exclude-pattern>
+
 	<rule ref="PSR2R"/>
+
+	<!--
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.UselessAnnotation"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.UselessDocComment"/>
+        <properties>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
+            <property name="enableIntersectionTypeHint" value="false"/>
+            <property name="enableNeverTypeHint" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessDocComment"/>
+        <properties>
+            <property name="enableStaticTypeHint" value="false"/>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
+            <property name="enableIntersectionTypeHint" value="false"/>
+            <property name="enableNeverTypeHint" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessAnnotation"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessDocComment"/>
+        <properties>
+            <property name="enableNativeTypeHint" value="false"/>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
+            <property name="enableIntersectionTypeHint" value="false"/>
+        </properties>
+    </rule>
+	-->
+
+	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInDeclaration"/>
+	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInClosureUse"/>
+
+	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator">
+		<severity>0</severity>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration">
+		<severity>0</severity>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInClosureUse">
+		<severity>0</severity>
+	</rule>
 </ruleset>
