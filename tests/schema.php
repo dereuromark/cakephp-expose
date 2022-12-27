@@ -2,7 +2,9 @@
 
 $tables = [];
 
-/** @var \DirectoryIterator<\DirectoryIterator> $ierator */
+/**
+ * @var \DirectoryIterator<\DirectoryIterator> $ierator
+ */
 $ierator = new DirectoryIterator(__DIR__ . DS . 'Fixture');
 foreach ($ierator as $file) {
 	if (!preg_match('/(\w+)Fixture.php$/', (string)$file, $matches)) {
@@ -13,7 +15,7 @@ foreach ($ierator as $file) {
 	$tableName = \Cake\Utility\Inflector::underscore($name);
 	$class = 'Expose\\Test\\Fixture\\' . $name . 'Fixture';
 	try {
-		$object = (new \ReflectionClass($class))->getProperty('fields');
+		$object = (new ReflectionClass($class))->getProperty('fields');
 	} catch (ReflectionException $e) {
 		continue;
 	}

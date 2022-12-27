@@ -4,7 +4,7 @@ namespace Expose\Test\TestCase\Controller\Component;
 
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Expose\Controller\Component\SuperimposeComponent;
 use TestApp\Controller\UsersController;
@@ -35,7 +35,7 @@ class SuperimposeComponentTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->controller = new UsersController();
+		$this->controller = new UsersController(new ServerRequest());
 		$this->component = new SuperimposeComponent(new ComponentRegistry($this->controller));
 	}
 
@@ -46,7 +46,7 @@ class SuperimposeComponentTest extends TestCase {
 		$event = new Event('event');
 		$this->component->beforeFilter($event);
 
-		$this->assertTrue($this->controller->loadModel()->hasBehavior('Superimpose'));
+		$this->assertTrue($this->controller->fetchTable()->hasBehavior('Superimpose'));
 	}
 
 	/**
@@ -60,7 +60,7 @@ class SuperimposeComponentTest extends TestCase {
 
 		$this->component->beforeFilter($event);
 
-		$this->assertFalse($this->controller->loadModel()->hasBehavior('Superimpose'));
+		$this->assertFalse($this->controller->fetchTable()->hasBehavior('Superimpose'));
 	}
 
 }

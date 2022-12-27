@@ -4,7 +4,6 @@ namespace Expose\Test\TestCase\Database\Type;
 
 use Cake\Core\Configure;
 use Cake\Database\Driver;
-use Cake\Database\DriverInterface;
 use Cake\TestSuite\TestCase;
 use Expose\Converter\KeikoShort;
 use Expose\Database\Type\ShortUuidType;

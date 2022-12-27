@@ -5,6 +5,8 @@ namespace TestApp;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Routing\Route\DashedRoute;
+use Cake\Routing\RouteBuilder;
 
 class Application extends BaseApplication {
 
@@ -17,6 +19,18 @@ class Application extends BaseApplication {
 		$middlewareQueue->add(new RoutingMiddleware($this));
 
 		return $middlewareQueue;
+	}
+
+	/**
+	 * @param \Cake\Routing\RouteBuilder $routes
+	 *
+	 * @return void
+	 */
+	public function routes(RouteBuilder $routes): void {
+		$routes->setRouteClass(DashedRoute::class);
+		$routes->scope('/', function(RouteBuilder $routes): void {
+			$routes->fallbacks();
+		});
 	}
 
 }

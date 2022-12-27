@@ -2,9 +2,6 @@
 
 namespace TestApp\Test\TestCase\Controller;
 
-use Cake\Routing\Route\DashedRoute;
-use Cake\Routing\RouteBuilder;
-use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -26,10 +23,6 @@ class PostsControllerTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		Router::defaultRouteClass(DashedRoute::class);
-		Router::scope('/', function(RouteBuilder $routes): void {
-			$routes->fallbacks();
-		});
 	}
 
 	/**

@@ -4,8 +4,8 @@ namespace Expose\Test\TestCase\Command;
 
 use Cake\Command\Command;
 use Cake\Console\ConsoleIo;
-use Cake\ORM\TableRegistry;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Expose\Command\AddExposedFieldCommand;
 use ReflectionClass;
@@ -51,7 +51,7 @@ class AddExposedFieldCommandTest extends TestCase {
 		$this->command = new AddExposedFieldCommand();
 
 		$this->setAppNamespace();
-		$this->useCommandRunner();
+		//$this->useCommandRunner();
 	}
 
 	/**
