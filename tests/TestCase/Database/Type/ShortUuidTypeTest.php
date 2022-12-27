@@ -3,6 +3,7 @@
 namespace Expose\Test\TestCase\Database\Type;
 
 use Cake\Core\Configure;
+use Cake\Database\Driver;
 use Cake\Database\DriverInterface;
 use Cake\TestSuite\TestCase;
 use Expose\Converter\KeikoShort;
@@ -17,7 +18,7 @@ class ShortUuidTypeTest extends TestCase {
 	protected $type;
 
 	/**
-	 * @var \Cake\Database\DriverInterface|\PHPUnit\Framework\MockObject\MockObject
+	 * @var \Cake\Database\Driver|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected $driver;
 
@@ -27,7 +28,7 @@ class ShortUuidTypeTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->driver = $this->getMockBuilder(DriverInterface::class)->getMock();
+		$this->driver = $this->getMockBuilder(Driver::class)->getMock();
 		$this->type = new ShortUuidType();
 	}
 

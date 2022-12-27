@@ -35,8 +35,6 @@ class SuperimposeComponentTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->Users = TableRegistry::getTableLocator()->get('Users');
-
 		$this->controller = new UsersController();
 		$this->component = new SuperimposeComponent(new ComponentRegistry($this->controller));
 	}

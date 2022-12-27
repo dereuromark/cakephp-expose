@@ -75,7 +75,7 @@ Then execute the migration using `bin/cake migrations migrate`.
 #### Entity update
 You want to make sure that neither primary key, nor this exposed field is patchable (when marshalling = mass assignment):
 ```php
-protected $_accessible = [
+protected array $_accessible = [
     '*' => true,
     'id' => false,
     'uuid' => false, // Your exposed field

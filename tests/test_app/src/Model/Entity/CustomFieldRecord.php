@@ -18,7 +18,7 @@ class CustomFieldRecord extends Entity {
 	 *
 	 * @var array
 	 */
-	protected $_accessible = [
+	protected array $_accessible = [
 		'*' => true,
 		'public_identifier' => false,
 		'id' => false,
