@@ -32,7 +32,6 @@ class AddExposedFieldCommand extends Command {
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
 		$model = $args->getArgument('model');
 
-		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
 		$table = $this->getTableLocator()->get($model);
 
 		if ($table::class === Table::class) {
@@ -42,6 +41,7 @@ class AddExposedFieldCommand extends Command {
 			$io->abort('You need to attach the Expose.Expose behavior to this model first (' . $table::class . '). Then we can create the migration for it.');
 		}
 
+		/** @phpstan-var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
 		$field = $table->getExposedKey();
 		$fieldExists = $table->hasField($field);
 
