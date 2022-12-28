@@ -35,11 +35,11 @@ class AddExposedFieldCommand extends Command {
 		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
 		$table = $this->getTableLocator()->get($model);
 
-		if (get_class($table) === Table::class) {
-			$io->abort('This table class cannot be found (' . get_class($table) . ' was used). Please check the name of your table class.');
+		if ($table::class === Table::class) {
+			$io->abort('This table class cannot be found (' . $table::class . ' was used). Please check the name of your table class.');
 		}
 		if (!$table->hasBehavior('Expose')) {
-			$io->abort('You need to attach the Expose.Expose behavior to this model first (' . get_class($table) . '). Then we can create the migration for it.');
+			$io->abort('You need to attach the Expose.Expose behavior to this model first (' . $table::class . '). Then we can create the migration for it.');
 		}
 
 		$field = $table->getExposedKey();
