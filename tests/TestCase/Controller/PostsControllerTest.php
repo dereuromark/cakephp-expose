@@ -15,7 +15,7 @@ class PostsControllerTest extends TestCase {
 	/**
 	 * @var array<string>
 	 */
-	public $fixtures = [
+	protected $fixtures = [
 		'plugin.Expose.Users',
 		'plugin.Expose.Posts',
 	];
