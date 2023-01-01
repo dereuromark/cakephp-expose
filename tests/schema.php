@@ -1,5 +1,7 @@
 <?php
 
+use Cake\Utility\Inflector;
+
 $tables = [];
 
 /**
@@ -12,7 +14,7 @@ foreach ($ierator as $file) {
 	}
 
 	$name = $matches[1];
-	$tableName = \Cake\Utility\Inflector::underscore($name);
+	$tableName = Inflector::underscore($name);
 	$class = 'Expose\\Test\\Fixture\\' . $name . 'Fixture';
 	try {
 		$object = (new ReflectionClass($class))->getProperty('fields');

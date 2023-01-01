@@ -23,7 +23,7 @@ class ShortUuidType extends BinaryUuidType {
 	 *
 	 * @param mixed $value The value to convert.
 	 * @param \Cake\Database\Driver $driver The driver instance to convert with.
-	 * @return resource|string
+	 * @return resource|string|null
 	 */
 	public function toDatabase(mixed $value, Driver $driver): mixed {
 		if (is_string($value)) {

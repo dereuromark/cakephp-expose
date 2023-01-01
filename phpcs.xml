@@ -47,14 +47,24 @@
 
 	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInDeclaration"/>
 	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInClosureUse"/>
-
-	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator">
-		<severity>0</severity>
-	</rule>
+	<rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall"/>
 	<rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration">
-		<severity>0</severity>
+		<properties>
+			<property name="onlySingleLine" type="boolean" value="true"/>
+		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInClosureUse">
+		<properties>
+			<property name="onlySingleLine" type="boolean" value="true"/>
+		</properties>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall">
+		<properties>
+			<property name="onlySingleLine" type="boolean" value="true"/>
+		</properties>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator">
 		<severity>0</severity>
 	</rule>
 </ruleset>
