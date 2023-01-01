@@ -2,6 +2,8 @@
 
 namespace Expose\Reverser;
 
+use Exception;
+
 class Reverser {
 
 	/**
@@ -25,7 +27,7 @@ class Reverser {
 				$object = new $stategy();
 
 				return $object->reverse($uuid);
-			} catch (\Exception $exception) {
+			} catch (Exception $exception) {
 				// Do nothing
 			}
 		}
