@@ -9,7 +9,7 @@ class Reverser {
 	/**
 	 * @var array<string>
 	 */
-	protected $stategies = [
+	protected array $stategies = [
 		ReverseBinary::class,
 		ReverseHex::class,
 		ReverseShortened::class,

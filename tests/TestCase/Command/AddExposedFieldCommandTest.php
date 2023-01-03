@@ -9,6 +9,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Expose\Command\AddExposedFieldCommand;
 use ReflectionClass;
+use TestApp\Model\Table\UsersTable;
 
 class AddExposedFieldCommandTest extends TestCase {
 
@@ -27,7 +28,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	/**
 	 * @var \TestApp\Model\Table\UsersTable
 	 */
-	protected $Users;
+	protected UsersTable $Users;
 
 	/**
 	 * @var \Cake\Console\ConsoleIo|\PHPUnit\Framework\MockObject\MockObject
@@ -37,7 +38,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	/**
 	 * @var \Expose\Command\AddExposedFieldCommand
 	 */
-	protected $command;
+	protected AddExposedFieldCommand $command;
 
 	/**
 	 * @return void
@@ -129,7 +130,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	 *
 	 * @return mixed Method return.
 	 */
-	protected function invokeMethod(object &$object, string $methodName, array $parameters = []) {
+	protected function invokeMethod(object &$object, string $methodName, array $parameters = []): mixed {
 		$reflection = new ReflectionClass($object::class);
 		$method = $reflection->getMethod($methodName);
 		$method->setAccessible(true);

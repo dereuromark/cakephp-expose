@@ -14,7 +14,7 @@ class ShortUuidTypeTest extends TestCase {
 	/**
 	 * @var \Expose\Database\Type\ShortUuidType
 	 */
-	protected $type;
+	protected ShortUuidType $type;
 
 	/**
 	 * @var \Cake\Database\Driver|\PHPUnit\Framework\MockObject\MockObject

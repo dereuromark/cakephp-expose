@@ -10,7 +10,7 @@ class ShortTest extends TestCase {
 	/**
 	 * @var \Expose\Converter\Short
 	 */
-	protected $converter;
+	protected Short $converter;
 
 	/**
 	 * @return void

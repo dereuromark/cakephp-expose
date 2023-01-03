@@ -4,6 +4,7 @@ namespace Expose\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use TestApp\Model\Table\UsersTable;
 
 class ExposeBehaviorTest extends TestCase {
 
@@ -20,7 +21,7 @@ class ExposeBehaviorTest extends TestCase {
 	/**
 	 * @var \TestApp\Model\Table\UsersTable
 	 */
-	protected $Users;
+	protected UsersTable $Users;
 
 	/**
 	 * @return void

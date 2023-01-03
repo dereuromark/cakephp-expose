@@ -18,7 +18,7 @@ class AddExposedFieldCommand extends Command {
 	/**
 	 * @var string
 	 */
-	protected $migrationPath = CONFIG . 'Migrations' . DS;
+	protected string $migrationPath = CONFIG . 'Migrations' . DS;
 
 	/**
 	 * E.g.:

@@ -10,7 +10,7 @@ class KeikoShortTest extends TestCase {
 	/**
 	 * @var \Expose\Converter\KeikoShort
 	 */
-	protected $converter;
+	protected KeikoShort $converter;
 
 	/**
 	 * @return void

@@ -10,7 +10,7 @@ class ReverserTest extends TestCase {
 	/**
 	 * @var \Expose\Reverser\Reverser
 	 */
-	protected $reverser;
+	protected Reverser $reverser;
 
 	/**
 	 * @return void

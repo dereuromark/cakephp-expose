@@ -16,7 +16,7 @@ class KeikoShort implements ConverterInterface {
 	/**
 	 * @var \Keiko\Uuid\Shortener\Shortener
 	 */
-	protected $shortener;
+	protected Shortener $shortener;
 
 	/**
 	 * @param \Keiko\Uuid\Shortener\Dictionary|null $dictionary

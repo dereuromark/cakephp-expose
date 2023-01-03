@@ -15,7 +15,7 @@
         <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.UselessAnnotation"/>
         <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.UselessDocComment"/>
         <properties>
-            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableMixedTypeHint" value="true"/>
             <property name="enableUnionTypeHint" value="false"/>
             <property name="enableIntersectionTypeHint" value="false"/>
             <property name="enableNeverTypeHint" value="false"/>
@@ -27,7 +27,7 @@
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessDocComment"/>
         <properties>
             <property name="enableStaticTypeHint" value="false"/>
-            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableMixedTypeHint" value="true"/>
             <property name="enableUnionTypeHint" value="false"/>
             <property name="enableIntersectionTypeHint" value="false"/>
             <property name="enableNeverTypeHint" value="false"/>
@@ -38,8 +38,8 @@
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessAnnotation"/>
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessDocComment"/>
         <properties>
-            <property name="enableNativeTypeHint" value="false"/>
-            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableNativeTypeHint" value="true"/>
+            <property name="enableMixedTypeHint" value="true"/>
             <property name="enableUnionTypeHint" value="false"/>
             <property name="enableIntersectionTypeHint" value="false"/>
         </properties>

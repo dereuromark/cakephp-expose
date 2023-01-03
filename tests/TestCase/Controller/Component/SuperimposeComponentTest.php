@@ -3,6 +3,7 @@
 namespace Expose\Test\TestCase\Controller\Component;
 
 use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
@@ -22,12 +23,12 @@ class SuperimposeComponentTest extends TestCase {
 	/**
 	 * @var \Cake\Controller\Controller
 	 */
-	protected $controller;
+	protected Controller $controller;
 
 	/**
 	 * @var \Expose\Controller\Component\SuperimposeComponent
 	 */
-	protected $component;
+	protected SuperimposeComponent $component;
 
 	/**
 	 * @return void

@@ -6,6 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use TestApp\Model\Entity\Post;
+use TestApp\Model\Table\UsersTable;
 
 class SuperimposeBehaviorTest extends TestCase {
 
@@ -20,7 +21,7 @@ class SuperimposeBehaviorTest extends TestCase {
 	/**
 	 * @var \TestApp\Model\Table\UsersTable
 	 */
-	protected $Users;
+	protected UsersTable $Users;
 
 	/**
 	 * @return void

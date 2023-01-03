@@ -6,6 +6,8 @@ use Cake\Command\Command;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Expose\Command\PopulateExposedFieldCommand;
+use TestApp\Model\Table\ExistingRecordsTable;
 
 class PopulateExposedFieldCommandTest extends TestCase {
 
@@ -21,12 +23,12 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	/**
 	 * @var \TestApp\Model\Table\ExistingRecordsTable
 	 */
-	protected $ExistingRecords;
+	protected ExistingRecordsTable $ExistingRecords;
 
 	/**
 	 * @var \Expose\Command\PopulateExposedFieldCommand
 	 */
-	protected $command;
+	protected PopulateExposedFieldCommand $command;
 
 	/**
 	 * @return void
