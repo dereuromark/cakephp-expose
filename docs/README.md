@@ -220,9 +220,9 @@ So here we need to overwrite this type-mapping of CakePHP now.
 
 In this case you need to specify the type-map in your bootstrap:
 ```php
-use Cake\Database\Type;
+use Cake\Database\TypeFactory;
 
-Type::map('binaryuuid', \Expose\Database\Type\ShortUuidType::class);
+TypeFactory::map('binaryuuid', \Expose\Database\Type\ShortUuidType::class);
 ```
 A UUID stored in the DB as `4e52c919-513e-4562-9248-7dd612c6c1ca` would then be displayed and
 used as `fpfyRTmt6XeE9ehEKZ5LwF` for example.
