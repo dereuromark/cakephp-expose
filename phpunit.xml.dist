@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="tests/bootstrap.php">
-    <php>
-        <ini name="memory_limit" value="-1"/>
-        <ini name="apc.enable_cli" value="1"/>
+	<php>
+		<ini name="memory_limit" value="-1"/>
+		<ini name="apc.enable_cli" value="1"/>
 		<!-- E_ALL & ~E_USER_DEPRECATED (16383)-->
 		<!-- E_ALL (32767) -->
 		<ini name="error_reporting" value="16383"/>
-    </php>
+	</php>
 
-    <!-- Add any additional test suites you want to run here -->
-    <testsuites>
-        <testsuite name="cake-expose">
-            <directory>tests/TestCase/</directory>
-        </testsuite>
-    </testsuites>
+	<!-- Add any additional test suites you want to run here -->
+	<testsuites>
+		<testsuite name="cake-expose">
+			<directory>tests/TestCase/</directory>
+		</testsuite>
+	</testsuites>
 
 	<listeners>
 		<listener class="Cake\TestSuite\Fixture\FixtureInjector">
@@ -23,14 +23,14 @@
 		</listener>
 	</listeners>
 
-    <!-- Prevent coverage reports from looking in tests and vendors -->
-    <filter>
-        <whitelist>
-            <directory suffix=".php">src/</directory>
+	<!-- Prevent coverage reports from looking in tests and vendors -->
+	<coverage>
+		<include>
+			<directory suffix=".php">src/</directory>
 			<exclude>
 				<directory>src/TestSuite/</directory>
 			</exclude>
-        </whitelist>
-    </filter>
+		</include>
+	</coverage>
 
 </phpunit>
