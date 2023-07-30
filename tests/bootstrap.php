@@ -1,7 +1,13 @@
 <?php
 
 use Cake\Cache\Cache;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
+use Cake\TestSuite\Fixture\SchemaLoader;
+use Cake\View\View;
+use Expose\Plugin as ExposePlugin;
+use TestApp\Controller\AppController;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -30,8 +36,9 @@ define('CAKE', CORE_PATH . APP_DIR . DS);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
+require CAKE . 'functions.php';
 
-Cake\Core\Configure::write('App', [
+Configure::write('App', [
 	'namespace' => 'TestApp',
 	'encoding' => 'UTF-8',
 	'fullBaseUrl' => '/',
@@ -42,7 +49,7 @@ Cake\Core\Configure::write('App', [
 	],
 ]);
 
-Cake\Core\Configure::write('Expose', [
+Configure::write('Expose', [
 ]);
 
 $cache = [
@@ -66,12 +73,12 @@ $cache = [
 ];
 Cache::setConfig($cache);
 
-Cake\Core\Configure::write('debug', true);
+Configure::write('debug', true);
 
-class_alias(TestApp\Controller\AppController::class, 'App\Controller\AppController');
-class_alias(Cake\View\View::class, 'App\View\AppView');
+class_alias(AppController::class, 'App\Controller\AppController');
+class_alias(View::class, 'App\View\AppView');
 
-Cake\Core\Plugin::getCollection()->add(new Expose\Plugin());
+Plugin::getCollection()->add(new ExposePlugin());
 
 // Ensure default test connection is defined
 if (!getenv('db_class')) {
@@ -92,7 +99,7 @@ ConnectionManager::setConfig('test', [
 //$migrator = new Migrator();
 //$migrator->run();
 
-if (env('FIXTURE_SCHEMA_METADATA')) {
-	$loader = new Cake\TestSuite\Fixture\SchemaLoader();
-	$loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
+if (getenv('FIXTURE_SCHEMA_METADATA')) {
+	$loader = new SchemaLoader();
+	$loader->loadInternalFile(getenv('FIXTURE_SCHEMA_METADATA'));
 }

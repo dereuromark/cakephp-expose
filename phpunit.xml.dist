@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-	<php>
-		<ini name="memory_limit" value="-1"/>
-		<ini name="apc.enable_cli" value="1"/>
+<phpunit bootstrap="tests/bootstrap.php">
+    <php>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="apc.enable_cli" value="1"/>
 		<!-- E_ALL & ~E_USER_DEPRECATED (16383)-->
 		<!-- E_ALL (32767) -->
 		<ini name="error_reporting" value="16383"/>
 
 		<env name="FIXTURE_SCHEMA_METADATA" value="tests/schema.php"/>
-	</php>
+    </php>
 
-	<testsuites>
-		<testsuite name="cake-expose">
-			<directory>tests/TestCase/</directory>
-		</testsuite>
-	</testsuites>
+    <!-- Add any additional test suites you want to run here -->
+    <testsuites>
+        <testsuite name="cake-expose">
+            <directory>tests/TestCase/</directory>
+        </testsuite>
+    </testsuites>
+
 	<extensions>
 		<extension class="\Cake\TestSuite\Fixture\PHPUnitExtension"/>
 	</extensions>
@@ -27,4 +29,5 @@
 			<directory>src/TestSuite/</directory>
 		</exclude>
 	</coverage>
+
 </phpunit>
