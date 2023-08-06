@@ -6,7 +6,7 @@ use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\Fixture\SchemaLoader;
 use Cake\View\View;
-use Expose\Plugin as ExposePlugin;
+use Expose\ExposePlugin;
 use TestApp\Controller\AppController;
 
 if (!defined('DS')) {

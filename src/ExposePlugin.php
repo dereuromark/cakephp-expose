@@ -8,7 +8,7 @@ use Cake\Routing\RouteBuilder;
 /**
  * Plugin for Expose
  */
-class Plugin extends BasePlugin {
+class ExposePlugin extends BasePlugin {
 
 	/**
 	 * @var bool
