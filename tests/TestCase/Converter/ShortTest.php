@@ -3,7 +3,9 @@
 namespace Expose\Test\TestCase\Converter;
 
 use Cake\TestSuite\TestCase;
+use Expose\Converter\ConverterFactory;
 use Expose\Converter\Short;
+use Ramsey\Uuid\Uuid;
 
 class ShortTest extends TestCase {
 
@@ -39,6 +41,16 @@ class ShortTest extends TestCase {
 		$result = $this->converter->decode($shortId);
 
 		$this->assertSame('4e52c919-513e-4562-9248-7dd612c6c1ca', $result);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testUuid6(): void {
+		$uuidOrginal = Uuid::uuid6()->toString();
+		$uuidShort = ConverterFactory::getConverter()->encode($uuidOrginal);
+		$uuidDecoded = ConverterFactory::getConverter()->decode($uuidShort);
+		$this->assertSame($uuidOrginal, $uuidDecoded);
 	}
 
 }
