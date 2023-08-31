@@ -47,6 +47,8 @@ class ShortTest extends TestCase {
 	 * @return void
 	 */
 	public function testUuid6(): void {
+		$this->skipIf(!method_exists(Uuid::class, 'uuid6'), 'Only PHP 8+');
+
 		$uuidOrginal = Uuid::uuid6()->toString();
 		$uuidShort = ConverterFactory::getConverter()->encode($uuidOrginal);
 		$uuidDecoded = ConverterFactory::getConverter()->decode($uuidShort);
