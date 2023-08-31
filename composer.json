@@ -35,6 +35,7 @@
 		"phpunit/phpunit": "^9.5",
 		"brick/math": "^0.10.0 || ^0.11.0",
 		"keiko/uuid-shortener": "^0.6.0",
+		"ramsey/uuid": "^3.9 || ^4.7",
 		"fig-r/psr2r-sniffer": "dev-master"
 	},
 	"autoload": {
