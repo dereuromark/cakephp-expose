@@ -8,7 +8,7 @@ use Brick\Math\RoundingMode;
 /**
  * Make sure to include the required dependency `"brick/math": "^0.8.14"`.
  *
- * @link https://github.com/mgrajcarek/uuid-shortener
+ * @note Does not support UUID v7 at this point.
  */
 class Short implements ConverterInterface {
 
