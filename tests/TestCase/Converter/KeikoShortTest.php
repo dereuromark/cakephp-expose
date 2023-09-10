@@ -3,7 +3,6 @@
 namespace Expose\Test\TestCase\Converter;
 
 use Cake\TestSuite\TestCase;
-use Expose\Converter\ConverterFactory;
 use Expose\Converter\KeikoShort;
 use Ramsey\Uuid\Uuid;
 
@@ -50,8 +49,8 @@ class KeikoShortTest extends TestCase {
 		$this->skipIf(!method_exists(Uuid::class, 'uuid6'), 'Only PHP 8+');
 
 		$uuidOriginal = Uuid::uuid6()->toString();
-		$uuidShort = ConverterFactory::getConverter()->encode($uuidOriginal);
-		$uuidDecoded = ConverterFactory::getConverter()->decode($uuidShort);
+		$uuidShort = $this->converter->encode($uuidOriginal);
+		$uuidDecoded = $this->converter->decode($uuidShort);
 		$this->assertSame($uuidOriginal, $uuidDecoded);
 	}
 
@@ -59,11 +58,11 @@ class KeikoShortTest extends TestCase {
 	 * @return void
 	 */
 	public function testUuid7(): void {
-		$this->skipIf(true, 'Not supported right now');
+		$this->skipIf(!method_exists(Uuid::class, 'uuid7'), 'Only PHP 8+');
 
 		$uuidOriginal = Uuid::uuid7()->toString();
-		$uuidShort = ConverterFactory::getConverter()->encode($uuidOriginal);
-		$uuidDecoded = ConverterFactory::getConverter()->decode($uuidShort);
+		$uuidShort = $this->converter->encode($uuidOriginal);
+		$uuidDecoded = $this->converter->decode($uuidShort);
 		$this->assertSame($uuidOriginal, $uuidDecoded);
 	}
 

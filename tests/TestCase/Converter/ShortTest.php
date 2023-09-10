@@ -3,7 +3,6 @@
 namespace Expose\Test\TestCase\Converter;
 
 use Cake\TestSuite\TestCase;
-use Expose\Converter\ConverterFactory;
 use Expose\Converter\Short;
 use Ramsey\Uuid\Uuid;
 
@@ -50,8 +49,8 @@ class ShortTest extends TestCase {
 		$this->skipIf(!method_exists(Uuid::class, 'uuid6'), 'Only PHP 8+');
 
 		$uuidOriginal = Uuid::uuid6()->toString();
-		$uuidShort = ConverterFactory::getConverter()->encode($uuidOriginal);
-		$uuidDecoded = ConverterFactory::getConverter()->decode($uuidShort);
+		$uuidShort = $this->converter->encode($uuidOriginal);
+		$uuidDecoded = $this->converter->decode($uuidShort);
 		$this->assertSame($uuidOriginal, $uuidDecoded);
 	}
 
@@ -62,8 +61,8 @@ class ShortTest extends TestCase {
 		$this->skipIf(true, 'Not supported right now');
 
 		$uuidOriginal = Uuid::uuid7()->toString();
-		$uuidShort = ConverterFactory::getConverter()->encode($uuidOriginal);
-		$uuidDecoded = ConverterFactory::getConverter()->decode($uuidShort);
+		$uuidShort = $this->converter->encode($uuidOriginal);
+		$uuidDecoded = $this->converter->decode($uuidShort);
 		$this->assertSame($uuidOriginal, $uuidDecoded);
 	}
 
