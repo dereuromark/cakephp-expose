@@ -3,7 +3,6 @@
 namespace Expose\Test\TestCase\Converter;
 
 use Cake\TestSuite\TestCase;
-use Expose\Converter\ConverterFactory;
 use Expose\Converter\Short;
 use Ramsey\Uuid\Uuid;
 
