@@ -270,7 +270,7 @@ $result = ConverterFactory::getConverter()->decode($value);
 ```
 
 Also note: Some more modern UUIDs might require a special shortener.
-E.g. v7 currently is not supported by `KeikoShort` or `Short` converter.
+E.g. v7 currently is only supported by `KeikoShort` converter, not built-in one.
 
 ### Backend
 The plugin comes with an optional and small admin backend to reverse UUIDs.
