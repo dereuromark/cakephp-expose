@@ -9,6 +9,7 @@ use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Expose\Controller\Component\SuperimposeComponent;
 use TestApp\Controller\UsersController;
+use TestApp\Model\Table\UsersTable;
 
 class SuperimposeComponentTest extends TestCase {
 
@@ -28,7 +29,7 @@ class SuperimposeComponentTest extends TestCase {
 	/**
 	 * @var \TestApp\Model\Table\UsersTable
 	 */
-	protected $Users;
+	protected UsersTable $Users;
 
 	/**
 	 * @var \Expose\Controller\Component\SuperimposeComponent
