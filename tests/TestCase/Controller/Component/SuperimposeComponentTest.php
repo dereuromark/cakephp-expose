@@ -26,6 +26,11 @@ class SuperimposeComponentTest extends TestCase {
 	protected Controller $controller;
 
 	/**
+	 * @var \TestApp\Model\Table\UsersTable
+	 */
+	protected $Users;
+
+	/**
 	 * @var \Expose\Controller\Component\SuperimposeComponent
 	 */
 	protected SuperimposeComponent $component;
