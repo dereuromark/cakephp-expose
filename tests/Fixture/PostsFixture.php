@@ -37,7 +37,6 @@ class PostsFixture extends TestFixture {
 	public function init(): void {
 		$this->records = [
 			[
-				'id' => 1,
 				'uuid' => 'tb25610d-7bfa-4e34-812c-ad72b100fb2e',
 				'user_id' => 1,
 				'content' => 'Foo Bar',

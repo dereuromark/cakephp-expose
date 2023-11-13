@@ -36,7 +36,6 @@ class ExistingRecordsFixture extends TestFixture {
 	public function init(): void {
 		$this->records = [
 			[
-				'id' => 1,
 				'uuid' => null,
 				'name' => 'Foo Bar',
 				'created' => '2020-02-24 08:21:27',
