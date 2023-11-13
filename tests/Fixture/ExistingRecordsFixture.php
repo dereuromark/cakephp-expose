@@ -20,7 +20,7 @@ class ExistingRecordsFixture extends TestFixture {
 		'modified' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
 		'_constraints' => [
 			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-			'uuid' => ['type' => 'unique', 'columns' => ['uuid'], 'length' => []],
+			'records-uuid' => ['type' => 'unique', 'columns' => ['uuid'], 'length' => []],
 		],
 		'_options' => [
 			'engine' => 'InnoDB',
