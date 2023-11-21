@@ -86,20 +86,21 @@ class ExposeBehavior extends Behavior {
 	/**
 	 * Custom finder exposed as
 	 *
+	 * legacy
 	 * ->find('exposed', ['uuid' => $uuid])
 	 *
+	 * new way
+	 * ->find('exposed', $uuid)
+	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query
-	 * @param array $options
+	 * @param string $uuid
 	 * @throws \InvalidArgumentException If the 'slug' key is missing in options
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposed(SelectQuery $query, array $options): SelectQuery {
+	public function findExposed(SelectQuery $query, string $uuid): SelectQuery {
 		$field = $this->getConfig('field');
-		if (empty($options[$field])) {
-			throw new InvalidArgumentException('The `' . $field . '` key is required for find(\'exposed\')');
-		}
 
-		return $query->where([$this->table()->getAlias() . '.' . $field => $options[$field]]);
+		return $query->where([$this->table()->getAlias() . '.' . $field => $uuid]);
 	}
 
 	/**
