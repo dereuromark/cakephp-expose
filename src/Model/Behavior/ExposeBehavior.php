@@ -10,7 +10,6 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Table;
-use InvalidArgumentException;
 use RuntimeException;
 
 /**
