@@ -1,6 +1,7 @@
 {
 	"name": "dereuromark/cakephp-expose",
 	"description": "CakePHP Expose Plugin to expose entities through UUIDs instead of AIIDs",
+	"license": "MIT",
 	"type": "cakephp-plugin",
 	"keywords": [
 		"cakephp",
@@ -8,8 +9,6 @@
 		"uuid",
 		"obfuscate"
 	],
-	"homepage": "https://github.com/dereuromark/cakephp-expose/",
-	"license": "MIT",
 	"authors": [
 		{
 			"name": "Mark Scherer",
@@ -22,6 +21,7 @@
 			"role": "Developer"
 		}
 	],
+	"homepage": "https://github.com/dereuromark/cakephp-expose/",
 	"support": {
 		"issues": "https://github.com/dereuromark/cakephp-expose/issues",
 		"source": "https://github.com/dereuromark/cakephp-expose/"
@@ -32,12 +32,14 @@
 	},
 	"require-dev": {
 		"ext-bcmath": "*",
-		"phpunit/phpunit": "^10.2",
 		"brick/math": "^0.10.0 || ^0.11.0",
+		"fig-r/psr2r-sniffer": "dev-next",
 		"keiko/uuid-shortener": "^0.6.0",
-		"ramsey/uuid": "^3.9 || ^4.7",
-		"fig-r/psr2r-sniffer": "dev-next"
+		"phpunit/phpunit": "^10.2",
+		"ramsey/uuid": "^3.9 || ^4.7"
 	},
+	"minimum-stability": "stable",
+	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
 			"Expose\\": "src/"
@@ -49,19 +51,17 @@
 			"TestApp\\": "tests/test_app/src/"
 		}
 	},
-	"scripts": {
-		"test": "phpunit",
-		"test-coverage": "phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",
-		"stan": "phpstan analyse",
-		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^1.0.0 && mv composer.backup composer.json",
-		"cs-check": "phpcs --extensions=php",
-		"cs-fix": "phpcbf --extensions=php"
-	},
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
-	"minimum-stability": "stable",
-	"prefer-stable": true
+	"scripts": {
+		"cs-check": "phpcs --extensions=php",
+		"cs-fix": "phpcbf --extensions=php",
+		"stan": "phpstan analyse",
+		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^1.0.0 && mv composer.backup composer.json",
+		"test": "phpunit",
+		"test-coverage": "phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml"
+	}
 }
