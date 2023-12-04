@@ -23,8 +23,11 @@ class PopulateExposedFieldCommand extends Command {
 	 */
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
 		$model = $args->getArgument('model');
+		if ($model === null) {
+			$io->abort('Model missing');
+		}
 
-		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
+		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table */
 		$table = $this->getTableLocator()->get($model);
 
 		$field = $table->getExposedKey();

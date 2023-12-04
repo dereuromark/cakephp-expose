@@ -2,7 +2,6 @@
 
 namespace Expose\Test\TestCase\Model\Behavior;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use TestApp\Model\Entity\Post;
@@ -29,7 +28,7 @@ class SuperimposeBehaviorTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->Users = TableRegistry::getTableLocator()->get('Users');
+		$this->Users = $this->getTableLocator()->get('Users');
 	}
 
 	/**
@@ -160,7 +159,7 @@ class SuperimposeBehaviorTest extends TestCase {
 		]);
 
 		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('Cannot convert value of type `string` to integer');
+		$this->expectExceptionMessageMatches('#Cannot convert value `.+` of type `string` to int#');
 
 		$this->Users->Posts->saveOrFail($post);
 	}

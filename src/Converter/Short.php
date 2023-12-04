@@ -4,6 +4,7 @@ namespace Expose\Converter;
 
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
+use RuntimeException;
 
 /**
  * Make sure to include the required dependency `"brick/math": "^0.8.14"`.
@@ -87,7 +88,11 @@ class Short implements ConverterInterface {
 	protected function stringToNum(string $string): BigInteger {
 		$number = BigInteger::of(0);
 		foreach (str_split(strrev($string)) as $char) {
-			$number = $number->multipliedBy($this->dictionaryLength)->plus(array_search($char, $this->dictionary, false));
+			$plus = array_search($char, $this->dictionary, true);
+			if ($plus === false) {
+				throw new RuntimeException('Invalid char `' . $char . '`');
+			}
+			$number = $number->multipliedBy($this->dictionaryLength)->plus($plus);
 		}
 
 		return $number;

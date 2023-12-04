@@ -13,7 +13,7 @@ use Cake\ORM\Behavior;
  * Adds superimpose functionality on top of Expose behavior.
  * This should only be added at runtime to the specific actions where needed through SuperimposeComponent.
  *
- * @property \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $_table
+ * @property \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $_table
  */
 class SuperimposeBehavior extends Behavior {
 
@@ -89,7 +89,7 @@ class SuperimposeBehavior extends Behavior {
 			return;
 		}
 
-		$query->traverseExpressions(function ($expression) {
+		$query->traverseExpressions(function (object $expression) {
 			$pk = $this->_table->getPrimaryKey();
 			if (
 				method_exists($expression, 'getField')
@@ -117,7 +117,7 @@ class SuperimposeBehavior extends Behavior {
 		}
 
 		foreach ($this->_table->associations() as $association) {
-			/** @var \Cake\ORM\Association|\Cake\ORM\Table $association */
+			/** @var \Cake\ORM\Association $association */
 			if ($association->getTarget()->hasBehavior('Expose') && $association->getFinder() === 'all') {
 				if (!$association->hasBehavior('Superimpose')) {
 					$association->addBehavior('Expose.Superimpose');

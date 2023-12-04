@@ -31,6 +31,9 @@ class AddExposedFieldCommand extends Command {
 	 */
 	public function execute(Arguments $args, ConsoleIo $io): ?int {
 		$model = $args->getArgument('model');
+		if ($model === null) {
+			$io->abort('Model missing');
+		}
 
 		$table = $this->getTableLocator()->get($model);
 
@@ -41,7 +44,7 @@ class AddExposedFieldCommand extends Command {
 			$io->abort('You need to attach the Expose.Expose behavior to this model first (' . $table::class . '). Then we can create the migration for it.');
 		}
 
-		/** @phpstan-var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table */
+		/** @phpstan-var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table */
 		$field = $table->getExposedKey();
 		$fieldExists = $table->hasField($field);
 
@@ -49,6 +52,10 @@ class AddExposedFieldCommand extends Command {
 			/** @var \Cake\Datasource\SchemaInterface $tableSchema */
 			$tableSchema = $table->getSchema();
 			$schema = $tableSchema->getColumn($field);
+			if ($schema === null) {
+				$io->abort('Column schema missing for field `' . $field . '`');
+			}
+
 			if ($schema['null'] === false) {
 				$io->success('Nothing to be done. The field exists and is already set to NOT NULL.');
 
@@ -139,7 +146,7 @@ class AddExposedFieldCommand extends Command {
 
 	/**
 	 * @param string $migrationName
-	 * @param \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table
+	 * @param \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table
 	 * @param bool $containsRecords
 	 * @param bool $binary
 	 *
@@ -168,7 +175,7 @@ TXT;
 	}
 
 	/**
-	 * @param \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table
+	 * @param \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table
 	 * @param bool $containsRecords
 	 * @param bool $binary
 	 *
@@ -206,7 +213,7 @@ TXT;
 	}
 
 	/**
-	 * @param \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $table
+	 * @param \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table
 	 *
 	 * @return string
 	 */

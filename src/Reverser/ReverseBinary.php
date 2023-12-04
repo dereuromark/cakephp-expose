@@ -16,7 +16,7 @@ class ReverseBinary implements ReverseStrategyInterface {
 			throw new RuntimeException();
 		}
 
-		return (new BinaryUuidType())->toPHP($uuid, new Mysql());
+		return (string)(new BinaryUuidType())->toPHP($uuid, new Mysql());
 	}
 
 }

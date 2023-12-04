@@ -197,7 +197,7 @@ class ExposeBehaviorTest extends TestCase {
 	public function testInitExposedField(): void {
 		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('ExistingRecords');
 
-		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $customFieldRecordsTable */
+		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $customFieldRecordsTable */
 		$customFieldRecordsTable->addBehavior('Expose.Expose');
 
 		$count = $customFieldRecordsTable->initExposedField();
@@ -215,7 +215,7 @@ class ExposeBehaviorTest extends TestCase {
 	public function testBinaryUuidField(): void {
 		$binaryFieldRecordsTable = TableRegistry::getTableLocator()->get('BinaryFieldRecords');
 
-		/** @var \Cake\ORM\Table|\Expose\Model\Behavior\ExposeBehavior $binaryFieldRecordsTable */
+		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $binaryFieldRecordsTable */
 		$binaryFieldRecordsTable->addBehavior('Expose.Expose');
 		$binaryFieldRecordsTable->addBehavior('Timestamp');
 
