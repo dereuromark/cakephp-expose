@@ -139,9 +139,9 @@ $field = $this->Users->getExposedKey(true); // ModelName.field_name
 Especially when you `contain` other relations, you should always prefix the fields to avoid naming collisions.
 
 #### Pagination restrictions
-Set a sortWhitelist into your pagination config:
+Set a `sortableFields` array into your pagination config:
 ```php
-    'sortWhitelist' => [
+    'sortableFields' => [
         'name',
     ],
 ```
