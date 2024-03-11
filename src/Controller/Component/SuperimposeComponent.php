@@ -37,7 +37,7 @@ class SuperimposeComponent extends Component {
 			throw new RuntimeException('Expose.Expose behavior must be attached to a model that wants to do superimposition through Expose.Superimpose behavior.');
 		}
 
-		$this->getController()->$modelName->addBehavior('Expose.Superimpose', $this->getConfig());
+		$this->getController()->$modelName->addBehavior('Superimpose', ['className' => 'Expose.Superimpose'] + $this->getConfig());
 	}
 
 }
