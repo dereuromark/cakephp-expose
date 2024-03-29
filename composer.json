@@ -36,7 +36,7 @@
 		"brick/math": "^0.10.0 || ^0.11.0",
 		"keiko/uuid-shortener": "^0.6.0",
 		"ramsey/uuid": "^3.9 || ^4.7",
-		"fig-r/psr2r-sniffer": "dev-master"
+		"fig-r/psr2r-sniffer": "^1.5.1"
 	},
 	"autoload": {
 		"psr-4": {
