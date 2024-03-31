@@ -1,6 +1,6 @@
 <?php
 
-namespace TestApp\Test\TestCase\Controller;
+namespace Expose\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
