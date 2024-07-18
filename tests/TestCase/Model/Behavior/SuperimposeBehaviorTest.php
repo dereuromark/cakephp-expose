@@ -90,7 +90,7 @@ class SuperimposeBehaviorTest extends TestCase {
 
 		$this->assertSame([], $user->getDirty());
 
-		$user = $this->Users->get($user->id, ['contain' => ['Posts']]);
+		$user = $this->Users->get($user->id, contain: ['Posts']);
 
 		$this->assertSame($uuid, $user->uuid);
 

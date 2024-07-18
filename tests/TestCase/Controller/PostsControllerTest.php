@@ -76,7 +76,7 @@ class PostsControllerTest extends TestCase {
 		$this->assertRedirect();
 
 		$postsTable->removeBehavior('Superimpose');
-		$post = $postsTable->get($post->id, ['contain' => ['Users']]);
+		$post = $postsTable->get($post->id, contain: ['Users']);
 		$this->assertSame($data['content'], $post->content);
 	}
 

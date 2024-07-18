@@ -45,9 +45,7 @@ class PostsController extends AppController {
 	 * @return \Cake\Http\Response|null|void
 	 */
 	public function edit($id = null) {
-		$post = $this->Posts->get($id, [
-			'contain' => [],
-		]);
+		$post = $this->Posts->get($id);
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$post = $this->Posts->patchEntity($post, $this->request->getData());
 			if ($this->Posts->save($post)) {
