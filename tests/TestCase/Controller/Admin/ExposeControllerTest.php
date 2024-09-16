@@ -13,6 +13,15 @@ class ExposeControllerTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function setUp(): void {
+		parent::setUp();
+
+		$this->loadPlugins(['Expose']);
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testIndex(): void {
 		$this->disableErrorHandlerMiddleware();
 

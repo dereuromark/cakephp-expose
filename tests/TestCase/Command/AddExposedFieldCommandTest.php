@@ -46,13 +46,14 @@ class AddExposedFieldCommandTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
+		$this->loadPlugins(['Expose']);
+
 		$this->Users = TableRegistry::getTableLocator()->get('Users');
 
 		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
 		$this->command = new AddExposedFieldCommand();
 
 		$this->setAppNamespace();
-		//$this->useCommandRunner();
 	}
 
 	/**

@@ -36,6 +36,8 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
+		$this->loadPlugins(['Expose']);
+
 		$this->ExistingRecords = TableRegistry::getTableLocator()->get('ExistingRecords');
 		$this->ExistingRecords->deleteAll('1=1');
 		$this->ExistingRecords->removeBehavior('Expose');
@@ -53,7 +55,6 @@ class PopulateExposedFieldCommandTest extends TestCase {
 		$this->ExistingRecords->addBehavior('Expose.Expose');
 
 		$this->setAppNamespace();
-		//$this->useCommandRunner();
 	}
 
 	/**
