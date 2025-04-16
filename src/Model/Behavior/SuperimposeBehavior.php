@@ -131,7 +131,7 @@ class SuperimposeBehavior extends Behavior {
 	 * Custom finder that superimposes the primary key with the UUID in returned result set.
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query Query.
-	 * @param array $options Options.
+	 * @param array<string, mixed> $options Options.
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
 	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {

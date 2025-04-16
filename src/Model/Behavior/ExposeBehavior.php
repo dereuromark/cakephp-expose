@@ -54,7 +54,7 @@ class ExposeBehavior extends Behavior {
 
 	/**
 	 * @param \Cake\ORM\Query\SelectQuery $query
-	 * @param array $options
+	 * @param array<string, mixed> $options
 	 *
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
