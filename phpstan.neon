@@ -4,8 +4,8 @@ parameters:
 		- src/
 	bootstrapFiles:
 		- %rootDir%/../../../tests/bootstrap.php
-	checkMissingIterableValueType: false
-	checkGenericClassInNonGenericObjectType: false
 	ignoreErrors:
+		- identifier: missingType.iterableValue
+		- identifier: missingType.generics
 		- '#Call to an undefined method Cake\\ORM\\Table::getExposedKey\(\).#'
 		- '#PHPDoc tag @\w+ for \w+ \$table contains unresolvable type.#'
