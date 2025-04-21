@@ -49,7 +49,7 @@ class AddExposedFieldCommand extends Command {
 		$fieldExists = $table->hasField($field);
 
 		if ($fieldExists) {
-			/** @var \Cake\Datasource\SchemaInterface $tableSchema */
+			/** @var \Cake\Database\Schema\TableSchema $tableSchema */
 			$tableSchema = $table->getSchema();
 			$schema = $tableSchema->getColumn($field);
 			if ($schema === null) {
@@ -242,13 +242,12 @@ TXT;
 	protected function migrationExists(string $migrationName, string $migrationPath): bool {
 		$inflectedMigrationName = Inflector::underscore($migrationName);
 
-		/** @var array<\DirectoryIterator&\SplFileInfo> $iterator */
+		/** @var \DirectoryIterator<\SplFileInfo> $iterator */
 		$iterator = new DirectoryIterator($migrationPath);
 		foreach ($iterator as $fileInfo) {
 			if ($fileInfo->isDot()) {
 				continue;
 			}
-
 			if (preg_match('#_(' . $migrationName . '|' . $inflectedMigrationName . ')\.php$#', $fileInfo->getFilename())) {
 				return true;
 			}

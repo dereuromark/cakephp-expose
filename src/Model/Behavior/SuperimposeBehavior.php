@@ -13,7 +13,7 @@ use Cake\ORM\Behavior;
  * Adds superimpose functionality on top of Expose behavior.
  * This should only be added at runtime to the specific actions where needed through SuperimposeComponent.
  *
- * @property \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $_table
+ * @property \Cake\ORM\Table<array{Expose: \Expose\Model\Behavior\ExposeBehavior}> $_table
  */
 class SuperimposeBehavior extends Behavior {
 
@@ -42,8 +42,9 @@ class SuperimposeBehavior extends Behavior {
 			return;
 		}
 
+		/** @var string $pk */
 		$pk = $this->_table->getPrimaryKey();
-		$field = $this->_table->getExposedKey();
+		$field = $this->_table->getBehavior('Expose')->getExposedKey();
 		$alias = $this->getConfig('primaryKeyField');
 		if (isset($entity->$field) && isset($entity->$alias)) {
 			$entity->$pk = $entity->$alias;
@@ -60,8 +61,9 @@ class SuperimposeBehavior extends Behavior {
 	 * @return void
 	 */
 	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
+		/** @var string $pk */
 		$pk = $this->_table->getPrimaryKey();
-		$field = $this->_table->getExposedKey();
+		$field = $this->_table->getBehavior('Expose')->getExposedKey();
 
 		if (!$options['_primary'] && !$this->getConfig('recursive')) {
 			return;
@@ -90,6 +92,7 @@ class SuperimposeBehavior extends Behavior {
 		}
 
 		$query->traverseExpressions(function (object $expression) {
+			/** @var string $pk */
 			$pk = $this->_table->getPrimaryKey();
 			if (
 				method_exists($expression, 'getField')
@@ -137,8 +140,9 @@ class SuperimposeBehavior extends Behavior {
 	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
+				/** @var string $pk */
 				$pk = $this->_table->getPrimaryKey();
-				$field = $this->_table->getExposedKey();
+				$field = $this->_table->getBehavior('Expose')->getExposedKey();
 				if (!isset($row[$field])) {
 					return $row;
 				}
@@ -167,8 +171,9 @@ class SuperimposeBehavior extends Behavior {
 	 * @return void
 	 */
 	public function beforeDelete(EventInterface $event, EntityInterface $entity): void {
+		/** @var string $pk */
 		$pk = $this->_table->getPrimaryKey();
-		$field = $this->_table->getExposedKey();
+		$field = $this->_table->getBehavior('Expose')->getExposedKey();
 		$alias = $this->getConfig('primaryKeyField');
 		if (isset($entity->$field) && isset($entity->$alias)) {
 			$entity->$pk = $entity->$alias;
@@ -186,7 +191,7 @@ class SuperimposeBehavior extends Behavior {
 
 		$record = $this->_table
 			->find()
-			->where([$this->_table->getExposedKey() => $uuid])
+			->where([$this->_table->getBehavior('Expose')->getExposedKey() => $uuid])
 			->select([$primaryKey])
 			->firstOrFail();
 
