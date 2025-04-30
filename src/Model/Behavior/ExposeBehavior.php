@@ -65,7 +65,7 @@ class ExposeBehavior extends Behavior {
 			'groupField' => null,
 		];
 
-		return $query->find('list', $options);
+		return $query->find('list', ...$options);
 	}
 
 	/**
@@ -182,7 +182,7 @@ class ExposeBehavior extends Behavior {
 
 		$count = 0;
 
-		while (($records = $this->_table->find('all', $params)->toArray())) {
+		while (($records = $this->_table->find('all', ...$params)->toArray())) {
 			/** @var \Cake\ORM\Entity $record */
 			foreach ($records as $record) {
 				$uuid = $this->generateExposedField($field);

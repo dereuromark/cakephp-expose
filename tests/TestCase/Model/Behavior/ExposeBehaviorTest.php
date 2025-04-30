@@ -133,7 +133,7 @@ class ExposeBehaviorTest extends TestCase {
 		$this->assertSame('uuid', $field);
 
 		/** @var \TestApp\Model\Entity\User $result */
-		$result = $this->Users->find('exposed', [$field => $uuid])->firstOrFail();
+		$result = $this->Users->find('exposed', ...[$field => $uuid])->firstOrFail();
 
 		$this->assertSame($user->id, $result->id);
 
@@ -203,7 +203,7 @@ class ExposeBehaviorTest extends TestCase {
 		$count = $customFieldRecordsTable->initExposedField();
 		$this->assertSame(1, $count);
 
-		$records = $customFieldRecordsTable->find()->find('list', ['valueField' => 'uuid'])->toArray();
+		$records = $customFieldRecordsTable->find()->find('list', ...['valueField' => 'uuid'])->toArray();
 		foreach ($records as $id => $uuid) {
 			$this->assertNotEmpty($uuid, 'ID ' . $id . ' not expected to have empty uuid field');
 		}
@@ -227,7 +227,7 @@ class ExposeBehaviorTest extends TestCase {
 
 		$this->assertNotEmpty($user->uuid);
 
-		$result = $binaryFieldRecordsTable->find('exposed', ['uuid' => $user->uuid])->firstOrFail();
+		$result = $binaryFieldRecordsTable->find('exposed', ...['uuid' => $user->uuid])->firstOrFail();
 		$this->assertSame($user->name, $result->name);
 	}
 
