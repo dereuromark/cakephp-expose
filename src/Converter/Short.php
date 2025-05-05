@@ -7,7 +7,7 @@ use Brick\Math\RoundingMode;
 use RuntimeException;
 
 /**
- * Make sure to include the required dependency `"brick/math": "^0.8.14"`.
+ * Make sure to include the required dependency `brick/math`.
  *
  * @note Does not support UUID v7 at this point.
  */
