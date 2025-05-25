@@ -1,5 +1,5 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class MigrationFooBar extends AbstractMigration {
+class MigrationFooBar extends BaseMigration {
 }
