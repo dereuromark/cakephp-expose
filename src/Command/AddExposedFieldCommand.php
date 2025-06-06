@@ -159,7 +159,7 @@ class AddExposedFieldCommand extends Command {
 <?php
 use Migrations\BaseMigration;
 
-class $migrationName extends AbstractMigration
+class $migrationName extends BaseMigration
 {
     /**
      * @return void
