@@ -189,7 +189,7 @@ class ExposeBehavior extends Behavior {
 			foreach ($records as $record) {
 				$uuid = $this->generateExposedField($field);
 
-				$this->_table->updateAll(['uuid' => $uuid], [$primaryKey => $record->get($primaryKey)]);
+				$this->_table->updateAll([$field => $uuid], [$primaryKey => $record->get($primaryKey)]);
 				$count++;
 			}
 		}
