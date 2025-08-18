@@ -20,7 +20,7 @@ class CustomPrimaryKeyRecordsFixture extends TestFixture {
 		'modified' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
 		'_constraints' => [
 			'primary' => ['type' => 'primary', 'columns' => ['code'], 'length' => []],
-			'records-uuid' => ['type' => 'unique', 'columns' => ['uuid'], 'length' => []],
+			'custom-records-uuid' => ['type' => 'unique', 'columns' => ['uuid'], 'length' => []],
 		],
 		'_options' => [
 			'engine' => 'InnoDB',
