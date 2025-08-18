@@ -173,10 +173,12 @@ class ExposeBehavior extends Behavior {
 			throw new RuntimeException('Table does not have exposed field `' . $field . '`');
 		}
 
+		/** @var string $primaryKey */
+		$primaryKey = $this->_table->getPrimaryKey();
 		$defaults = [
 			'limit' => 1000,
 			'conditions' => [$field . ' IS' => null],
-			'fields' => (array)$this->_table->getPrimaryKey(),
+			'fields' => (array)$primaryKey,
 		];
 		$params = array_merge($defaults, $params);
 
@@ -187,7 +189,7 @@ class ExposeBehavior extends Behavior {
 			foreach ($records as $record) {
 				$uuid = $this->generateExposedField($field);
 
-				$this->_table->updateAll(['uuid' => $uuid], ['id' => $record->id]);
+				$this->_table->updateAll(['uuid' => $uuid], [$primaryKey => $record->get($primaryKey)]);
 				$count++;
 			}
 		}
