@@ -16,6 +16,7 @@ class ExposeBehaviorTest extends TestCase {
 		'plugin.Expose.CustomFieldRecords',
 		'plugin.Expose.ExistingRecords',
 		'plugin.Expose.BinaryFieldRecords',
+		'plugin.Expose.CustomPrimaryKeyRecords',
 	];
 
 	/**
@@ -229,6 +230,35 @@ class ExposeBehaviorTest extends TestCase {
 
 		$result = $binaryFieldRecordsTable->find('exposed', ...['uuid' => $user->uuid])->firstOrFail();
 		$this->assertSame($user->name, $result->name);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testInitExposedFieldWithCustomPrimaryKey(): void {
+		$customPrimaryKeyTable = TableRegistry::getTableLocator()->get('CustomPrimaryKeyRecords');
+
+		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $customPrimaryKeyTable */
+		$customPrimaryKeyTable->addBehavior('Expose.Expose');
+
+		$primaryKey = $customPrimaryKeyTable->getPrimaryKey();
+		$this->assertSame('code', $primaryKey);
+
+		$count = $customPrimaryKeyTable->initExposedField();
+		$this->assertSame(2, $count);
+
+		$records = $customPrimaryKeyTable->find()->toArray();
+		foreach ($records as $record) {
+			$this->assertNotEmpty($record->uuid, 'Record with code ' . $record->code . ' should have a uuid');
+		}
+
+		$record1 = $customPrimaryKeyTable->find()->where(['code' => 'RECORD-001'])->firstOrFail();
+		$this->assertNotEmpty($record1->uuid);
+
+		$record2 = $customPrimaryKeyTable->find()->where(['code' => 'RECORD-002'])->firstOrFail();
+		$this->assertNotEmpty($record2->uuid);
+
+		$this->assertNotSame($record1->uuid, $record2->uuid);
 	}
 
 }
