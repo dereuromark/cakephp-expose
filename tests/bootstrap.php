@@ -49,8 +49,7 @@ Configure::write('App', [
 	],
 ]);
 
-Configure::write('Expose', [
-]);
+Configure::write('Expose', []);
 
 $cache = [
 	'default' => [
