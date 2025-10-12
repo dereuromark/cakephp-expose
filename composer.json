@@ -34,7 +34,7 @@
 		"ext-bcmath": "*",
 		"brick/math": "^0.13.0 || ^0.14.0",
 		"fig-r/psr2r-sniffer": "dev-master",
-		"keiko/uuid-shortener": "^0.6.0",
+		"keiko/uuid-shortener": "^1.2.0",
 		"phpunit/phpunit": "^10.5 || ^11.5 || ^12.1",
 		"ramsey/uuid": "^3.9 || ^4.7"
 	},
