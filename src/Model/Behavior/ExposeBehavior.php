@@ -93,7 +93,6 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query
 	 * @param string $uuid
-	 * @throws \InvalidArgumentException If the 'slug' key is missing in options
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
 	public function findExposed(SelectQuery $query, string $uuid): SelectQuery {
@@ -205,7 +204,9 @@ class ExposeBehavior extends Behavior {
 	protected function generateExposedField(string $field): string {
 		$fieldType = $this->_table->getSchema()->getColumnType($field);
 		if (!$fieldType) {
-			throw new RuntimeException('Cannot determine column type of field `' . $field . '`');
+			$schema = $this->_table->getSchema()->getColumn($field);
+
+			throw new RuntimeException('Cannot determine column type of field `' . $field . '`. Found type: ' . ($schema['type'] ?? 'unknown'));
 		}
 
 		$type = TypeFactory::build($fieldType);

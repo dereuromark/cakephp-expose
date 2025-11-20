@@ -13,7 +13,7 @@ class ReverseBinary implements ReverseStrategyInterface {
 	 */
 	public function reverse(string $uuid): string {
 		if (strlen($uuid) !== 16) {
-			throw new RuntimeException();
+			throw new RuntimeException('Expected 16-byte binary UUID, got ' . strlen($uuid) . ' bytes');
 		}
 
 		return (string)(new BinaryUuidType())->toPHP($uuid, new Mysql());

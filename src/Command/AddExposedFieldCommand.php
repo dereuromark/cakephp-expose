@@ -101,7 +101,16 @@ class AddExposedFieldCommand extends Command {
 			if ($this->migrationExists($migrationName, $this->migrationPath)) {
 				$io->abort('File already exists: ' . $migrationFilePath);
 			}
-			file_put_contents($migrationFilePath, $migrationContent);
+			if (!is_dir($this->migrationPath)) {
+				$io->abort('Migration path does not exist: ' . $this->migrationPath);
+			}
+			if (!is_writable($this->migrationPath)) {
+				$io->abort('Migration path is not writable: ' . $this->migrationPath);
+			}
+			$bytesWritten = @file_put_contents($migrationFilePath, $migrationContent);
+			if ($bytesWritten === false) {
+				$io->abort('Failed to write migration file: ' . $migrationFilePath);
+			}
 			$io->success('Migration file created. Now you can migrate your table(s) using `bin/cake migrations migrate`.');
 		} else {
 			$io->out('--- ' . $migrationName . '.php' . ' ---');
