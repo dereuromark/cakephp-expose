@@ -16,7 +16,7 @@ class SuperimposeComponent extends Component {
 	 * @var array<string, mixed>
 	 */
 	protected array $_defaultConfig = [
-		'actions' => [],
+		'actions' => [], // Array of action names (strings) to apply superimposition to
 	];
 
 	/**

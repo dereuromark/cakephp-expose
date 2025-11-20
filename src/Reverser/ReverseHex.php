@@ -18,7 +18,7 @@ class ReverseHex implements ReverseStrategyInterface {
 			return (string)(new BinaryUuidType())->toPHP($binaryUuid, new Mysql());
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException('Expected hex format starting with "0x" and length 34, got: ' . $uuid);
 	}
 
 }
