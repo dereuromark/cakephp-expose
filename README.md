@@ -56,9 +56,9 @@ See [Docs](/docs) for details.
 
 Faster than the speed of light:
 
-- Add the behavior and run `bin/cake add_exposed_field PluginName.ModelName {MigrationName}` to generate a migration for adding the field.
-- Execute the migration and then populate existing records using `bin/cake populate_exposed_field PluginName.ModelName`
-- Re-run `bin/cake add_exposed_field PluginName.ModelName {MigrationName}` to get a non-nullable field migration for your new field.
+- Add the behavior and run `bin/cake expose add_field PluginName.ModelName {MigrationName}` to generate a migration for adding the field.
+- Execute the migration and then populate existing records using `bin/cake expose populate_field PluginName.ModelName`
+- Re-run `bin/cake expose add_field PluginName.ModelName {MigrationName}` to get a non-nullable field migration for your new field.
 - After also executing that migration all new records will automatically have their exposed field stored as well.
 
 You are done and can now adjust your public actions to query by exposed field only and hide the primary key completely.

@@ -13,8 +13,15 @@ use Cake\Console\ConsoleOptionParser;
 class PopulateExposedFieldCommand extends Command {
 
 	/**
+	 * @return string
+	 */
+	public static function defaultName(): string {
+		return 'expose populate_field';
+	}
+
+	/**
 	 * E.g.:
-	 * bin/cake populate_exposed_field PluginName.ModelName
+	 * bin/cake expose populate_field PluginName.ModelName
 	 *
 	 * @param \Cake\Console\Arguments $args The command arguments.
 	 * @param \Cake\Console\ConsoleIo $io The console io

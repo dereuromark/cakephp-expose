@@ -64,7 +64,7 @@ $table->update();
 
 Use the command here to generate a migration file for you:
 ```
-bin/cake add_exposed_field PluginName.ModelName {MigrationName}
+bin/cake expose add_field PluginName.ModelName {MigrationName}
 ```
 With `-d`/`--dry-run` you can output first what would be generated.
 
@@ -163,7 +163,7 @@ public function newId(): string {
 The behavior ships with a convenience command to be called from CLI.
 So just run this to populate the existing records with the missing UUID data.
 ```
-bin/cake populate_exposed_field PluginName.ModelName
+bin/cake expose populate_field PluginName.ModelName
 ```
 
 Make sure the `Expose.Expose` behavior is attached to this table class.
@@ -173,7 +173,7 @@ Once all records are populated, you can make a second migration file and set the
 to be `DEFAULT NOT NULL` and add a `UNIQUE` constraint.
 If you run here the first command again, it will display the code snippet for it:
 ```
-bin/cake add_exposed_field PluginName.ModelName
+bin/cake expose add_field PluginName.ModelName
 ```
 You don't need the dry-run part here anymore, since it will just output the migration content in this case.
 

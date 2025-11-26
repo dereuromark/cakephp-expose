@@ -16,13 +16,20 @@ use DirectoryIterator;
 class AddExposedFieldCommand extends Command {
 
 	/**
+	 * @return string
+	 */
+	public static function defaultName(): string {
+		return 'expose add_field';
+	}
+
+	/**
 	 * @var string
 	 */
 	protected string $migrationPath = CONFIG . 'Migrations' . DS;
 
 	/**
 	 * E.g.:
-	 * bin/cake add_exposed_field PluginName.ModelName {MigrationName}
+	 * bin/cake expose add_field PluginName.ModelName {MigrationName}
 	 *
 	 * @param \Cake\Console\Arguments $args The command arguments.
 	 * @param \Cake\Console\ConsoleIo $io The console io
@@ -65,7 +72,7 @@ class AddExposedFieldCommand extends Command {
 			$io->out('Field has been detected as existing. You want to now make this field not nullable once all records have been populated.');
 			$count = $table->find()->where([$field . ' IS' => null])->count();
 			if ($count) {
-				$io->abort($count . ' records require the exposed field to be populated with UUID data. Use the `populate_exposed_field` command for this.');
+				$io->abort($count . ' records require the exposed field to be populated with UUID data. Use the `expose populate_field` command for this.');
 			}
 
 			$io->out('Use the following snippet in a follow up migration now:');

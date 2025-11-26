@@ -61,7 +61,7 @@ class PopulateExposedFieldCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testExecute(): void {
-		$this->exec('populate_exposed_field ExistingRecords');
+		$this->exec('expose populate_field ExistingRecords');
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
 		$this->assertOutputContains('Populated 2 records. Nothing else left.');

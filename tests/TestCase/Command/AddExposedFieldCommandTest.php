@@ -80,7 +80,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	public function testExecute(): void {
 		$this->io->expects($this->any())->method('askChoice')->willReturn('yes');
 
-		$this->exec('add_exposed_field Users');
+		$this->exec('expose add_field Users');
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
 	}
@@ -92,7 +92,7 @@ class AddExposedFieldCommandTest extends TestCase {
 		$this->Users->removeBehavior('Expose');
 		$this->Users->addBehavior('Expose.Expose', ['field' => 'binary_uuid']);
 
-		$this->exec('add_exposed_field Users -d', ['yes']);
+		$this->exec('expose add_field Users -d', ['yes']);
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
 
@@ -111,7 +111,7 @@ class AddExposedFieldCommandTest extends TestCase {
 		$this->Users->removeBehavior('Expose');
 		$this->Users->addBehavior('Expose.Expose', ['field' => 'binary_uuid']);
 
-		$this->exec('add_exposed_field Users -b -d', ['yes']);
+		$this->exec('expose add_field Users -b -d', ['yes']);
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
 
