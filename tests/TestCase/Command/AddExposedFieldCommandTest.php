@@ -78,7 +78,7 @@ class AddExposedFieldCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testExecute(): void {
-		$this->io->expects($this->any())->method('askChoice')->willReturn('yes');
+		$this->io->method('askChoice')->willReturn('yes');
 
 		$this->exec('expose add_field Users');
 

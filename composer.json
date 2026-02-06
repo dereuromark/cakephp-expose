@@ -35,7 +35,7 @@
 		"brick/math": "^0.13.0 || ^0.14.0",
 		"fig-r/psr2r-sniffer": "dev-master",
 		"keiko/uuid-shortener": "^1.2.0",
-		"phpunit/phpunit": "^11.5 || ^12.1",
+		"phpunit/phpunit": "^11.5 || ^12.1 || ^13.0",
 		"ramsey/uuid": "^3.9 || ^4.7"
 	},
 	"minimum-stability": "stable",
