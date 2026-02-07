@@ -34,13 +34,14 @@ class PopulateExposedFieldCommand extends Command {
 			$io->abort('Model missing');
 		}
 
-		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table */
 		$table = $this->getTableLocator()->get($model);
 
-		$field = $table->getExposedKey();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $table->getBehavior('Expose');
+		$field = $exposeBehavior->getExposedKey();
 		$io->out('Populating ' . $model . ' `' . $field . '` field ...');
 
-		$count = $table->initExposedField();
+		$count = $exposeBehavior->initExposedField();
 
 		$io->success('Populated ' . $count . ' records. Nothing else left.');
 

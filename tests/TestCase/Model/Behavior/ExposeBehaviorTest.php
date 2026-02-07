@@ -110,7 +110,9 @@ class ExposeBehaviorTest extends TestCase {
 
 		$uuid = $user->uuid;
 
-		$field = $this->Users->getExposedKey();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $this->Users->getBehavior('Expose');
+		$field = $exposeBehavior->getExposedKey();
 		$this->assertSame('uuid', $field);
 
 		/** @var \TestApp\Model\Entity\User $result */
@@ -118,7 +120,7 @@ class ExposeBehaviorTest extends TestCase {
 
 		$this->assertSame($user->id, $result->id);
 
-		$field = $this->Users->getExposedKey(true);
+		$field = $exposeBehavior->getExposedKey(true);
 		$this->assertSame('Users.uuid', $field);
 	}
 
@@ -130,7 +132,9 @@ class ExposeBehaviorTest extends TestCase {
 
 		$uuid = $user->uuid;
 
-		$field = $this->Users->getExposedKey();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $this->Users->getBehavior('Expose');
+		$field = $exposeBehavior->getExposedKey();
 		$this->assertSame('uuid', $field);
 
 		/** @var \TestApp\Model\Entity\User $result */
@@ -138,7 +142,7 @@ class ExposeBehaviorTest extends TestCase {
 
 		$this->assertSame($user->id, $result->id);
 
-		$field = $this->Users->getExposedKey(true);
+		$field = $exposeBehavior->getExposedKey(true);
 		$this->assertSame('Users.uuid', $field);
 	}
 
@@ -197,11 +201,11 @@ class ExposeBehaviorTest extends TestCase {
 	 */
 	public function testInitExposedField(): void {
 		$customFieldRecordsTable = TableRegistry::getTableLocator()->get('ExistingRecords');
-
-		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $customFieldRecordsTable */
 		$customFieldRecordsTable->addBehavior('Expose.Expose');
 
-		$count = $customFieldRecordsTable->initExposedField();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $customFieldRecordsTable->getBehavior('Expose');
+		$count = $exposeBehavior->initExposedField();
 		$this->assertSame(1, $count);
 
 		$records = $customFieldRecordsTable->find()->find('list', ...['valueField' => 'uuid'])->toArray();
@@ -237,14 +241,14 @@ class ExposeBehaviorTest extends TestCase {
 	 */
 	public function testInitExposedFieldWithCustomPrimaryKey(): void {
 		$customPrimaryKeyTable = TableRegistry::getTableLocator()->get('CustomPrimaryKeyRecords');
-
-		/** @var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $customPrimaryKeyTable */
 		$customPrimaryKeyTable->addBehavior('Expose.Expose');
 
 		$primaryKey = $customPrimaryKeyTable->getPrimaryKey();
 		$this->assertSame('code', $primaryKey);
 
-		$count = $customPrimaryKeyTable->initExposedField();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $customPrimaryKeyTable->getBehavior('Expose');
+		$count = $exposeBehavior->initExposedField();
 		$this->assertSame(2, $count);
 
 		$records = $customPrimaryKeyTable->find()->toArray();
