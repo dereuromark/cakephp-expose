@@ -7,5 +7,3 @@ parameters:
 	ignoreErrors:
 		- identifier: missingType.iterableValue
 		- identifier: missingType.generics
-		- '#Call to an undefined method Cake\\ORM\\Table::getExposedKey\(\).#'
-		- '#PHPDoc tag @\w+ for \w+ \$table contains unresolvable type.#'

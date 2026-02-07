@@ -51,8 +51,9 @@ class AddExposedFieldCommand extends Command {
 			$io->abort('You need to attach the Expose.Expose behavior to this model first (' . $table::class . '). Then we can create the migration for it.');
 		}
 
-		/** @phpstan-var \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table */
-		$field = $table->getExposedKey();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $table->getBehavior('Expose');
+		$field = $exposeBehavior->getExposedKey();
 		$fieldExists = $table->hasField($field);
 
 		if ($fieldExists) {
@@ -162,7 +163,7 @@ class AddExposedFieldCommand extends Command {
 
 	/**
 	 * @param string $migrationName
-	 * @param \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table
+	 * @param \Cake\ORM\Table $table
 	 * @param bool $containsRecords
 	 * @param bool $binary
 	 *
@@ -191,14 +192,16 @@ TXT;
 	}
 
 	/**
-	 * @param \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table
+	 * @param \Cake\ORM\Table $table
 	 * @param bool $containsRecords
 	 * @param bool $binary
 	 *
 	 * @return string
 	 */
 	protected function generateOperations(Table $table, bool $containsRecords, bool $binary): string {
-		$field = $table->getExposedKey();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $table->getBehavior('Expose');
+		$field = $exposeBehavior->getExposedKey();
 		$tableName = $table->getTable();
 		$null = $containsRecords ? 'true' : 'false';
 		$type = $binary ? 'binary' : 'uuid';
@@ -229,12 +232,14 @@ TXT;
 	}
 
 	/**
-	 * @param \Cake\ORM\Table&\Expose\Model\Behavior\ExposeBehavior $table
+	 * @param \Cake\ORM\Table $table
 	 *
 	 * @return string
 	 */
 	protected function generateUpdateOperation(Table $table): string {
-		$field = $table->getExposedKey();
+		/** @var \Expose\Model\Behavior\ExposeBehavior $exposeBehavior */
+		$exposeBehavior = $table->getBehavior('Expose');
+		$field = $exposeBehavior->getExposedKey();
 		$tableName = $table->getTable();
 
 		$operations = <<<TXT
