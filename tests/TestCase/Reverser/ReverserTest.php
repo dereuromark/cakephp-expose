@@ -51,4 +51,23 @@ class ReverserTest extends TestCase {
 		$this->assertSame('f7ac0123-a938-4e80-840e-efe892051332', $result);
 	}
 
+	/**
+	 * No strategy should match a clearly invalid input; null is returned without leaking errors.
+	 *
+	 * @return void
+	 */
+	public function testReverseUnreversableReturnsNull(): void {
+		$this->assertNull($this->reverser->reverse('not-a-uuid'));
+	}
+
+	/**
+	 * A 34-char string with the expected `0x` prefix but non-hex bytes must not be silently accepted.
+	 *
+	 * @return void
+	 */
+	public function testReverseHexWithInvalidHexContentReturnsNull(): void {
+		$invalid = '0x' . str_repeat('z', 32);
+		$this->assertNull($this->reverser->reverse($invalid));
+	}
+
 }

@@ -2,14 +2,14 @@
 
 namespace Expose\Reverser;
 
-use Exception;
+use RuntimeException;
 
 class Reverser {
 
 	/**
-	 * @var array<string>
+	 * @var array<class-string<\Expose\Reverser\ReverseStrategyInterface>>
 	 */
-	protected array $stategies = [
+	protected array $strategies = [
 		ReverseBinary::class,
 		ReverseHex::class,
 		ReverseShortened::class,
@@ -21,14 +21,11 @@ class Reverser {
 	 * @return string|null
 	 */
 	public function reverse(string $uuid): ?string {
-		foreach ($this->stategies as $stategy) {
+		foreach ($this->strategies as $strategy) {
 			try {
-				/** @var \Expose\Reverser\ReverseStrategyInterface $object */
-				$object = new $stategy();
-
-				return $object->reverse($uuid);
-			} catch (Exception $exception) {
-				// Do nothing
+				return (new $strategy())->reverse($uuid);
+			} catch (RuntimeException $exception) {
+				// Strategy could not handle this input format, try next.
 			}
 		}
 
