@@ -28,14 +28,14 @@
 
 		<?php echo $this->Form->create(null, ['type' => 'file']);?>
 		<fieldset>
-			<legend><?php echo __('Enter the UUID you want to reverse');?></legend>
+			<legend><?php echo __d('expose', 'Enter the UUID you want to reverse');?></legend>
 			<?php
 			echo $this->Form->control('uuid', []);
 			//echo $this->Form->control('shortened', ['type' => 'checkbox', 'label' => 'This UUID is shortened']);
 			echo $this->Form->control('file', ['type' => 'file', 'label' => '.bin file']);
 			?>
 		</fieldset>
-		<?php echo $this->Form->submit(__('Submit')); echo $this->Form->end();?>
+		<?php echo $this->Form->submit(__d('expose', 'Submit')); echo $this->Form->end();?>
 
 	</div>
 
