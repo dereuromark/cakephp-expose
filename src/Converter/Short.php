@@ -9,7 +9,9 @@ use RuntimeException;
 /**
  * Make sure to include the required dependency `brick/math`.
  *
- * @note Does not support UUID v7 at this point.
+ * Works on any UUID version (v4 is the default the plugin generates). Note that v6/v7 embed
+ * a timestamp in their leading bits, which leaks record creation order/time - see
+ * docs/Motivation.md for the rationale behind preferring v4 for exposed fields.
  */
 class Short implements ConverterInterface {
 
@@ -108,7 +110,7 @@ class Short implements ConverterInterface {
 	 * @return string
 	 */
 	protected function formatHex(string $hex): string {
-		$hex = str_pad($hex, 32, '0');
+		$hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
 		$matched = preg_match('/([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{12})/', $hex, $matches);
 		if ($matched === 0) {
 			throw new RuntimeException('Invalid hex string format: ' . $hex);

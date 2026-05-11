@@ -33,3 +33,14 @@ Further issues with only UUID as primary key:
 Issues with mixing across tables - some primary keys as UUID and others as AIID:
 - Easy to mess things up (e.g. some foreign_key now has to be varchar to allow both the int and the string)
 - Less flexible in general of adding functionality on top. Keeping always primary key one type allows here for easier future additions.
+
+### Why UUIDv4 (and not v7, ULID, NanoID, Snowflake, KSUID, ...)
+The exposed field's job is to be a public lookup key that does **not** leak information about the underlying record. That rules out every time-ordered identifier:
+
+- **UUIDv7, ULID, KSUID, Snowflake** all embed a high-precision timestamp in their leading bits. Anyone holding two such IDs can determine which record was created first, estimate the gap between them, and approximate when each was created. With a handful of samples, they can also estimate how many records you create per minute. That is exactly the side-channel this plugin is designed to close.
+- **NanoID** is random by design and would be acceptable on the randomness axis, but it's a *generator*, not an *encoding* - it produces fresh strings rather than reversibly encoding an existing 128-bit value. Since this plugin shortens an existing UUID column (so the DB column type stays a real `uuid`/`binary(16)`), there is no functional gap a NanoID alphabet would fill that the `Short` converter's URL-safe dictionary doesn't already cover at the same 22-char output length.
+- **Hashids / Sqids** encode the primary key itself, which is precisely the approach this plugin moved away from (see "Why not Hash IDs" above).
+
+So UUIDv4 is not a default-of-convenience here, it's a deliberate choice: 122 bits of pure randomness, no embedded timestamp, no embedded counter, native DB type support across MySQL/Postgres/SQLite.
+
+If your project would rather have time-ordered IDs and is OK with the timestamp leakage - e.g. you only expose IDs to authenticated users who would already be able to infer ordering, or you need cursor pagination over the exposed key - UUIDv7 still works with this plugin: both built-in converters round-trip v7 correctly. You just need to swap the UUID generator the plugin uses (see "Using a different UUID generator" in the converter docs).
