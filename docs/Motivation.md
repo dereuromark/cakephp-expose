@@ -43,4 +43,4 @@ The exposed field's job is to be a public lookup key that does **not** leak info
 
 So UUIDv4 is not a default-of-convenience here, it's a deliberate choice: 122 bits of pure randomness, no embedded timestamp, no embedded counter, native DB type support across MySQL/Postgres/SQLite.
 
-If your project values time-ordering (e.g. for cursor pagination or natural insertion order in the DB) more than it values not leaking creation time, UUIDv7 *is* usable with this plugin via the `KeikoShort` converter - the built-in `Short` converter intentionally does not support v7. See the converter docs for details.
+If your project would rather have time-ordered IDs and is OK with the timestamp leakage - e.g. you only expose IDs to authenticated users who would already be able to infer ordering, or you need cursor pagination over the exposed key - UUIDv7 still works with this plugin: both built-in converters round-trip v7 correctly. You just need to swap the UUID generator the plugin uses (see "Using a different UUID generator" in the converter docs).

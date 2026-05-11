@@ -9,9 +9,9 @@ use RuntimeException;
 /**
  * Make sure to include the required dependency `brick/math`.
  *
- * UUIDv7 is deliberately not supported here: this plugin's exposed field is meant to be a public
- * lookup key that does not leak record creation order/time, and v7 embeds a timestamp in its
- * leading bits. Use the `KeikoShort` converter if you accept that trade-off. See docs/Motivation.md.
+ * Works on any UUID version (v4 is the default the plugin generates). Note that v6/v7 embed
+ * a timestamp in their leading bits, which leaks record creation order/time - see
+ * docs/Motivation.md for the rationale behind preferring v4 for exposed fields.
  */
 class Short implements ConverterInterface {
 
@@ -110,7 +110,7 @@ class Short implements ConverterInterface {
 	 * @return string
 	 */
 	protected function formatHex(string $hex): string {
-		$hex = str_pad($hex, 32, '0');
+		$hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
 		$matched = preg_match('/([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{12})/', $hex, $matches);
 		if ($matched === 0) {
 			throw new RuntimeException('Invalid hex string format: ' . $hex);

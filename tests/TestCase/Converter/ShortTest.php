@@ -58,12 +58,25 @@ class ShortTest extends TestCase {
 	 * @return void
 	 */
 	public function testUuid7(): void {
-		$this->skipIf(true, 'Not supported right now');
+		$this->skipIf(!method_exists(Uuid::class, 'uuid7'), 'Only ramsey/uuid 4.7+');
 
 		$uuidOriginal = Uuid::uuid7()->toString();
 		$uuidShort = $this->converter->encode($uuidOriginal);
 		$uuidDecoded = $this->converter->decode($uuidShort);
 		$this->assertSame($uuidOriginal, $uuidDecoded);
+	}
+
+	/**
+	 * Regression: hex values with leading zero nibbles must round-trip.
+	 * BigInteger drops most-significant zeros, so decode must left-pad to 32 chars.
+	 *
+	 * @return void
+	 */
+	public function testEncodeDecodeWithLeadingZero(): void {
+		$uuid = '0e52c919-513e-4562-9248-7dd612c6c1ca';
+		$encoded = $this->converter->encode($uuid);
+		$decoded = $this->converter->decode($encoded);
+		$this->assertSame($uuid, $decoded);
 	}
 
 }
