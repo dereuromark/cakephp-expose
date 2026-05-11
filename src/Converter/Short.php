@@ -9,7 +9,9 @@ use RuntimeException;
 /**
  * Make sure to include the required dependency `brick/math`.
  *
- * @note Does not support UUID v7 at this point.
+ * UUIDv7 is deliberately not supported here: this plugin's exposed field is meant to be a public
+ * lookup key that does not leak record creation order/time, and v7 embeds a timestamp in its
+ * leading bits. Use the `KeikoShort` converter if you accept that trade-off. See docs/Motivation.md.
  */
 class Short implements ConverterInterface {
 

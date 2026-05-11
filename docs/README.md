@@ -268,8 +268,14 @@ $result = ConverterFactory::getConverter()->encode($value);
 $result = ConverterFactory::getConverter()->decode($value);
 ```
 
-Also note: Some more modern UUIDs might require a special shortener.
-E.g. v7 currently is only supported by `KeikoShort` converter, not built-in one.
+#### Using UUIDv7 (or other modern UUID flavors)
+This plugin defaults to UUIDv4 because the exposed field is meant to be a public lookup key that does not leak record-creation order or timing. UUIDv7 (and ULID, KSUID, Snowflake, ...) embed a high-precision timestamp in their leading bits, so any two such IDs reveal which record came first and roughly when - see [Motivation: Why UUIDv4](Motivation.md#why-uuidv4-and-not-v7-ulid-nanoid-snowflake-ksuid-) for the full trade-off.
+
+If your project values time-ordering more than that obfuscation, UUIDv7 works with this plugin, but only via the `KeikoShort` converter:
+```php
+'Expose.converter' => \Expose\Converter\KeikoShort::class,
+```
+The built-in `Short` converter intentionally does not support v7 - that's a design choice, not a missing feature.
 
 ### Backend
 The plugin comes with an optional and small admin backend to reverse UUIDs.
