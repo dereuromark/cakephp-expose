@@ -123,10 +123,8 @@ class ExposeBehavior extends Behavior {
 		$field = $this->getConfig('field');
 		$data[$field] = $this->generateExposedField($field);
 
-		if (isset($options['fields'])) {
-			if (!in_array($field, $options['fields'], true)) {
-				$options['fields'][] = $field;
-			}
+		if (isset($options['fields']) && !in_array($field, $options['fields'], true)) {
+			$options['fields'][] = $field;
 		}
 
 		if (!isset($options['accessibleFields'])) {

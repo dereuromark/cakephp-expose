@@ -19,14 +19,14 @@ class ExposeController extends AppController {
 			$file = $this->request->getData('file');
 			if ($file && !$file->getError()) {
 				$content = $file->getStream()->getContents();
-				if (strlen($content) === 16) {
+				if (strlen((string)$content) === 16) {
 					$uuid = $content;
 				}
 			}
 
 			$result = $this->reverseUuid($uuid);
 
-			$this->set(compact('result'));
+			$this->set(['result' => $result]);
 		}
 	}
 

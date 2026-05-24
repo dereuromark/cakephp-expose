@@ -24,7 +24,7 @@ class Reverser {
 		foreach ($this->strategies as $strategy) {
 			try {
 				return (new $strategy())->reverse($uuid);
-			} catch (RuntimeException $exception) {
+			} catch (RuntimeException) {
 				// Strategy could not handle this input format, try next.
 			}
 		}
