@@ -172,7 +172,7 @@ class AddExposedFieldCommand extends Command {
 	protected function generateMigration(string $migrationName, Table $table, bool $containsRecords, bool $binary): string {
 		$operations = $this->generateOperations($table, $containsRecords, $binary);
 
-		$migration = <<<TXT
+		return <<<TXT
 <?php
 use Migrations\BaseMigration;
 
@@ -187,8 +187,6 @@ $operations
     }
 }
 TXT;
-
-		return $migration;
 	}
 
 	/**
@@ -219,7 +217,7 @@ $options
 TXT;
 		}
 
-		$operations = <<<TXT
+		return <<<TXT
         \$table = \$this->table('$tableName');
         \$table->addColumn('$field', '$type', [
 $options
@@ -227,8 +225,6 @@ $options
         \$table->addIndex(['$field'], ['unique' => true]);
         \$table->update();
 TXT;
-
-		return $operations;
 	}
 
 	/**
@@ -242,7 +238,7 @@ TXT;
 		$field = $exposeBehavior->getExposedKey();
 		$tableName = $table->getTable();
 
-		$operations = <<<TXT
+		return <<<TXT
         \$table = \$this->table('$tableName');
         \$table->changeColumn('$field', 'uuid', [
             'default' => null,
@@ -250,8 +246,6 @@ TXT;
         ]);
         \$table->update();
 TXT;
-
-		return $operations;
 	}
 
 	/**
