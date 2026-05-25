@@ -26,7 +26,7 @@ class ExposeController extends AppController {
 
 			$result = $this->reverseUuid($uuid);
 
-			$this->set(['result' => $result]);
+			$this->set(compact('result'));
 		}
 	}
 
