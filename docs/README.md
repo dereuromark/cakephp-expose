@@ -106,7 +106,7 @@ Then you would query now in your public actions based on this exposed field:
  *@return \Cake\Http\Response|null|void
  */
 public function view($uuid = null) {
-    $user = $this->Users->find('exposed', $uuid)->firstOrFail();
+    $user = $this->Users->find('exposed', uuid: $uuid)->firstOrFail();
 
     $this->set(compact('user'));
 }
