@@ -88,8 +88,8 @@ class ExposeBehavior extends Behavior {
 	 * legacy
 	 * ->find('exposed', ['uuid' => $uuid])
 	 *
-	 * new way
-	 * ->find('exposed', $uuid)
+	 * new way (typed finder, named argument)
+	 * ->find('exposed', uuid: $uuid)
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query
 	 * @param string $uuid
