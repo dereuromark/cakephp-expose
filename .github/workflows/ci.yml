@@ -6,6 +6,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  brick-math-v1:
+    name: Brick Math v1
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl
+          coverage: none
+
+      - name: Install Brick Math v1
+        run: |
+          composer remove --dev keiko/uuid-shortener ramsey/uuid --no-update
+          composer require --dev brick/math:^1.0 --no-progress --prefer-dist
+
+      - name: Run converter tests
+        run: vendor/bin/phpunit --filter '/::test(Encode|Decode|EncodeDecodeWithLeadingZero)$/' tests/TestCase/Converter/ShortTest.php
+
   testsuite:
     runs-on: ubuntu-22.04
     strategy:

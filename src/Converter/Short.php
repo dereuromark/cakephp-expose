@@ -3,7 +3,6 @@
 namespace Expose\Converter;
 
 use Brick\Math\BigInteger;
-use Brick\Math\RoundingMode;
 use RuntimeException;
 
 /**
@@ -74,9 +73,7 @@ class Short implements ConverterInterface {
 	protected function numToString(BigInteger $number): string {
 		$output = '';
 		while ($number->isGreaterThan(0)) {
-			$previousNumber = clone $number;
-			$number = $number->dividedBy($this->dictionaryLength, RoundingMode::DOWN);
-			$digit = $previousNumber->mod($this->dictionaryLength);
+			[$number, $digit] = $number->quotientAndRemainder($this->dictionaryLength);
 
 			$output .= $this->dictionary[(int)(string)$digit];
 		}
