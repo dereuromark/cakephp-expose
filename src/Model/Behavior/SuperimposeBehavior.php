@@ -20,6 +20,7 @@ use Expose\Converter\ConverterFactory;
 use Expose\Database\Type\ShortUuidType;
 use InvalidArgumentException;
 use RuntimeException;
+use Stringable;
 use WeakMap;
 
 /**
@@ -272,7 +273,11 @@ class SuperimposeBehavior extends Behavior {
 			return array_map($this->resolveComparisonValue(...), $value);
 		}
 
-		return is_string($value) ? $this->resolve($value) : $value;
+		if ($value instanceof ExpressionInterface || $value instanceof Query) {
+			return $value;
+		}
+
+		return is_string($value) || $value instanceof Stringable ? $this->resolve((string)$value) : $value;
 	}
 
 	/**

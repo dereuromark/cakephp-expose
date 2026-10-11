@@ -2,7 +2,9 @@
 
 namespace Expose\Test\TestCase\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use Stringable;
 use TestApp\Model\Behavior\LegacyExposeBehavior;
 use TestApp\Model\Behavior\LegacySuperimposeBehavior;
 
@@ -46,8 +48,40 @@ class ReleasedFinderContractTest extends TestCase {
 		$this->assertSame([$uuid], $behavior->resolved);
 		$this->assertGreaterThan(0, $behavior->calls);
 		$calls = $behavior->calls;
-		$this->assertSame($uuid, $behavior->findSuperimpose($users->find(), [])->firstOrFail()->id);
+		$this->assertSame($uuid, $behavior->findSuperimpose($users->find(superimpose: false), [])->firstOrFail()->id);
 		$this->assertGreaterThan($calls, $behavior->calls);
+		$result = $behavior->findSuperimpose($users->find(superimpose: false), [])->firstOrFail();
+		$this->assertSame(1, $result->_id);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testStringableUuidUsesReleasedResolver(): void {
+		$users = $this->fetchTable('Users');
+		$users->addBehavior('Expose.Superimpose');
+		$uuid = new class implements Stringable {
+			public function __toString(): string {
+				return 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+			}
+		};
+		$this->assertSame((string)$uuid, $users->find()->where(['Users.id' => $uuid])->firstOrFail()->id);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testReleasedArrayFinderDispatch(): void {
+		$duplicates = Configure::read('Error.allowDuplicateDeprecations');
+		Configure::write('Error.allowDuplicateDeprecations', true);
+		try {
+			$this->deprecated(function (): void {
+				$users = $this->fetchTable('Users');
+				$this->assertSame([1 => 'Foo Bar'], $users->find('exposedList', ['keyField' => 'id', 'valueField' => 'name'])->toArray());
+			});
+		} finally {
+			Configure::write('Error.allowDuplicateDeprecations', $duplicates);
+		}
 	}
 
 }
