@@ -1,6 +1,6 @@
 # Upgrading
 
-This branch supports CakePHP 5. Check [composer.json](https://github.com/dereuromark/cakephp-expose/blob/master/composer.json)
+This development branch prepares finder contracts for CakePHP 6. Its current dependency constraints still use CakePHP 5 for verification. Check [composer.json](https://github.com/dereuromark/cakephp-expose/blob/master/composer.json)
 for the package's current requirements.
 
 Use named finder arguments, such as `find('exposed', uuid: $uuid)` and
@@ -15,3 +15,9 @@ Superimposition supports UUID `IN` and `NOT IN` conditions without failing on un
 
 For CakePHP 6, review its release and migration notes when selecting a compatible plugin branch.
 The current branch does not promise CakePHP 6 compatibility.
+
+## Finder contracts prepared for CakePHP 6
+
+Update direct `findExposedList()` calls to named arguments such as `keyField: 'id'` and `valueField: 'title'`. The options-array method signature is removed. The default list key is the configured exposed field, including when `keyField` is null; pass `keyField: 'id'` to select internal primary keys.
+
+`findSuperimpose()` now takes only its query. Subclass finders must match the new signatures. The protected `resolve(string $uuid)` hook now declares `string|int` as its return type; add that declaration to existing overrides. Stringable UUID comparison values and SQL subqueries remain supported.
