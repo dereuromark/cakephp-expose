@@ -3,6 +3,7 @@
 namespace Expose\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use TestApp\Model\Entity\Post;
@@ -43,13 +44,32 @@ class SuperimposeBehaviorTest extends TestCase {
 		$this->assertSame(1, $users[0]->_id);
 	}
 
-	public function testIntegerPrimaryKeyCondition(): void {
+	public function testIntegerPrimaryKeyDoesNotBypassUuidLookup(): void {
 		$this->Users->addBehavior('Expose.Superimpose');
 
-		$user = $this->Users->get(1);
+		$this->expectException(RecordNotFoundException::class);
+		$this->Users->get(1);
+	}
 
-		$this->assertSame('eb25610d-7bfa-4e34-812c-ad72b100fb26', $user->id);
-		$this->assertSame(1, $user->_id);
+	public function testFloatPrimaryKeyDoesNotBypassUuidLookup(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->expectException(RecordNotFoundException::class);
+		$this->Users->get(1.0);
+	}
+
+	public function testUuidListIgnoresUnknownIdentifiers(): void {
+		$uuid = 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+		$unknown = '806d0969-95b3-433b-976f-774611fdacbb';
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$users = $this->Users->find()->where(['Users.id IN' => [$uuid, $unknown]])->all()->toList();
+
+		$this->assertCount(1, $users);
+		$this->assertSame($uuid, $users[0]->id);
+		$this->assertSame(0, $this->Users->find()->where(['Users.id IN' => [$unknown]])->count());
+		$this->assertSame(1, $this->Users->find()->where(['Users.id NOT IN' => [$unknown]])->count());
+		$this->assertSame(0, $this->Users->find()->where(['Users.id NOT IN' => [$uuid, $unknown]])->count());
 	}
 
 	public function testNullPrimaryKeyCondition(): void {

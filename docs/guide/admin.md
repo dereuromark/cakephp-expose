@@ -1,7 +1,8 @@
 # Administration
 
 The optional reverse-UUID page is available at `/admin/expose` when plugin routes are enabled.
-It accepts shortened identifiers, hexadecimal UUIDs, and uploaded 16-byte binary UUID files.
+It accepts shortened identifiers, 34-character hexadecimal values starting with `0x`, and uploaded 16-byte binary UUID files.
+A normal 36-character UUID already has its readable form and is not a reverse conversion input.
 The short-format strategy uses your configured converter and its optional dependency.
 
 The controller extends your application's `AppController`.

@@ -128,6 +128,29 @@ class AddExposedFieldCommandTest extends TestCase {
 		$this->assertOutputContains("'limit' => 16,");
 	}
 
+	public function testExistingNativeUuidKeepsItsStorageType(): void {
+		$column = $this->Users->getSchema()->getColumn('uuid');
+		$column['type'] = 'nativeuuid';
+		$column['null'] = true;
+		$this->Users->getSchema()->addColumn('uuid', $column);
+
+		$this->exec('expose add_field Users');
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+		$this->assertOutputContains("changeColumn('uuid', 'nativeuuid', [");
+	}
+
+	public function testVendorPluginGetsAValidDefaultMigrationName(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['field' => 'public_uuid']);
+		TableRegistry::getTableLocator()->set('My/PluginName.Users', $this->Users);
+
+		$this->exec('expose add_field My/PluginName.Users -d', ['yes']);
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+		$this->assertOutputContains('class MigrationExposedFieldMyPluginNameUsers extends BaseMigration');
+	}
+
 	public function testInvalidMigrationNameIsRejected(): void {
 		$this->Users->removeBehavior('Expose');
 		$this->Users->addBehavior('Expose.Expose', ['field' => 'public_uuid']);

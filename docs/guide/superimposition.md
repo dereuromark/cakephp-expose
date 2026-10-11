@@ -19,7 +19,7 @@ An empty `actions` list applies it to every action, so use an explicit list for 
 
 Returned records expose the UUID in `id`; the original primary key is retained in `_id`.
 String primary-key query values are resolved through the exposed UUID field.
-Integer comparison values remain internal primary keys, and arrays of UUIDs can be used with `IN`.
+Integer lookup values are also resolved as exposed identifiers, so converting a route argument to an integer does not enable internal-ID lookup. UUID lists use the exposed field directly with `IN` or `NOT IN`; unknown identifiers do not abort the whole query.
 
 With `autoFinder` enabled, the behavior adds the `superimpose` finder to queries.
 Set `autoFinder` to `false` to apply `find('superimpose')` manually.

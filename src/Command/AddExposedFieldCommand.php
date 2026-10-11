@@ -91,7 +91,7 @@ class AddExposedFieldCommand extends Command {
 		$containsRecords = $io->askChoice('Does this table already contain records? If so, we need to create a nullable field.', ['no', 'yes'], 'yes') === 'yes';
 
 		[$prefix, $name] = pluginSplit($model);
-		$migrationName = $args->getArgument('migration') ?: 'MigrationExposedField' . $prefix . $name;
+		$migrationName = $args->getArgument('migration') ?: 'MigrationExposedField' . str_replace('/', '', (string)$prefix) . $name;
 		if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/D', $migrationName)) {
 			$io->abort('Migration name must be a valid PHP class name.');
 		}
@@ -243,15 +243,14 @@ TXT;
 		$field = $exposeBehavior->getExposedKey();
 		$tableName = $table->getTable();
 		$columnType = $table->getSchema()->getColumnType($field);
-		$binary = $columnType === 'binary' || ($columnType !== null && TypeFactory::build($columnType) instanceof BinaryUuidType);
-		$type = $binary ? 'binary' : 'uuid';
+		$binary = $columnType === 'binary' || ($columnType !== null && $columnType !== 'nativeuuid' && TypeFactory::build($columnType) instanceof BinaryUuidType);
+		$type = $binary ? 'binary' : ($columnType === 'nativeuuid' ? 'nativeuuid' : 'uuid');
 		$limit = $binary ? "            'limit' => 16,\n" : '';
 
 		return <<<TXT
         \$table = \$this->table('$tableName');
         \$table->changeColumn('$field', '$type', [
-{$limit}
-            'default' => null,
+{$limit}            'default' => null,
             'null' => false, // Now that all records are populated, we can force this to be not null
         ]);
         \$table->update();

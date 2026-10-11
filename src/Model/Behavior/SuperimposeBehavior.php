@@ -4,6 +4,8 @@ namespace Expose\Model\Behavior;
 
 use ArrayObject;
 use Cake\Collection\CollectionInterface;
+use Cake\Database\Expression\ComparisonExpression;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query\SelectQuery;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -91,22 +93,26 @@ class SuperimposeBehavior extends Behavior {
 			return;
 		}
 
-		$query->traverseExpressions(function (object $expression) {
-			/** @var string $pk */
-			$pk = $this->_table->getPrimaryKey();
-			if (
-				method_exists($expression, 'getField')
-				&& in_array($expression->getField(), [$pk, $this->_table->aliasField($pk)], true)
-			) {
-				/** @var \Cake\Database\Expression\ComparisonExpression $expression */
-				//$field = $this->_table->getExposedKey(); // This doesnt work yet, so we have to make an extra query
-				//$expression = new Comparison($field, $expression->getValue(), 'string');
-				$expression->setValue($this->resolve($expression->getValue()));
-
-				return $expression;
+		$query->traverseExpressions(function (object $expression): void {
+			if (!$expression instanceof QueryExpression) {
+				return;
 			}
+			$expression->iterateParts(function (mixed $part): mixed {
+				/** @var string $pk */
+				$pk = $this->_table->getPrimaryKey();
+				if (!$part instanceof ComparisonExpression || !in_array($part->getField(), [$pk, $this->_table->aliasField($pk)], true)) {
+					return $part;
+				}
+				if (is_array($part->getValue()) && in_array($part->getOperator(), ['IN', 'NOT IN'], true)) {
+					$field = $this->_table->getBehavior('Expose')->getExposedKey();
+					$type = $this->_table->getSchema()->getColumnType($field);
 
-			return $expression;
+					return new ComparisonExpression($this->_table->aliasField($field), $part->getValue(), $type . '[]', $part->getOperator());
+				}
+				$part->setValue($this->resolve($part->getValue()));
+
+				return $part;
+			});
 		});
 
 		if (!$this->getConfig('autoFinder')) {
@@ -188,6 +194,9 @@ class SuperimposeBehavior extends Behavior {
 	protected function resolve(mixed $uuid): mixed {
 		if (is_array($uuid)) {
 			return array_map($this->resolve(...), $uuid);
+		}
+		if (is_scalar($uuid)) {
+			$uuid = (string)$uuid;
 		}
 		if (!is_string($uuid)) {
 			return $uuid;
