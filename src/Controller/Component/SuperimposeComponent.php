@@ -15,7 +15,7 @@ class SuperimposeComponent extends Component {
 	/**
 	 * @var array<string, mixed>
 	 */
-	protected array $_defaultConfig = [
+	protected array $defaultConfig = [
 		'actions' => [], // Array of action names (strings) to apply superimposition to
 	];
 
@@ -26,7 +26,7 @@ class SuperimposeComponent extends Component {
 	 */
 	public function beforeFilter(EventInterface $event): void {
 		$currentAction = $this->getController()->getRequest()->getParam('action');
-		$actions = $this->_config['actions'];
+		$actions = $this->config['actions'];
 
 		if ($actions && !in_array($currentAction, $actions, true)) {
 			return;

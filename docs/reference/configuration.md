@@ -24,7 +24,7 @@ Use a single-column primary key for the documented workflows.
 `beforeMarshal` generates a value when data is marshalled, including when existing records are patched.
 That mode can replace an existing identifier, so keep the default when public URLs must remain stable.
 
-Protect both the primary key and exposed field with your entity's `_accessible` rules.
+Protect both the primary key and exposed field with your entity's `$patchable` rules.
 The plugin does not make existing entities immune to explicit field changes.
 
 ## Superimpose behavior

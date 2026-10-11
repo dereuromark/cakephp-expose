@@ -27,14 +27,14 @@ use WeakMap;
  * Adds superimpose functionality on top of Expose behavior.
  * This should only be added at runtime to the specific actions where needed through SuperimposeComponent.
  *
- * @property \Cake\ORM\Table<array{Expose: \Expose\Model\Behavior\ExposeBehavior}> $_table
+ * @property \Cake\ORM\Table<array{Expose: \Expose\Model\Behavior\ExposeBehavior}> $table
  */
 class SuperimposeBehavior extends Behavior {
 
 	/**
 	 * @var array<string, mixed>
 	 */
-	protected array $_defaultConfig = [
+	protected array $defaultConfig = [
 		'autoFinder' => true,
 		'recursive' => true,
 		'primaryKeyField' => '_id',
@@ -57,8 +57,8 @@ class SuperimposeBehavior extends Behavior {
 		}
 
 		/** @var string $pk */
-		$pk = $this->_table->getPrimaryKey();
-		$field = $this->_table->getBehavior('Expose')->getExposedKey();
+		$pk = $this->table()->getPrimaryKey();
+		$field = $this->exposeBehavior()->getExposedKey();
 		$alias = $this->getConfig('primaryKeyField');
 		if (isset($entity->$field) && isset($entity->$alias)) {
 			$entity->$pk = $entity->$alias;
@@ -76,8 +76,8 @@ class SuperimposeBehavior extends Behavior {
 	 */
 	public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
 		/** @var string $pk */
-		$pk = $this->_table->getPrimaryKey();
-		$field = $this->_table->getBehavior('Expose')->getExposedKey();
+		$pk = $this->table()->getPrimaryKey();
+		$field = $this->exposeBehavior()->getExposedKey();
 
 		if (!$options['_primary'] && !$this->getConfig('recursive')) {
 			return;
@@ -122,7 +122,7 @@ class SuperimposeBehavior extends Behavior {
 			return;
 		}
 
-		foreach ($this->_table->associations() as $association) {
+		foreach ($this->table()->associations() as $association) {
 			/** @var \Cake\ORM\Association $association */
 			if ($association->getTarget()->hasBehavior('Expose') && $association->getFinder() === 'all') {
 				if (!$association->hasBehavior('Superimpose')) {
@@ -155,21 +155,21 @@ class SuperimposeBehavior extends Behavior {
 				return $part;
 			}
 			/** @var string $pk */
-			$pk = $this->_table->getPrimaryKey();
-			if (!$part instanceof ComparisonExpression || !in_array($part->getField(), [$pk, $this->_table->aliasField($pk)], true)) {
+			$pk = $this->table()->getPrimaryKey();
+			if (!$part instanceof ComparisonExpression || !in_array($part->getField(), [$pk, $this->table()->aliasField($pk)], true)) {
 				return $part;
 			}
 			if (is_array($part->getValue()) && in_array($part->getOperator(), ['IN', 'NOT IN'], true)) {
-				$field = $this->_table->getBehavior('Expose')->getExposedKey();
-				$type = $this->_table->getSchema()->getColumnType($field);
+				$field = $this->exposeBehavior()->getExposedKey();
+				$type = $this->table()->getSchema()->getColumnType($field);
 				$integers = array_values(array_filter($part->getValue(), is_int(...)));
 				$values = array_values(array_filter($part->getValue(), $this->isValidUuid(...)));
 				if ($integers) {
 					$operator = $part->getOperator();
 					$conditions = new QueryExpression([], [], $operator === 'IN' ? 'OR' : 'AND');
-					$conditions->add(new ComparisonExpression($this->_table->aliasField($pk), $integers, 'integer[]', $operator));
+					$conditions->add(new ComparisonExpression($this->table()->aliasField($pk), $integers, 'integer[]', $operator));
 					if ($values) {
-						$conditions->add(new ComparisonExpression($this->_table->aliasField($field), $values, $type . '[]', $operator));
+						$conditions->add(new ComparisonExpression($this->table()->aliasField($field), $values, $type . '[]', $operator));
 					}
 
 					return $conditions;
@@ -178,7 +178,7 @@ class SuperimposeBehavior extends Behavior {
 					return new QueryExpression($part->getOperator() === 'IN' ? '1 = 0' : '1 = 1');
 				}
 
-				return new ComparisonExpression($this->_table->aliasField($field), $values, $type . '[]', $part->getOperator());
+				return new ComparisonExpression($this->table()->aliasField($field), $values, $type . '[]', $part->getOperator());
 			}
 			$part->setValue($this->resolveComparisonValue($part->getValue()));
 
@@ -190,8 +190,8 @@ class SuperimposeBehavior extends Behavior {
 		if (!is_string($value)) {
 			return false;
 		}
-		$field = $this->_table->getBehavior('Expose')->getExposedKey();
-		$columnType = $this->_table->getSchema()->getColumnType($field);
+		$field = $this->exposeBehavior()->getExposedKey();
+		$columnType = $this->table()->getSchema()->getColumnType($field);
 		if ($columnType === null) {
 			throw new RuntimeException('Exposed field is missing from the table schema: ' . $field);
 		}
@@ -223,8 +223,8 @@ class SuperimposeBehavior extends Behavior {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				/** @var string $pk */
-				$pk = $this->_table->getPrimaryKey();
-				$field = $this->_table->getBehavior('Expose')->getExposedKey();
+				$pk = $this->table()->getPrimaryKey();
+				$field = $this->exposeBehavior()->getExposedKey();
 				if (!isset($row[$field])) {
 					return $row;
 				}
@@ -254,8 +254,8 @@ class SuperimposeBehavior extends Behavior {
 	 */
 	public function beforeDelete(EventInterface $event, EntityInterface $entity): void {
 		/** @var string $pk */
-		$pk = $this->_table->getPrimaryKey();
-		$field = $this->_table->getBehavior('Expose')->getExposedKey();
+		$pk = $this->table()->getPrimaryKey();
+		$field = $this->exposeBehavior()->getExposedKey();
 		$alias = $this->getConfig('primaryKeyField');
 		if (isset($entity->$field) && isset($entity->$alias)) {
 			$entity->$pk = $entity->$alias;
@@ -288,15 +288,27 @@ class SuperimposeBehavior extends Behavior {
 			throw new RecordNotFoundException('Invalid exposed identifier.');
 		}
 
-		$primaryKey = $this->_table->getPrimaryKey();
+		$primaryKey = $this->table()->getPrimaryKey();
 
-		$record = $this->_table
+		$record = $this->table()
 			->find()
-			->where([$this->_table->getBehavior('Expose')->getExposedKey() => $uuid])
+			->where([$this->exposeBehavior()->getExposedKey() => $uuid])
 			->select([$primaryKey])
 			->firstOrFail();
 
 		return $record->$primaryKey;
+	}
+
+	/**
+	 * @return \Expose\Model\Behavior\ExposeBehavior
+	 */
+	private function exposeBehavior(): ExposeBehavior {
+		$behavior = $this->table()->getBehavior('Expose');
+		if (!$behavior instanceof ExposeBehavior) {
+			throw new RuntimeException('The Expose behavior must extend ExposeBehavior.');
+		}
+
+		return $behavior;
 	}
 
 }

@@ -63,7 +63,7 @@ use Cake\ORM\Entity;
 
 class Article extends Entity
 {
-    protected array $_accessible = [
+    protected array $patchable = [
         'title' => true,
         'id' => false,
         'uuid' => false,
