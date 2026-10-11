@@ -6,6 +6,8 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Database\Type\BinaryUuidType;
+use Cake\Database\TypeFactory;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use DirectoryIterator;
@@ -90,6 +92,9 @@ class AddExposedFieldCommand extends Command {
 
 		[$prefix, $name] = pluginSplit($model);
 		$migrationName = $args->getArgument('migration') ?: 'MigrationExposedField' . $prefix . $name;
+		if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/D', $migrationName)) {
+			$io->abort('Migration name must be a valid PHP class name.');
+		}
 		$migrationFilePath = $this->migrationPath . date('YmdHis') . '_' . $migrationName . '.php';
 
 		$io->out('Migration to be created: ' . $migrationName);
@@ -106,14 +111,14 @@ class AddExposedFieldCommand extends Command {
 		$binary = (bool)$args->getOption('binary');
 		$migrationContent = $this->generateMigration($migrationName, $table, $containsRecords, $binary);
 		if (!$args->getOption('dry-run')) {
-			if ($this->migrationExists($migrationName, $this->migrationPath)) {
-				$io->abort('File already exists: ' . $migrationFilePath);
-			}
 			if (!is_dir($this->migrationPath)) {
 				$io->abort('Migration path does not exist: ' . $this->migrationPath);
 			}
 			if (!is_writable($this->migrationPath)) {
 				$io->abort('Migration path is not writable: ' . $this->migrationPath);
+			}
+			if ($this->migrationExists($migrationName, $this->migrationPath)) {
+				$io->abort('File already exists: ' . $migrationFilePath);
 			}
 			$bytesWritten = @file_put_contents($migrationFilePath, $migrationContent);
 			if ($bytesWritten === false) {
@@ -137,14 +142,14 @@ class AddExposedFieldCommand extends Command {
 	 */
 	protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
 		$parser = parent::buildOptionParser($parser);
-		$parser->setDescription('Initialize the exposed field for all existing records. This requires the `Expose.Expose` behavior to be attached to this table class as well as the migration for the field to be added being executed.');
+		$parser->setDescription('Generate a migration for the exposed UUID field. Attach the `Expose.Expose` behavior to the table first.');
 
 		$parser->addArgument('model', [
 			'required' => true,
 			'help' => 'Model name (e.g. `Photos` or `My/PluginName.Attachments`)',
 		]);
 		$parser->addArgument('migration', [
-			'help' => 'Name of Migration to generate (defaults to `MigrationExposedField{FieldName}`)',
+			'help' => 'Name of Migration to generate (defaults to `MigrationExposedField{PluginName}{ModelName}`)',
 			'required' => false,
 		]);
 		$parser->addOption('binary', [
@@ -237,10 +242,15 @@ TXT;
 		$exposeBehavior = $table->getBehavior('Expose');
 		$field = $exposeBehavior->getExposedKey();
 		$tableName = $table->getTable();
+		$columnType = $table->getSchema()->getColumnType($field);
+		$binary = $columnType === 'binary' || ($columnType !== null && TypeFactory::build($columnType) instanceof BinaryUuidType);
+		$type = $binary ? 'binary' : 'uuid';
+		$limit = $binary ? "            'limit' => 16,\n" : '';
 
 		return <<<TXT
         \$table = \$this->table('$tableName');
-        \$table->changeColumn('$field', 'uuid', [
+        \$table->changeColumn('$field', '$type', [
+{$limit}
             'default' => null,
             'null' => false, // Now that all records are populated, we can force this to be not null
         ]);

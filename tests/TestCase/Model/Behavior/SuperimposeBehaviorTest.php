@@ -32,6 +32,32 @@ class SuperimposeBehaviorTest extends TestCase {
 		$this->Users = $this->getTableLocator()->get('Users');
 	}
 
+	public function testUuidListCondition(): void {
+		$uuid = 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$users = $this->Users->find()->where(['Users.id IN' => [$uuid]])->all()->toList();
+
+		$this->assertCount(1, $users);
+		$this->assertSame($uuid, $users[0]->id);
+		$this->assertSame(1, $users[0]->_id);
+	}
+
+	public function testIntegerPrimaryKeyCondition(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$user = $this->Users->get(1);
+
+		$this->assertSame('eb25610d-7bfa-4e34-812c-ad72b100fb26', $user->id);
+		$this->assertSame(1, $user->_id);
+	}
+
+	public function testNullPrimaryKeyCondition(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertSame(1, $this->Users->find()->where(['Users.id IS NOT' => null])->count());
+	}
+
 	/**
 	 * @return void
 	 */

@@ -134,10 +134,9 @@ class SuperimposeBehavior extends Behavior {
 	 * Custom finder that superimposes the primary key with the UUID in returned result set.
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query Query.
-	 * @param array<string, mixed> $options Options.
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {
+	public function findSuperimpose(SelectQuery $query): SelectQuery {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				/** @var string $pk */
@@ -182,11 +181,18 @@ class SuperimposeBehavior extends Behavior {
 	}
 
 	/**
-	 * @param string $uuid UUID to resolve
+	 * @param mixed $uuid UUID or comparison value to resolve
 	 *
-	 * @return string|int
+	 * @return mixed
 	 */
-	protected function resolve(string $uuid) {
+	protected function resolve(mixed $uuid): mixed {
+		if (is_array($uuid)) {
+			return array_map($this->resolve(...), $uuid);
+		}
+		if (!is_string($uuid)) {
+			return $uuid;
+		}
+
 		$primaryKey = $this->_table->getPrimaryKey();
 
 		$record = $this->_table

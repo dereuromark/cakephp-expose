@@ -4,6 +4,7 @@ namespace Expose\Controller\Admin;
 
 use App\Controller\AppController;
 use Expose\Reverser\Reverser;
+use Psr\Http\Message\UploadedFileInterface;
 
 class ExposeController extends AppController {
 
@@ -15,9 +16,8 @@ class ExposeController extends AppController {
 			$result = null;
 
 			$uuid = (string)$this->request->getData('uuid');
-			/** @var \Laminas\Diactoros\UploadedFile|null $file */
 			$file = $this->request->getData('file');
-			if ($file && !$file->getError()) {
+			if ($file instanceof UploadedFileInterface && $file->getError() === UPLOAD_ERR_OK) {
 				$content = $file->getStream()->getContents();
 				if (strlen((string)$content) === 16) {
 					$uuid = $content;
