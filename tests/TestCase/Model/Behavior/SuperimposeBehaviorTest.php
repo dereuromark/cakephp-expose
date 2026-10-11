@@ -83,6 +83,7 @@ class SuperimposeBehaviorTest extends TestCase {
 		$subquery = $posts->find()->select(['user_id'])->where(['id IN' => [1]]);
 
 		$this->assertSame(1, $this->Users->find()->where(['Users.id IN' => $subquery])->count());
+		$this->assertSame(0, $this->Users->find()->where(['NOT' => ['Users.id IN' => $subquery]])->count());
 	}
 
 	public function testInvalidUuidListsDoNotReachTheDatabase(): void {

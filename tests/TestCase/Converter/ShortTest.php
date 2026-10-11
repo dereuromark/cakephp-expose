@@ -5,6 +5,7 @@ namespace Expose\Test\TestCase\Converter;
 use Cake\TestSuite\TestCase;
 use Expose\Converter\Short;
 use Ramsey\Uuid\Uuid;
+use RuntimeException;
 
 class ShortTest extends TestCase {
 
@@ -77,6 +78,12 @@ class ShortTest extends TestCase {
 		$encoded = $this->converter->encode($uuid);
 		$decoded = $this->converter->decode($encoded);
 		$this->assertSame($uuid, $decoded);
+	}
+
+	public function testOverflowingShortIdentifierIsRejected(): void {
+		$this->expectException(RuntimeException::class);
+
+		$this->converter->decode(str_repeat('z', 30));
 	}
 
 }
