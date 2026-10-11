@@ -75,16 +75,4 @@ class TypedFinderContractTest extends TestCase {
 		$this->assertSame((string)$uuid, $users->find()->where(['Users.id' => $uuid])->firstOrFail()->id);
 	}
 
-	/**
-	 * @return void
-	 */
-	public function testCake5VerificationArrayFinderDispatch(): void {
-		$this->withErrorReporting(E_ALL, function (): void {
-			$this->deprecated(function (): void {
-				$users = $this->fetchTable('Users');
-				$this->assertSame([1 => 'Foo Bar'], $users->find('exposedList', ['keyField' => 'id', 'valueField' => 'name'])->toArray());
-			});
-		});
-	}
-
 }

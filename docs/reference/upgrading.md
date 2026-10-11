@@ -1,6 +1,6 @@
 # Upgrading
 
-This development branch prepares finder contracts for CakePHP 6. Its current dependency constraints still use CakePHP 5 for verification. Check [composer.json](https://github.com/dereuromark/cakephp-expose/blob/cake6/composer.json)
+This development branch targets CakePHP 6 and PHP 8.5. Check [composer.json](https://github.com/dereuromark/cakephp-expose/blob/cake6/composer.json)
 for the package's current requirements.
 
 Use named finder arguments, such as `find('exposed', uuid: $uuid)` and
@@ -13,11 +13,16 @@ The non-nullable migration helper preserves an existing binary UUID field rather
 Custom population conditions only select missing identifiers; populated rows are preserved.
 Superimposition supports UUID `IN` and `NOT IN` conditions without failing on unknown UUIDs. Integer internal keys remain available for ORM existence rules; public actions should accept UUID strings.
 
-For CakePHP 6, review its release and migration notes when selecting a compatible plugin branch.
-The current branch does not promise CakePHP 6 compatibility.
+CakePHP 6 is still a development dependency. Review its migration notes before upgrading an application.
 
-## Finder contracts prepared for CakePHP 6
+## CakePHP 6 finder contracts
 
 Update direct `findExposedList()` calls to named arguments such as `keyField: 'id'` and `valueField: 'title'`. The options-array method signature is removed. The default list key is the configured exposed field, including when `keyField` is null; pass `keyField: 'id'` to select internal primary keys. Pass list options directly to the finder; query-level `keyField` options are no longer inherited.
 
 `findSuperimpose()` now takes only its query. Subclass finders must match the new signatures. The protected `resolve(string $uuid)` hook now declares `string|int` as its return type; add that declaration to existing overrides. Stringable UUID values remain supported in scalar equality comparisons. SQL subqueries remain supported.
+
+## Framework changes
+
+Custom behavior and component configuration defaults now use `$defaultConfig`. Entity mass-assignment rules use `$patchable`, and marshalling options use `patchableFields`. The behavior still permits its generated UUID when configured for `beforeMarshal`.
+
+Commands implement parameterless `execute()` and use the command's argument and console services. Existing `expose add_field` and `expose populate_field` command options remain available.

@@ -1,9 +1,9 @@
 # CakePHP Expose plugin
 
-[![CI](https://github.com/dereuromark/cakephp-expose/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/dereuromark/cakephp-expose/actions/workflows/ci.yml?query=branch%3Amaster)
+[![CI](https://github.com/dereuromark/cakephp-expose/actions/workflows/ci.yml/badge.svg?branch=cake6)](https://github.com/dereuromark/cakephp-expose/actions/workflows/ci.yml?query=branch%3Acake6)
 [![Codecov](https://img.shields.io/codecov/c/github/dereuromark/cakephp-expose/master.svg)](https://codecov.io/gh/dereuromark/cakephp-expose)
 [![Latest Stable Version](https://poser.pugx.org/dereuromark/cakephp-expose/v/stable.svg)](https://packagist.org/packages/dereuromark/cakephp-expose)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.2-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.5-8892BF.svg)](https://php.net/)
 [![License](https://poser.pugx.org/dereuromark/cakephp-expose/license.svg)](LICENSE)
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-expose/d/total.svg)](https://packagist.org/packages/dereuromark/cakephp-expose)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-purple.svg?style=flat-square)](https://github.com/php-fig-rectified/fig-rectified-standards)
@@ -20,6 +20,8 @@ Read the [documentation website](https://dereuromark.github.io/cakephp-expose/):
 - [Choosing identifiers](https://dereuromark.github.io/cakephp-expose/guide/motivation)
 
 Package requirements are maintained in [composer.json](composer.json).
+This development branch targets CakePHP 6 and PHP 8.5.
+
 For older CakePHP branches, see the [version map](https://github.com/dereuromark/cakephp-expose/wiki#cakephp-version-map).
 
 ## Example

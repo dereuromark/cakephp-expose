@@ -30,7 +30,7 @@ class ExposeBehavior extends Behavior {
 	 *
 	 * @var array<string, mixed>
 	 */
-	protected array $_defaultConfig = [
+	protected array $defaultConfig = [
 		'field' => 'uuid',
 		'on' => 'beforeSave',
 		'implementedFinders' => [
@@ -71,7 +71,7 @@ class ExposeBehavior extends Behavior {
 		return $query->find(
 			'list',
 			keyField: $keyField ?? $this->getConfig('field'),
-			valueField: $valueField ?? $this->_table->getDisplayField(),
+			valueField: $valueField ?? $this->table()->getDisplayField(),
 			groupField: $groupField,
 			valueSeparator: $valueSeparator,
 		);
@@ -117,7 +117,7 @@ class ExposeBehavior extends Behavior {
 	 * This is only allowed/possible for (mass)creating or updating records.
 	 * It will overwrite all fields! Careful with using this callback as it does not separate between create and update.
 	 *
-	 * This callback will auto-add the exposed ID field into the fields whitelist as well as accessibleFields.
+	 * This callback will auto-add the exposed ID field into the fields whitelist as well as patchableFields.
 	 *
 	 * @param \Cake\Event\EventInterface $event
 	 * @param \ArrayObject $data
@@ -125,7 +125,7 @@ class ExposeBehavior extends Behavior {
 	 * @return void
 	 */
 	public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void {
-		if ($this->_config['on'] !== 'beforeMarshal') {
+		if ($this->config['on'] !== 'beforeMarshal') {
 			return;
 		}
 
@@ -136,10 +136,10 @@ class ExposeBehavior extends Behavior {
 			$options['fields'][] = $field;
 		}
 
-		if (!isset($options['accessibleFields'])) {
-			$options['accessibleFields'] = [];
+		if (!isset($options['patchableFields'])) {
+			$options['patchableFields'] = [];
 		}
-		$options['accessibleFields'][$field] = true;
+		$options['patchableFields'][$field] = true;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class ExposeBehavior extends Behavior {
 	 * @return void
 	 */
 	public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void {
-		if ($this->_config['on'] !== 'beforeSave') {
+		if ($this->config['on'] !== 'beforeSave') {
 			return;
 		}
 
@@ -175,12 +175,12 @@ class ExposeBehavior extends Behavior {
 	 */
 	public function initExposedField(array $params = []): int {
 		$field = $this->getConfig('field');
-		if (!$this->_table->hasField($field)) {
+		if (!$this->table()->hasField($field)) {
 			throw new RuntimeException('Table does not have exposed field `' . $field . '`');
 		}
 
 		/** @var string $primaryKey */
-		$primaryKey = $this->_table->getPrimaryKey();
+		$primaryKey = $this->table()->getPrimaryKey();
 		$defaults = [
 			'limit' => 1000,
 			'conditions' => [$field . ' IS' => null],
@@ -190,12 +190,12 @@ class ExposeBehavior extends Behavior {
 
 		$count = 0;
 
-		while (($records = $this->_table->find()->applyOptions($params)->where([$this->_table->aliasField($field) . ' IS' => null])->toArray())) {
+		while (($records = $this->table()->find()->applyOptions($params)->where([$this->table()->aliasField($field) . ' IS' => null])->toArray())) {
 			/** @var \Cake\ORM\Entity $record */
 			foreach ($records as $record) {
 				$uuid = $this->generateExposedField($field);
 
-				$this->_table->updateAll([$field => $uuid], [$primaryKey => $record->get($primaryKey)]);
+				$this->table()->updateAll([$field => $uuid], [$primaryKey => $record->get($primaryKey)]);
 				$count++;
 			}
 		}
@@ -209,9 +209,9 @@ class ExposeBehavior extends Behavior {
 	 * @return string
 	 */
 	protected function generateExposedField(string $field): string {
-		$fieldType = $this->_table->getSchema()->getColumnType($field);
+		$fieldType = $this->table()->getSchema()->getColumnType($field);
 		if (!$fieldType) {
-			$schema = $this->_table->getSchema()->getColumn($field);
+			$schema = $this->table()->getSchema()->getColumn($field);
 
 			throw new RuntimeException('Cannot determine column type of field `' . $field . '`. Found type: ' . ($schema['type'] ?? 'unknown'));
 		}

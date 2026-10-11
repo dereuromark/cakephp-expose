@@ -29,19 +29,19 @@
 		"source": "https://github.com/dereuromark/cakephp-expose/"
 	},
 	"require": {
-		"php": ">=8.2",
-		"cakephp/cakephp": "^5.1.1"
+		"php": ">=8.5",
+		"cakephp/cakephp": "^6.0@dev"
 	},
 	"require-dev": {
-		"dereuromark/cakephp-i18n-lint": "^0.1.1",
+		"dereuromark/cakephp-i18n-lint": "dev-cake6",
 		"ext-bcmath": "*",
 		"brick/math": "^0.13.0 || ^0.14.0 || ^1.0",
 		"fig-r/psr2r-sniffer": "dev-master",
 		"keiko/uuid-shortener": "^1.2.0",
-		"phpunit/phpunit": "^11.5 || ^12.1 || ^13.0",
+		"phpunit/phpunit": "^13.0",
 		"ramsey/uuid": "^3.9 || ^4.7"
 	},
-	"minimum-stability": "stable",
+	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {

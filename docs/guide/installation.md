@@ -1,19 +1,19 @@
 # Installation
 
-Install the plugin in your CakePHP application:
+This development branch targets CakePHP 6 and PHP 8.5. Install it in a CakePHP 6 application:
 
 ```sh
-composer require dereuromark/cakephp-expose
+composer require dereuromark/cakephp-expose:dev-cake6
 bin/cake plugin load Expose
 ```
 
-The current package requirements are in [composer.json](https://github.com/dereuromark/cakephp-expose/blob/master/composer.json).
+The current package requirements are in [composer.json](https://github.com/dereuromark/cakephp-expose/blob/cake6/composer.json).
 For older CakePHP branches, see the [version map](https://github.com/dereuromark/cakephp-expose/wiki#cakephp-version-map).
 
 The schema examples use CakePHP Migrations. If your application does not already have it:
 
 ```sh
-composer require cakephp/migrations
+composer require cakephp/migrations:dev-fix/6.x-cakephp-compatibility
 bin/cake plugin load Migrations
 ```
 
