@@ -44,18 +44,34 @@ class SuperimposeBehaviorTest extends TestCase {
 		$this->assertSame(1, $users[0]->_id);
 	}
 
-	public function testIntegerPrimaryKeyDoesNotBypassUuidLookup(): void {
+	public function testInternalIntegerKeyRemainsAvailableToOrmRules(): void {
 		$this->Users->addBehavior('Expose.Superimpose');
 
-		$this->expectException(RecordNotFoundException::class);
-		$this->Users->get(1);
+		$this->assertTrue($this->Users->exists(['id' => 1]));
+		$this->assertSame(1, $this->Users->get(1)->_id);
 	}
 
-	public function testFloatPrimaryKeyDoesNotBypassUuidLookup(): void {
+	public function testNumericStringIsNotAnInternalKey(): void {
 		$this->Users->addBehavior('Expose.Superimpose');
 
 		$this->expectException(RecordNotFoundException::class);
-		$this->Users->get(1.0);
+		$this->Users->get('1');
+	}
+
+	public function testOtherTableSubqueryKeepsItsOwnPrimaryKey(): void {
+		$posts = $this->getTableLocator()->get('Posts');
+		$posts->saveOrFail($posts->newEntity(['user_id' => 1, 'content' => 'Example']));
+		$this->Users->addBehavior('Expose.Superimpose');
+		$subquery = $posts->find()->select(['user_id'])->where(['id IN' => [1]]);
+
+		$this->assertSame(1, $this->Users->find()->where(['Users.id IN' => $subquery])->count());
+	}
+
+	public function testInvalidUuidListsDoNotReachTheDatabase(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertSame(0, $this->Users->find()->where(['Users.id IN' => ['invalid', 1]])->count());
+		$this->assertSame(1, $this->Users->find()->where(['Users.id NOT IN' => ['invalid', 1]])->count());
 	}
 
 	public function testUuidListIgnoresUnknownIdentifiers(): void {

@@ -18,8 +18,10 @@ An empty `actions` list applies it to every action, so use an explicit list for 
 ## Read behavior
 
 Returned records expose the UUID in `id`; the original primary key is retained in `_id`.
-String primary-key query values are resolved through the exposed UUID field.
-Integer lookup values are also resolved as exposed identifiers, so converting a route argument to an integer does not enable internal-ID lookup. UUID lists use the exposed field directly with `IN` or `NOT IN`; unknown identifiers do not abort the whole query.
+String primary-key conditions in the main query's `where` and `having` clauses are resolved through the exposed UUID field. Nested queries keep their own table conditions.
+Integer lookup values remain internal primary keys so ORM existence rules can work. Keep public route arguments as UUID strings: casting them to integers enables internal-ID lookup. Apply authorization checks regardless of the identifier. UUID lists use the exposed field directly with `IN` or `NOT IN`; unknown identifiers do not abort the whole query.
+
+Use explicit exposed-field conditions for range comparisons or bulk operations rather than relying on primary-key rewriting.
 
 With `autoFinder` enabled, the behavior adds the `superimpose` finder to queries.
 Set `autoFinder` to `false` to apply `find('superimpose')` manually.

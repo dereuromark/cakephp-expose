@@ -11,7 +11,7 @@ before marshalling by default are incorrect. Protect `id` and `uuid` in your ent
 
 The non-nullable migration helper preserves an existing binary UUID field rather than changing it to a textual UUID.
 Custom population conditions only select missing identifiers; populated rows are preserved.
-Superimposition supports UUID `IN` and `NOT IN` conditions without failing on unknown UUIDs. Integer lookup values continue to require a matching exposed identifier.
+Superimposition supports UUID `IN` and `NOT IN` conditions without failing on unknown UUIDs. Integer internal keys remain available for ORM existence rules; public actions should accept UUID strings.
 
 For CakePHP 6, review its release and migration notes when selecting a compatible plugin branch.
 The current branch does not promise CakePHP 6 compatibility.
