@@ -26,6 +26,14 @@ class TypedFinderContractTest extends TestCase {
 	/**
 	 * @return void
 	 */
+	public function testNullListKeyUsesExposedField(): void {
+		$users = $this->fetchTable('Users');
+		$this->assertSame(['eb25610d-7bfa-4e34-812c-ad72b100fb26' => 'Foo Bar'], $users->find('exposedList', keyField: null, valueField: 'name')->toArray());
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testTypedOverrideReceivesNamedFinderOptions(): void {
 		$users = $this->fetchTable('Users');
 		$users->removeBehavior('Expose');
@@ -70,7 +78,7 @@ class TypedFinderContractTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testReleasedArrayFinderDispatch(): void {
+	public function testCake5VerificationArrayFinderDispatch(): void {
 		$this->withErrorReporting(E_ALL, function (): void {
 			$this->deprecated(function (): void {
 				$users = $this->fetchTable('Users');
