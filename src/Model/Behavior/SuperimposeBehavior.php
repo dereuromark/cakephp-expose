@@ -217,10 +217,9 @@ class SuperimposeBehavior extends Behavior {
 	 * Custom finder that superimposes the primary key with the UUID in returned result set.
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query Query.
-	 * @param array<string, mixed> $options Finder options
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {
+	public function findSuperimpose(SelectQuery $query): SelectQuery {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				/** @var string $pk */
@@ -284,7 +283,7 @@ class SuperimposeBehavior extends Behavior {
 	 * @param string $uuid UUID to resolve
 	 * @return string|int
 	 */
-	protected function resolve(string $uuid) {
+	protected function resolve(string $uuid): string|int {
 		if (!$this->isValidUuid($uuid)) {
 			throw new RecordNotFoundException('Invalid exposed identifier.');
 		}
