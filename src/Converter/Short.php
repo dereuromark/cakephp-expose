@@ -108,7 +108,7 @@ class Short implements ConverterInterface {
 	 */
 	protected function formatHex(string $hex): string {
 		$hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
-		$matched = preg_match('/([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{12})/', $hex, $matches);
+		$matched = preg_match('/^([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{12})$/D', $hex, $matches);
 		if ($matched === 0) {
 			throw new RuntimeException('Invalid hex string format: ' . $hex);
 		}

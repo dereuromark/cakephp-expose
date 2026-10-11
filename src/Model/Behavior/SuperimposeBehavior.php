@@ -6,6 +6,8 @@ use ArrayObject;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Expression\ComparisonExpression;
 use Cake\Database\Expression\QueryExpression;
+use Cake\Database\ExpressionInterface;
+use Cake\Database\Query;
 use Cake\Database\Query\SelectQuery;
 use Cake\Database\Type\BinaryUuidType;
 use Cake\Database\Type\UuidType;
@@ -14,11 +16,11 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
-use Cake\Validation\Validation;
 use Expose\Converter\ConverterFactory;
 use Expose\Database\Type\ShortUuidType;
 use InvalidArgumentException;
 use RuntimeException;
+use WeakMap;
 
 /**
  * Adds superimpose functionality on top of Expose behavior.
@@ -137,6 +139,20 @@ class SuperimposeBehavior extends Behavior {
 
 				return $part;
 			}
+			if ($part instanceof ExpressionInterface && !$part instanceof ComparisonExpression && !$part instanceof Query) {
+				$ignored = new WeakMap();
+				$part->traverse(function (mixed $nested) use ($ignored): void {
+					if ($nested instanceof Query) {
+						$nested->traverseExpressions(static function (ExpressionInterface $child) use ($ignored): void {
+							$ignored[$child] = true;
+						});
+					} elseif ($nested instanceof QueryExpression && !isset($ignored[$nested])) {
+						$this->rewriteConditions($nested);
+					}
+				});
+
+				return $part;
+			}
 			/** @var string $pk */
 			$pk = $this->_table->getPrimaryKey();
 			if (!$part instanceof ComparisonExpression || !in_array($part->getField(), [$pk, $this->_table->aliasField($pk)], true)) {
@@ -145,7 +161,18 @@ class SuperimposeBehavior extends Behavior {
 			if (is_array($part->getValue()) && in_array($part->getOperator(), ['IN', 'NOT IN'], true)) {
 				$field = $this->_table->getBehavior('Expose')->getExposedKey();
 				$type = $this->_table->getSchema()->getColumnType($field);
+				$integers = array_values(array_filter($part->getValue(), is_int(...)));
 				$values = array_values(array_filter($part->getValue(), $this->isValidUuid(...)));
+				if ($integers) {
+					$operator = $part->getOperator();
+					$conditions = new QueryExpression([], [], $operator === 'IN' ? 'OR' : 'AND');
+					$conditions->add(new ComparisonExpression($this->_table->aliasField($pk), $integers, 'integer[]', $operator));
+					if ($values) {
+						$conditions->add(new ComparisonExpression($this->_table->aliasField($field), $values, $type . '[]', $operator));
+					}
+
+					return $conditions;
+				}
 				if (!$values) {
 					return new QueryExpression($part->getOperator() === 'IN' ? '1 = 0' : '1 = 1');
 				}
@@ -170,7 +197,7 @@ class SuperimposeBehavior extends Behavior {
 		$type = TypeFactory::build($columnType);
 		if ($type instanceof ShortUuidType && strlen($value) !== 36) {
 			try {
-				return Validation::uuid(ConverterFactory::getConverter()->decode($value));
+				return (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iD', ConverterFactory::getConverter()->decode($value));
 			} catch (InvalidArgumentException | RuntimeException) {
 				return false;
 			}
@@ -179,7 +206,7 @@ class SuperimposeBehavior extends Behavior {
 			return ctype_xdigit($value);
 		}
 		if ($type instanceof UuidType || $type instanceof BinaryUuidType) {
-			return Validation::uuid($value);
+			return (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iD', $value);
 		}
 
 		return true;
