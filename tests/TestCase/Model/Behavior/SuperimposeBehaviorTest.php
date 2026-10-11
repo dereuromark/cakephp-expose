@@ -51,6 +51,24 @@ class SuperimposeBehaviorTest extends TestCase {
 		$this->assertSame(1, $this->Users->get(1)->_id);
 	}
 
+	public function testNegatedUuidConditions(): void {
+		$uuid = 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertSame(0, $this->Users->find()->where(['NOT' => ['Users.id' => $uuid]])->count());
+		$this->assertSame(0, $this->Users->find()->where(fn ($expression) => $expression->not(['Users.id' => $uuid]))->count());
+	}
+
+	public function testIntegerAndMixedListsKeepInternalKeys(): void {
+		$unknown = '806d0969-95b3-433b-976f-774611fdacbb';
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertTrue($this->Users->exists(['id IN' => [1]]));
+		$this->assertSame(0, $this->Users->find()->where(['Users.id NOT IN' => [1]])->count());
+		$this->assertSame(1, $this->Users->find()->where(['Users.id IN' => [1, $unknown]])->count());
+		$this->assertSame(0, $this->Users->find()->where(['Users.id NOT IN' => [1, $unknown]])->count());
+	}
+
 	public function testNumericStringIsNotAnInternalKey(): void {
 		$this->Users->addBehavior('Expose.Superimpose');
 
@@ -70,8 +88,8 @@ class SuperimposeBehaviorTest extends TestCase {
 	public function testInvalidUuidListsDoNotReachTheDatabase(): void {
 		$this->Users->addBehavior('Expose.Superimpose');
 
-		$this->assertSame(0, $this->Users->find()->where(['Users.id IN' => ['invalid', 1]])->count());
-		$this->assertSame(1, $this->Users->find()->where(['Users.id NOT IN' => ['invalid', 1]])->count());
+		$this->assertSame(0, $this->Users->find()->where(['Users.id IN' => ['invalid']])->count());
+		$this->assertSame(1, $this->Users->find()->where(['Users.id NOT IN' => ['invalid']])->count());
 	}
 
 	public function testUuidListIgnoresUnknownIdentifiers(): void {
