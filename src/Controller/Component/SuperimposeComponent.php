@@ -32,12 +32,12 @@ class SuperimposeComponent extends Component {
 			return;
 		}
 
-		$modelName = $this->getController()->fetchTable()->getAlias();
-		if (!$this->getController()->$modelName->hasBehavior('Expose')) {
+		$table = $this->getController()->fetchTable();
+		if (!$table->hasBehavior('Expose')) {
 			throw new RuntimeException('Expose.Expose behavior must be attached to a model that wants to do superimposition through Expose.Superimpose behavior.');
 		}
 
-		$this->getController()->$modelName->addBehavior('Superimpose', ['className' => 'Expose.Superimpose'] + $this->getConfig());
+		$table->addBehavior('Superimpose', ['className' => 'Expose.Superimpose'] + $this->getConfig());
 	}
 
 }

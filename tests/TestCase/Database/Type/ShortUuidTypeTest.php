@@ -27,7 +27,7 @@ class ShortUuidTypeTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->driver = $this->getMockBuilder(Driver::class)->getMock();
+		$this->driver = $this->createStub(Driver::class);
 		$this->type = new ShortUuidType();
 	}
 

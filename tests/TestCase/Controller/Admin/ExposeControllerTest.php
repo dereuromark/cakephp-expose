@@ -44,6 +44,18 @@ class ExposeControllerTest extends TestCase {
 		$this->assertResponseCode(200);
 	}
 
+	public function testInvalidUploadDataDoesNotCauseAnError(): void {
+		$this->disableErrorHandlerMiddleware();
+
+		$this->post(['prefix' => 'Admin', 'plugin' => 'Expose', 'controller' => 'Expose', 'action' => 'index'], [
+			'uuid' => 'JG2n2fdRHcdMSiyDq5em5n',
+			'file' => 'invalid upload',
+		]);
+
+		$this->assertResponseCode(200);
+		$this->assertResponseContains('f7ac0123-a938-4e80-840e-efe892051332');
+	}
+
 	/**
 	 * @return void
 	 */

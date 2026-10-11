@@ -10,6 +10,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Table;
+use Closure;
 use RuntimeException;
 
 /**
@@ -54,18 +55,26 @@ class ExposeBehavior extends Behavior {
 
 	/**
 	 * @param \Cake\ORM\Query\SelectQuery $query
-	 * @param array<string, mixed> $options
-	 *
+	 * @param \Closure|array|string|null $keyField
+	 * @param \Closure|array|string|null $valueField
+	 * @param \Closure|array|string|null $groupField
+	 * @param string $valueSeparator
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposedList(SelectQuery $query, array $options): SelectQuery {
-		$options += [
-			'keyField' => $this->getConfig('field'),
-			'valueField' => $this->_table->getDisplayField(),
-			'groupField' => null,
-		];
-
-		return $query->find('list', ...$options);
+	public function findExposedList(
+		SelectQuery $query,
+		Closure|array|string|null $keyField = null,
+		Closure|array|string|null $valueField = null,
+		Closure|array|string|null $groupField = null,
+		string $valueSeparator = ' ',
+	): SelectQuery {
+		return $query->find(
+			'list',
+			keyField: $keyField ?? $this->getConfig('field'),
+			valueField: $valueField ?? $this->_table->getDisplayField(),
+			groupField: $groupField,
+			valueSeparator: $valueSeparator,
+		);
 	}
 
 	/**
@@ -181,7 +190,7 @@ class ExposeBehavior extends Behavior {
 
 		$count = 0;
 
-		while (($records = $this->_table->find('all', ...$params)->toArray())) {
+		while (($records = $this->_table->find()->applyOptions($params)->where([$this->_table->aliasField($field) . ' IS' => null])->toArray())) {
 			/** @var \Cake\ORM\Entity $record */
 			foreach ($records as $record) {
 				$uuid = $this->generateExposedField($field);

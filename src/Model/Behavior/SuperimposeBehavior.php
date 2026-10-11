@@ -4,10 +4,21 @@ namespace Expose\Model\Behavior;
 
 use ArrayObject;
 use Cake\Collection\CollectionInterface;
+use Cake\Database\Expression\ComparisonExpression;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query\SelectQuery;
+use Cake\Database\Type\BinaryUuidType;
+use Cake\Database\Type\UuidType;
+use Cake\Database\TypeFactory;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
+use Cake\Validation\Validation;
+use Expose\Converter\ConverterFactory;
+use Expose\Database\Type\ShortUuidType;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Adds superimpose functionality on top of Expose behavior.
@@ -91,23 +102,12 @@ class SuperimposeBehavior extends Behavior {
 			return;
 		}
 
-		$query->traverseExpressions(function (object $expression) {
-			/** @var string $pk */
-			$pk = $this->_table->getPrimaryKey();
-			if (
-				method_exists($expression, 'getField')
-				&& in_array($expression->getField(), [$pk, $this->_table->aliasField($pk)], true)
-			) {
-				/** @var \Cake\Database\Expression\ComparisonExpression $expression */
-				//$field = $this->_table->getExposedKey(); // This doesnt work yet, so we have to make an extra query
-				//$expression = new Comparison($field, $expression->getValue(), 'string');
-				$expression->setValue($this->resolve($expression->getValue()));
-
-				return $expression;
+		foreach (['where', 'having'] as $clause) {
+			$expression = $query->clause($clause);
+			if ($expression instanceof QueryExpression) {
+				$this->rewriteConditions($expression);
 			}
-
-			return $expression;
-		});
+		}
 
 		if (!$this->getConfig('autoFinder')) {
 			return;
@@ -130,14 +130,68 @@ class SuperimposeBehavior extends Behavior {
 		}
 	}
 
+	protected function rewriteConditions(QueryExpression $expression): void {
+		$expression->iterateParts(function (mixed $part): mixed {
+			if ($part instanceof QueryExpression) {
+				$this->rewriteConditions($part);
+
+				return $part;
+			}
+			/** @var string $pk */
+			$pk = $this->_table->getPrimaryKey();
+			if (!$part instanceof ComparisonExpression || !in_array($part->getField(), [$pk, $this->_table->aliasField($pk)], true)) {
+				return $part;
+			}
+			if (is_array($part->getValue()) && in_array($part->getOperator(), ['IN', 'NOT IN'], true)) {
+				$field = $this->_table->getBehavior('Expose')->getExposedKey();
+				$type = $this->_table->getSchema()->getColumnType($field);
+				$values = array_values(array_filter($part->getValue(), $this->isValidUuid(...)));
+				if (!$values) {
+					return new QueryExpression($part->getOperator() === 'IN' ? '1 = 0' : '1 = 1');
+				}
+
+				return new ComparisonExpression($this->_table->aliasField($field), $values, $type . '[]', $part->getOperator());
+			}
+			$part->setValue($this->resolve($part->getValue()));
+
+			return $part;
+		});
+	}
+
+	protected function isValidUuid(mixed $value): bool {
+		if (!is_string($value)) {
+			return false;
+		}
+		$field = $this->_table->getBehavior('Expose')->getExposedKey();
+		$columnType = $this->_table->getSchema()->getColumnType($field);
+		if ($columnType === null) {
+			throw new RuntimeException('Exposed field is missing from the table schema: ' . $field);
+		}
+		$type = TypeFactory::build($columnType);
+		if ($type instanceof ShortUuidType && strlen($value) !== 36) {
+			try {
+				return Validation::uuid(ConverterFactory::getConverter()->decode($value));
+			} catch (InvalidArgumentException | RuntimeException) {
+				return false;
+			}
+		}
+		if ($type instanceof BinaryUuidType && strlen($value) === 32) {
+			return ctype_xdigit($value);
+		}
+		if ($type instanceof UuidType || $type instanceof BinaryUuidType) {
+			return Validation::uuid($value);
+		}
+
+		return true;
+	}
+
 	/**
 	 * Custom finder that superimposes the primary key with the UUID in returned result set.
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query Query.
-	 * @param array<string, mixed> $options Options.
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {
+	public function findSuperimpose(SelectQuery $query): SelectQuery {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				/** @var string $pk */
@@ -182,11 +236,22 @@ class SuperimposeBehavior extends Behavior {
 	}
 
 	/**
-	 * @param string $uuid UUID to resolve
+	 * @param mixed $uuid UUID or comparison value to resolve
 	 *
-	 * @return string|int
+	 * @return mixed
 	 */
-	protected function resolve(string $uuid) {
+	protected function resolve(mixed $uuid): mixed {
+		if (is_array($uuid)) {
+			return array_map($this->resolve(...), $uuid);
+		}
+		if (!is_string($uuid)) {
+			return $uuid;
+		}
+
+		if (!$this->isValidUuid($uuid)) {
+			throw new RecordNotFoundException('Invalid exposed identifier.');
+		}
+
 		$primaryKey = $this->_table->getPrimaryKey();
 
 		$record = $this->_table

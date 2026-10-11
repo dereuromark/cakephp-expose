@@ -3,6 +3,7 @@
 namespace Expose\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use TestApp\Model\Entity\Post;
@@ -30,6 +31,67 @@ class SuperimposeBehaviorTest extends TestCase {
 		parent::setUp();
 
 		$this->Users = $this->getTableLocator()->get('Users');
+	}
+
+	public function testUuidListCondition(): void {
+		$uuid = 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$users = $this->Users->find()->where(['Users.id IN' => [$uuid]])->all()->toList();
+
+		$this->assertCount(1, $users);
+		$this->assertSame($uuid, $users[0]->id);
+		$this->assertSame(1, $users[0]->_id);
+	}
+
+	public function testInternalIntegerKeyRemainsAvailableToOrmRules(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertTrue($this->Users->exists(['id' => 1]));
+		$this->assertSame(1, $this->Users->get(1)->_id);
+	}
+
+	public function testNumericStringIsNotAnInternalKey(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->expectException(RecordNotFoundException::class);
+		$this->Users->get('1');
+	}
+
+	public function testOtherTableSubqueryKeepsItsOwnPrimaryKey(): void {
+		$posts = $this->getTableLocator()->get('Posts');
+		$posts->saveOrFail($posts->newEntity(['user_id' => 1, 'content' => 'Example']));
+		$this->Users->addBehavior('Expose.Superimpose');
+		$subquery = $posts->find()->select(['user_id'])->where(['id IN' => [1]]);
+
+		$this->assertSame(1, $this->Users->find()->where(['Users.id IN' => $subquery])->count());
+	}
+
+	public function testInvalidUuidListsDoNotReachTheDatabase(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertSame(0, $this->Users->find()->where(['Users.id IN' => ['invalid', 1]])->count());
+		$this->assertSame(1, $this->Users->find()->where(['Users.id NOT IN' => ['invalid', 1]])->count());
+	}
+
+	public function testUuidListIgnoresUnknownIdentifiers(): void {
+		$uuid = 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+		$unknown = '806d0969-95b3-433b-976f-774611fdacbb';
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$users = $this->Users->find()->where(['Users.id IN' => [$uuid, $unknown]])->all()->toList();
+
+		$this->assertCount(1, $users);
+		$this->assertSame($uuid, $users[0]->id);
+		$this->assertSame(0, $this->Users->find()->where(['Users.id IN' => [$unknown]])->count());
+		$this->assertSame(1, $this->Users->find()->where(['Users.id NOT IN' => [$unknown]])->count());
+		$this->assertSame(0, $this->Users->find()->where(['Users.id NOT IN' => [$uuid, $unknown]])->count());
+	}
+
+	public function testNullPrimaryKeyCondition(): void {
+		$this->Users->addBehavior('Expose.Superimpose');
+
+		$this->assertSame(1, $this->Users->find()->where(['Users.id IS NOT' => null])->count());
 	}
 
 	/**

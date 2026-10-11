@@ -3,7 +3,6 @@
 namespace Expose\Test\TestCase\Command;
 
 use Cake\Command\Command;
-use Cake\Console\ConsoleIo;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -31,11 +30,6 @@ class AddExposedFieldCommandTest extends TestCase {
 	protected UsersTable $Users;
 
 	/**
-	 * @var \Cake\Console\ConsoleIo|\PHPUnit\Framework\MockObject\MockObject
-	 */
-	protected $io;
-
-	/**
 	 * @var \Expose\Command\AddExposedFieldCommand
 	 */
 	protected AddExposedFieldCommand $command;
@@ -50,7 +44,6 @@ class AddExposedFieldCommandTest extends TestCase {
 
 		$this->Users = TableRegistry::getTableLocator()->get('Users');
 
-		$this->io = $this->getMockBuilder(ConsoleIo::class)->getMock();
 		$this->command = new AddExposedFieldCommand();
 
 		$this->setAppNamespace();
@@ -78,8 +71,6 @@ class AddExposedFieldCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testExecute(): void {
-		$this->io->method('askChoice')->willReturn('yes');
-
 		$this->exec('expose add_field Users');
 
 		$this->assertExitCode(Command::CODE_SUCCESS);
@@ -122,6 +113,52 @@ class AddExposedFieldCommandTest extends TestCase {
 		$this->assertOutputContains('\'null\' => true,');
 
 		$this->assertOutputContains('$table->addIndex([\'binary_uuid\'], [\'unique\' => true]);');
+	}
+
+	public function testExistingBinaryFieldKeepsItsStorageType(): void {
+		$column = $this->Users->getSchema()->getColumn('uuid');
+		$column['type'] = 'binaryuuid';
+		$column['null'] = true;
+		$this->Users->getSchema()->addColumn('uuid', $column);
+
+		$this->exec('expose add_field Users');
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+		$this->assertOutputContains("changeColumn('uuid', 'binary', [");
+		$this->assertOutputContains("'limit' => 16,");
+	}
+
+	public function testExistingNativeUuidKeepsItsStorageType(): void {
+		$column = $this->Users->getSchema()->getColumn('uuid');
+		$column['type'] = 'nativeuuid';
+		$column['null'] = true;
+		$this->Users->getSchema()->addColumn('uuid', $column);
+
+		$this->exec('expose add_field Users');
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+		$this->assertOutputContains("changeColumn('uuid', 'nativeuuid', [");
+	}
+
+	public function testVendorPluginGetsAValidDefaultMigrationName(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['field' => 'public_uuid']);
+		TableRegistry::getTableLocator()->set('My/PluginName.Users', $this->Users);
+
+		$this->exec('expose add_field My/PluginName.Users -d', ['yes']);
+
+		$this->assertExitCode(Command::CODE_SUCCESS);
+		$this->assertOutputContains('class MigrationExposedFieldMyPluginNameUsers extends BaseMigration');
+	}
+
+	public function testInvalidMigrationNameIsRejected(): void {
+		$this->Users->removeBehavior('Expose');
+		$this->Users->addBehavior('Expose.Expose', ['field' => 'public_uuid']);
+
+		$this->exec('expose add_field Users ../Invalid -d', ['yes']);
+
+		$this->assertExitCode(Command::CODE_ERROR);
+		$this->assertErrorContains('Migration name must be a valid PHP class name.');
 	}
 
 	/**

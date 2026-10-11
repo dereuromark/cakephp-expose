@@ -214,6 +214,29 @@ class ExposeBehaviorTest extends TestCase {
 		}
 	}
 
+	public function testPopulateWithCustomConditionsKeepsExistingIdentifiers(): void {
+		$table = TableRegistry::getTableLocator()->get('ExistingRecords');
+		$table->removeBehavior('Expose');
+		$uuid = 'eb25610d-7bfa-4e34-812c-ad72b100fb26';
+		$existing = $table->newEntity([
+			'name' => 'Foo Bar',
+			'uuid' => $uuid,
+			'created' => '2020-02-24 08:21:27',
+			'modified' => '2020-02-24 08:21:27',
+		]);
+		$table->saveOrFail($existing);
+		$table->addBehavior('Expose.Expose');
+
+		$count = $table->getBehavior('Expose')->initExposedField([
+			'conditions' => ['name' => 'Foo Bar'],
+			'limit' => 1,
+		]);
+
+		$this->assertSame(1, $count);
+		$this->assertSame($uuid, $table->get($existing->id)->uuid);
+		$this->assertSame(0, $table->find()->where(['uuid IS' => null])->count());
+	}
+
 	/**
 	 * @return void
 	 */

@@ -8,61 +8,31 @@
 [![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-expose/d/total.svg)](https://packagist.org/packages/dereuromark/cakephp-expose)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-purple.svg?style=flat-square)](https://github.com/php-fig-rectified/fig-rectified-standards)
 
-Exposes UUIDs as public identifiers for your entities instead of numeric AIID (Auto Increment ID) primary keys.
+Use UUIDs as public identifiers while keeping integer primary keys for internal relations.
+The default UUIDv4 generator does not encode record creation time or order.
+Your application controls entity accessibility and authorization.
 
-This branch is for use with **CakePHP 5.1+**. For details see [version map](https://github.com/dereuromark/cakephp-expose/wiki#cakephp-version-map).
+Read the [documentation website](https://dereuromark.github.io/cakephp-expose/):
 
-## Key Goals
-Cloaking/Obfuscation
-- True randomness, so you cannot determine order or count of records per time-frame.
+- [Installation](https://dereuromark.github.io/cakephp-expose/guide/installation)
+- [Getting started](https://dereuromark.github.io/cakephp-expose/guide/getting-started)
+- [Existing records](https://dereuromark.github.io/cakephp-expose/guide/existing-records)
+- [Choosing identifiers](https://dereuromark.github.io/cakephp-expose/guide/motivation)
 
-Security
-- Mass assignment and marshalling does not allow setting this exposed field - it are hidden by default just as the primary key.
+Package requirements are maintained in [composer.json](composer.json).
+For older CakePHP branches, see the [version map](https://github.com/dereuromark/cakephp-expose/wiki#cakephp-version-map).
 
-Robustness
-- Must work with also more complex queries and use cases, including the atomic `updateAll()`, `deleteAll()`.
-- Speed should be similar to default approach.
+## Example
 
-Simplicity
-- Code changes from AIID exposure to UUID lookup should be minimal for all public endpoints.
-- The default shortener provided makes the UUIDs also only 22 chars long concise strings.
+```php
+$articles->addBehavior('Expose.Expose');
+$article = $articles->newEntity(['title' => 'First article']);
+$articles->saveOrFail($article);
 
-## Why AIID and UUID as combination?
-See [Motivation](docs/Motivation.md) for details.
-
-## Demo
-See [sandbox](https://sandbox4.dereuromark.de/sandbox/expose-examples) examples.
-
-## Installation
-
-You can install this plugin into your CakePHP application using [Composer](https://getcomposer.org/).
-
-The recommended way to install is:
-
-```
-composer require dereuromark/cakephp-expose
+$found = $articles->find('exposed', uuid: $article->uuid)->firstOrFail();
 ```
 
-Then load the plugin with the following command:
-```
-bin/cake plugin load Expose
-```
+Add a UUID schema column and protect its entity accessibility first, as shown in Getting started.
+The UUID is generated on saving a new entity; the ordinary primary key remains available internally.
 
-## Usage
-
-See [Docs](/docs) for details.
-
-### Quick Start for adding to existing records
-
-Faster than the speed of light:
-
-- Add the behavior and run `bin/cake expose add_field PluginName.ModelName {MigrationName}` to generate a migration for adding the field.
-- Execute the migration and then populate existing records using `bin/cake expose populate_field PluginName.ModelName`
-- Re-run `bin/cake expose add_field PluginName.ModelName {MigrationName}` to get a non-nullable field migration for your new field.
-- After also executing that migration all new records will automatically have their exposed field stored as well.
-
-You are done and can now adjust your public actions to query by exposed field only and hide the primary key completely.
-Using `Superimpose` behavior on top of `Expose` means that you actually might not even have to modify any code.
-Should work out of the box.
-
-More migration tips in [Migrating](docs/Migrating.md) section.
+[Sandbox examples](https://sandbox4.dereuromark.de/sandbox/expose-examples) show public lookups in an application.
