@@ -33,6 +33,7 @@
 		"cakephp/cakephp": "^5.1.1"
 	},
 	"require-dev": {
+		"dereuromark/cakephp-i18n-lint": "^0.1.1",
 		"ext-bcmath": "*",
 		"brick/math": "^0.13.0 || ^0.14.0 || ^1.0",
 		"fig-r/psr2r-sniffer": "dev-master",
@@ -66,6 +67,9 @@
 		"lowest": "validate-prefer-lowest",
 		"lowest-setup": "composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction && cp composer.json composer.backup && composer require --dev dereuromark/composer-prefer-lowest && mv composer.backup composer.json",
 		"test": "phpunit",
-		"test-coverage": "phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml"
+		"test-coverage": "phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",
+		"i18n-check": "i18n-lint check",
+		"i18n-extract": "i18n-lint extract",
+		"i18n-lint": "i18n-lint lint"
 	}
 }
