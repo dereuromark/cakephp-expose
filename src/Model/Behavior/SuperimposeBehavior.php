@@ -273,7 +273,7 @@ class SuperimposeBehavior extends Behavior {
 			return array_map($this->resolveComparisonValue(...), $value);
 		}
 
-		if ($value instanceof ExpressionInterface || $value instanceof Query) {
+		if ($value instanceof ExpressionInterface) {
 			return $value;
 		}
 

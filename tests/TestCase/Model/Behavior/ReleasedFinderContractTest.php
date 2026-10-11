@@ -2,7 +2,6 @@
 
 namespace Expose\Test\TestCase\Model\Behavior;
 
-use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Stringable;
 use TestApp\Model\Behavior\LegacyExposeBehavior;
@@ -72,16 +71,12 @@ class ReleasedFinderContractTest extends TestCase {
 	 * @return void
 	 */
 	public function testReleasedArrayFinderDispatch(): void {
-		$duplicates = Configure::read('Error.allowDuplicateDeprecations');
-		Configure::write('Error.allowDuplicateDeprecations', true);
-		try {
+		$this->withErrorReporting(E_ALL, function (): void {
 			$this->deprecated(function (): void {
 				$users = $this->fetchTable('Users');
 				$this->assertSame([1 => 'Foo Bar'], $users->find('exposedList', ['keyField' => 'id', 'valueField' => 'name'])->toArray());
 			});
-		} finally {
-			Configure::write('Error.allowDuplicateDeprecations', $duplicates);
-		}
+		});
 	}
 
 }
