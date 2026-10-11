@@ -20,6 +20,7 @@ use Expose\Converter\ConverterFactory;
 use Expose\Database\Type\ShortUuidType;
 use InvalidArgumentException;
 use RuntimeException;
+use Stringable;
 use WeakMap;
 
 /**
@@ -179,7 +180,7 @@ class SuperimposeBehavior extends Behavior {
 
 				return new ComparisonExpression($this->_table->aliasField($field), $values, $type . '[]', $part->getOperator());
 			}
-			$part->setValue($this->resolve($part->getValue()));
+			$part->setValue($this->resolveComparisonValue($part->getValue()));
 
 			return $part;
 		});
@@ -216,9 +217,10 @@ class SuperimposeBehavior extends Behavior {
 	 * Custom finder that superimposes the primary key with the UUID in returned result set.
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query Query.
+	 * @param array<string, mixed> $options Finder options
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findSuperimpose(SelectQuery $query): SelectQuery {
+	public function findSuperimpose(SelectQuery $query, array $options): SelectQuery {
 		$query->formatResults(function (CollectionInterface $results) {
 			return $results->map(function ($row) {
 				/** @var string $pk */
@@ -263,18 +265,26 @@ class SuperimposeBehavior extends Behavior {
 	}
 
 	/**
-	 * @param mixed $uuid UUID or comparison value to resolve
-	 *
+	 * @param mixed $value Comparison value
 	 * @return mixed
 	 */
-	protected function resolve(mixed $uuid): mixed {
-		if (is_array($uuid)) {
-			return array_map($this->resolve(...), $uuid);
-		}
-		if (!is_string($uuid)) {
-			return $uuid;
+	private function resolveComparisonValue(mixed $value): mixed {
+		if (is_array($value)) {
+			return array_map($this->resolveComparisonValue(...), $value);
 		}
 
+		if ($value instanceof ExpressionInterface) {
+			return $value;
+		}
+
+		return is_string($value) || $value instanceof Stringable ? $this->resolve((string)$value) : $value;
+	}
+
+	/**
+	 * @param string $uuid UUID to resolve
+	 * @return string|int
+	 */
+	protected function resolve(string $uuid) {
 		if (!$this->isValidUuid($uuid)) {
 			throw new RecordNotFoundException('Invalid exposed identifier.');
 		}

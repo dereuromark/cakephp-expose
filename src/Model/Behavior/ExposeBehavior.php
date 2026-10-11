@@ -10,7 +10,6 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Table;
-use Closure;
 use RuntimeException;
 
 /**
@@ -54,27 +53,18 @@ class ExposeBehavior extends Behavior {
 	}
 
 	/**
-	 * @param \Cake\ORM\Query\SelectQuery $query
-	 * @param \Closure|array|string|null $keyField
-	 * @param \Closure|array|string|null $valueField
-	 * @param \Closure|array|string|null $groupField
-	 * @param string $valueSeparator
+	 * @param \Cake\ORM\Query\SelectQuery $query Query
+	 * @param array<string, mixed> $options List options
 	 * @return \Cake\ORM\Query\SelectQuery
 	 */
-	public function findExposedList(
-		SelectQuery $query,
-		Closure|array|string|null $keyField = null,
-		Closure|array|string|null $valueField = null,
-		Closure|array|string|null $groupField = null,
-		string $valueSeparator = ' ',
-	): SelectQuery {
-		return $query->find(
-			'list',
-			keyField: $keyField ?? $this->getConfig('field'),
-			valueField: $valueField ?? $this->_table->getDisplayField(),
-			groupField: $groupField,
-			valueSeparator: $valueSeparator,
-		);
+	public function findExposedList(SelectQuery $query, array $options): SelectQuery {
+		$options += [
+			'keyField' => $this->getConfig('field'),
+			'valueField' => $this->_table->getDisplayField(),
+			'groupField' => null,
+		];
+
+		return $query->find('list', ...$options);
 	}
 
 	/**
