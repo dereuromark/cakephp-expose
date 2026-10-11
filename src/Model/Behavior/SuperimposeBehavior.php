@@ -27,7 +27,7 @@ use WeakMap;
  * Adds superimpose functionality on top of Expose behavior.
  * This should only be added at runtime to the specific actions where needed through SuperimposeComponent.
  *
- * @property \Cake\ORM\Table<array{Expose: \Expose\Model\Behavior\ExposeBehavior}> $_table
+ * @property \Cake\ORM\Table<array{Expose: \Expose\Model\Behavior\ExposeBehavior}> $table
  */
 class SuperimposeBehavior extends Behavior {
 

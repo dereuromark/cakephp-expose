@@ -38,7 +38,7 @@ It also accepts `keyField`, `groupField`, and `valueSeparator`, following CakePH
 Use an aliased field name when joins could introduce another `uuid` column:
 
 ```php
-$field = $articles->getExposedKey(true);
+$field = $articles->getBehavior('Expose')->getExposedKey(true);
 $article = $articles->find()->where([$field => $uuid])->firstOrFail();
 ```
 

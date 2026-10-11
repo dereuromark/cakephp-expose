@@ -37,10 +37,6 @@ class ExposeBehavior extends Behavior {
 			'exposed' => 'findExposed',
 			'exposedList' => 'findExposedList',
 		],
-		'implementedMethods' => [
-			'getExposedKey' => 'getExposedKey',
-			'initExposedField' => 'initExposedField',
-		],
 	];
 
 	/**
@@ -94,10 +90,6 @@ class ExposeBehavior extends Behavior {
 	/**
 	 * Custom finder exposed as
 	 *
-	 * legacy
-	 * ->find('exposed', ['uuid' => $uuid])
-	 *
-	 * new way (typed finder, named argument)
 	 * ->find('exposed', uuid: $uuid)
 	 *
 	 * @param \Cake\ORM\Query\SelectQuery $query

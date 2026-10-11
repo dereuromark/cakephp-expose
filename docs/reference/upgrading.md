@@ -26,3 +26,5 @@ Update direct `findExposedList()` calls to named arguments such as `keyField: 'i
 Custom behavior and component configuration defaults now use `$defaultConfig`. Entity mass-assignment rules use `$patchable`, and marshalling options use `patchableFields`. The behavior still permits its generated UUID when configured for `beforeMarshal`.
 
 Commands implement parameterless `execute()` and use the command's argument and console services. Existing `expose add_field` and `expose populate_field` command options remain available.
+
+CakePHP 6 removes the table's behavior method proxy. Call `$table->getBehavior('Expose')->getExposedKey()` and `$table->getBehavior('Expose')->initExposedField()` on the behavior instance.

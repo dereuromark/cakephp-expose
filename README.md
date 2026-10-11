@@ -12,17 +12,19 @@ Use UUIDs as public identifiers while keeping integer primary keys for internal 
 The default UUIDv4 generator does not encode record creation time or order.
 Your application controls entity accessibility and authorization.
 
-Read the [documentation website](https://dereuromark.github.io/cakephp-expose/):
+Read the [documentation in this branch](https://github.com/dereuromark/cakephp-expose/tree/cake6/docs):
 
-- [Installation](https://dereuromark.github.io/cakephp-expose/guide/installation)
-- [Getting started](https://dereuromark.github.io/cakephp-expose/guide/getting-started)
-- [Existing records](https://dereuromark.github.io/cakephp-expose/guide/existing-records)
-- [Choosing identifiers](https://dereuromark.github.io/cakephp-expose/guide/motivation)
+- [Installation](https://github.com/dereuromark/cakephp-expose/blob/cake6/docs/guide/installation.md)
+- [Getting started](https://github.com/dereuromark/cakephp-expose/blob/cake6/docs/guide/getting-started.md)
+- [Existing records](https://github.com/dereuromark/cakephp-expose/blob/cake6/docs/guide/existing-records.md)
+- [Choosing identifiers](https://github.com/dereuromark/cakephp-expose/blob/cake6/docs/guide/motivation.md)
 
 Package requirements are maintained in [composer.json](composer.json).
 This development branch targets CakePHP 6 and PHP 8.5.
 
 For older CakePHP branches, see the [version map](https://github.com/dereuromark/cakephp-expose/wiki#cakephp-version-map).
+
+The [published documentation website](https://dereuromark.github.io/cakephp-expose/) describes the CakePHP 5 branch.
 
 ## Example
 
