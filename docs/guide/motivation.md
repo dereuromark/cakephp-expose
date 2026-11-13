@@ -4,6 +4,9 @@ Expose keeps integer primary keys for internal relations and adds a UUID for pub
 This avoids changing every foreign key just to replace numeric IDs in URLs.
 The additional field needs storage and an index; benchmark your own workload if lookup performance matters.
 
+The blog post [Exposing records in CakePHP](https://www.dereuromark.de/2020/03/22/exposing-records-in-cakephp/)
+explains why the plugin exists and which problems of numeric IDs in public URLs it addresses.
+
 ## UUIDv4
 
 The default CakePHP UUID generator produces UUIDv4 identifiers.

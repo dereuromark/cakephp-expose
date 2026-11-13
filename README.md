@@ -12,6 +12,9 @@ Use UUIDs as public identifiers while keeping integer primary keys for internal 
 The default UUIDv4 generator does not encode record creation time or order.
 Your application controls entity accessibility and authorization.
 
+For the reasoning behind this approach, see the blog post
+[Exposing records in CakePHP](https://www.dereuromark.de/2020/03/22/exposing-records-in-cakephp/).
+
 Read the [documentation website](https://dereuromark.github.io/cakephp-expose/):
 
 - [Installation](https://dereuromark.github.io/cakephp-expose/guide/installation)
